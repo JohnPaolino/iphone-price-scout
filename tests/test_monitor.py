@@ -45,6 +45,15 @@ class TestPriceScout(unittest.TestCase):
         self.assertIsNone(normalize_item({**item, 'price':'$1,099.00'},
                                          'Pro Max', 256, CONFIG))
 
+    def test_refurbished_only_merchants_are_excluded_even_without_title_label(self):
+        item = {'title':'Apple iPhone 17 Pro 1TB Blu',
+                'source':'Swappie', 'price':'900,00 €',
+                'link':'https://www.google.com/shopping/product/123'}
+        self.assertIsNone(normalize_item(item, 'Pro', 1024, CONFIG))
+        for seller in ('reBuy.it', 'Back Market', 'refurbed.it', 'CertiDeal.it'):
+            with self.subTest(seller=seller):
+                self.assertIsNone(normalize_item({**item,'source':seller}, 'Pro', 1024, CONFIG))
+
     def test_marketplace_source_remains_review_only(self):
         item = {'title':'Apple iPhone 17 Pro Max 512GB',
                 'source':'MediaWorld - Marketplace MediaWorld IT',
