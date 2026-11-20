@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-20T11:24:50Z",
+  "checked_at": "2026-11-20T11:36:26Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Google Shopping / Serper",
@@ -15,8 +15,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 40
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 26
     },
     "pro-512gb": {
       "model": "Pro",
@@ -25,8 +25,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 40
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 38
     },
     "pro-1tb": {
       "model": "Pro",
@@ -35,8 +35,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 23
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 40
     },
     "pro-max-256gb": {
       "model": "Pro Max",
@@ -45,8 +45,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 40
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 25
     },
     "pro-max-512gb": {
       "model": "Pro Max",
@@ -57,12 +57,12 @@
           "variant_id": "pro-max-512gb",
           "model": "Pro Max",
           "storage": "512GB",
-          "title": "Apple iPhone 17 Pro Max 512GB",
+          "title": "Apple iPhone 17 pro max tim 512GB",
           "merchant": "Unieuro",
           "price_eur": 1569.0,
           "shipping_eur": null,
           "total_eur": null,
-          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:16148245744705273692,gpcid:6747500198235643599,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:579993473427194908,gpcid:2048058991081880728,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "review_seller",
           "link_quality": "google_shopping",
           "condition": "not_declared_refurbished",
@@ -74,19 +74,19 @@
         "variant_id": "pro-max-512gb",
         "model": "Pro Max",
         "storage": "512GB",
-        "title": "Apple iPhone 17 Pro Max 512GB",
+        "title": "Apple iPhone 17 pro max tim 512GB",
         "merchant": "Unieuro",
         "price_eur": 1569.0,
         "shipping_eur": null,
         "total_eur": null,
-        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:16148245744705273692,gpcid:6747500198235643599,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:579993473427194908,gpcid:2048058991081880728,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
         "trust": "review_seller",
         "link_quality": "google_shopping",
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 18
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 40
     },
     "pro-max-1tb": {
       "model": "Pro Max",
@@ -125,48 +125,18 @@
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 14
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 37
     },
     "pro-max-2tb": {
       "model": "Pro Max",
       "storage": "2TB",
       "status": "ok",
-      "offers": [
-        {
-          "variant_id": "pro-max-2tb",
-          "model": "Pro Max",
-          "storage": "2TB",
-          "title": "Apple iPhone 17 Pro Max 2TB",
-          "merchant": "Unieuro",
-          "price_eur": 2279.0,
-          "shipping_eur": null,
-          "total_eur": null,
-          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-          "trust": "review_seller",
-          "link_quality": "google_shopping",
-          "condition": "not_declared_refurbished",
-          "shipping_known": false
-        }
-      ],
+      "offers": [],
       "best_trusted": null,
-      "best_review": {
-        "variant_id": "pro-max-2tb",
-        "model": "Pro Max",
-        "storage": "2TB",
-        "title": "Apple iPhone 17 Pro Max 2TB",
-        "merchant": "Unieuro",
-        "price_eur": 2279.0,
-        "shipping_eur": null,
-        "total_eur": null,
-        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-        "trust": "review_seller",
-        "link_quality": "google_shopping",
-        "condition": "not_declared_refurbished",
-        "shipping_known": false
-      },
-      "checked_at": "2026-11-20T11:24:50Z",
-      "results_checked": 10
+      "best_review": null,
+      "checked_at": "2026-11-20T11:36:26Z",
+      "results_checked": 9
     }
   }
 }

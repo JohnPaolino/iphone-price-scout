@@ -14,6 +14,11 @@
       "at": "2026-11-20T11:24:50Z",
       "price_eur": null,
       "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
+      "price_eur": null,
+      "merchant": null
     }
   ],
   "pro-512gb": [
@@ -29,6 +34,11 @@
     },
     {
       "at": "2026-11-20T11:24:50Z",
+      "price_eur": null,
+      "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
       "price_eur": null,
       "merchant": null
     }
@@ -48,6 +58,11 @@
       "at": "2026-11-20T11:24:50Z",
       "price_eur": null,
       "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
+      "price_eur": null,
+      "merchant": null
     }
   ],
   "pro-max-256gb": [
@@ -63,6 +78,11 @@
     },
     {
       "at": "2026-11-20T11:24:50Z",
+      "price_eur": null,
+      "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
       "price_eur": null,
       "merchant": null
     }
@@ -82,6 +102,11 @@
       "at": "2026-11-20T11:24:50Z",
       "price_eur": null,
       "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
+      "price_eur": null,
+      "merchant": null
     }
   ],
   "pro-max-1tb": [
@@ -99,6 +124,11 @@
       "at": "2026-11-20T11:24:50Z",
       "price_eur": null,
       "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
+      "price_eur": null,
+      "merchant": null
     }
   ],
   "pro-max-2tb": [
@@ -114,6 +144,11 @@
     },
     {
       "at": "2026-11-20T11:24:50Z",
+      "price_eur": null,
+      "merchant": null
+    },
+    {
+      "at": "2026-11-20T11:36:26Z",
       "price_eur": null,
       "merchant": null
     }
