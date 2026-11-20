@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-20T11:39:22Z",
+  "checked_at": "2026-11-20T11:43:19Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Google Shopping / Serper",
@@ -23,7 +23,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-256GB-Blu-Profondo-pidAPLIPHONE17PRO256B?srsltid=AYCX9vJieNQ1DR_7MxzskJ2WZGZFUS06HXHPdPvXZlwbYc_SKSr-hnUi",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-256GB-Blu-Profondo-pidAPLIPHONE17PRO256B?srsltid=AYCX9vLZX-Byzqp2VdravfTNy5xjC16jDjhg9UhH6frIMhC5CYPXgSIN",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -39,7 +39,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-256GB-Arancione-Cosmico-pidAPLIPHONE17PRO256O?srsltid=AYCX9vJUS05RudOHYs_ktU4cq9a09_AR2cQ84Fxzo10Vmbi-Vlu5-iyE",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-256GB-Arancione-Cosmico-pidAPLIPHONE17PRO256O?srsltid=AYCX9vKahskRlNE9HxgD-V3rPrEow1j-MAyKMwidQJjXb-Wqo1TfppVX",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -48,8 +48,8 @@
       ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:39:22Z",
-      "results_checked": 40
+      "checked_at": "2026-11-20T11:43:19Z",
+      "results_checked": 26
     },
     "pro-512gb": {
       "model": "Pro",
@@ -66,7 +66,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vKHrrP9nHNug335Es9ls1LB9FNNP2pp81jFQm1sT_dThHUvJp7Y",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vLUm5kArGsIY1d_Hy11bWCjIbgmarzqUPHdbCKMCH4Gli7wFKyy",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -82,7 +82,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Argento-pidAPLIPHONE17PRO512S?srsltid=AYCX9vLkTKkzhzSzE6X2-2x1AezsHiGxbjR66bcYXwfbTpK_KcZf931w",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Argento-pidAPLIPHONE17PRO512S?srsltid=AYCX9vKy5zpsLZ8EK_eKCNQHWcROBQ6a5t7ZcsdIuR1-GQ0De1NPmNJB",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -91,7 +91,7 @@
       ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:39:22Z",
+      "checked_at": "2026-11-20T11:43:19Z",
       "results_checked": 40
     },
     "pro-1tb": {
@@ -109,7 +109,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-1TB-Argento-pidILIIPHONE17PRO1TBS?srsltid=AYCX9vJApfncbB6QDLvASSAsmjpvbCqP7glqR9acPOXuZgXEzv9MrReG",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-1TB-Argento-pidILIIPHONE17PRO1TBS?srsltid=AYCX9vLeiUhUh1VDblqQBHSh1dehJ9j_b0gFYb4CitAFPF_j-yOTP5Yi",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -118,8 +118,8 @@
       ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:39:22Z",
-      "results_checked": 40
+      "checked_at": "2026-11-20T11:43:19Z",
+      "results_checked": 25
     },
     "pro-max-256gb": {
       "model": "Pro Max",
@@ -136,7 +136,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Argento-pidAPLIPHONE17PMAX256S?srsltid=AYCX9vIpMA4k9jAYskUcPpb3oYPQFhnYUPpfUgRo9gFy4M_bnozAKiqe",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Argento-pidAPLIPHONE17PMAX256S?srsltid=AYCX9vKHKfR9gsbKdZd3mLme4OCv4UUHugXSIPnYBrXDng3qmTALapUQ",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -152,7 +152,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Blu-Profondo-pidAPLIPHONE17PMAX256B?srsltid=AYCX9vJVxDkaErYhNug0LtbsR3hgmCf9M8IAopDjB2W9kMxUZkcoQQPk",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Blu-Profondo-pidAPLIPHONE17PMAX256B?srsltid=AYCX9vIg1JWR642xXnRG3Cf-hFfGtqItCvGzbJVac1W5lyKCFV9Ysw7w",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -168,7 +168,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Arancione-Cosmico-pidAPLIPHONE17PMAX256O?srsltid=AYCX9vKduaQC731lo_-UwyOsWE1JHTLI40M07u_hwhIv0acRPkPmRHLJ",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Arancione-Cosmico-pidAPLIPHONE17PMAX256O?srsltid=AYCX9vIpQUn--5WKLo1eHTICtBCoP6m5PD2UeYlv2Pkc2-PJ23Pli-dl",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -177,7 +177,7 @@
       ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:39:22Z",
+      "checked_at": "2026-11-20T11:43:19Z",
       "results_checked": 40
     },
     "pro-max-512gb": {
@@ -210,7 +210,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Arancione-Cosmico-pidAPLIPHONE17PMAX512O?srsltid=AYCX9vJbNw7OMFgORKQ3k2jTZ3wHaLLn8qd3GXvgqVxTY3ltjnC_AMXF",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Arancione-Cosmico-pidAPLIPHONE17PMAX512O?srsltid=AYCX9vKVZ4IbQmW4yyvzSvsXkNo2Jr9hcDHcGjq6nVeQcIwTu1ZXpYrV",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -226,7 +226,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Argento-pidAPLIPHONE17PMAX512S?srsltid=AYCX9vIpkVnAUNcxFhmXSb8bl1lCCPhRy0p0lFQcKa6VyqVuIgk2TYBK",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Argento-pidAPLIPHONE17PMAX512S?srsltid=AYCX9vKyFshckWitbGqe6KHXxnK9YknVoBpnebUM5WHzb9OPHcrOXWBG",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -242,7 +242,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Blu-Profondo-pidAPLIPHONE17PMAX512B?srsltid=AYCX9vLpLf-5dbGpPGBi8fRKZvyLe0K5y9oHNON7zt8mVMivKi5n87Lb",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Blu-Profondo-pidAPLIPHONE17PMAX512B?srsltid=AYCX9vLRI8DcVzsq9a-lllzefJFre3icjDCmVU8bAuY6MFU8QGTUqwRu",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -265,8 +265,8 @@
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:39:22Z",
-      "results_checked": 38
+      "checked_at": "2026-11-20T11:43:19Z",
+      "results_checked": 35
     },
     "pro-max-1tb": {
       "model": "Pro Max",
@@ -298,7 +298,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-1TB-Blu-Profondo-pidILIIPHONE17PMAX1TBB?srsltid=AYCX9vJDJrnyfTzPPGabewcwCjencYazoCaFMsJXfv7mrZpH4xH4hDD7",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-1TB-Blu-Profondo-pidILIIPHONE17PMAX1TBB?srsltid=AYCX9vLiDuJEsHvUqu9pMMFDK37YfPEE0P9IP_CRczQ7yeMK9c-MHvME",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -314,7 +314,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-1TB-Arancione-Cosmico-pidILIIPHONE17PMAX1TBO?srsltid=AYCX9vLAsOL0btaKG5NO0_53Gpxb-Hf_Jkz1c3ez2IcFQOLEEzo8vwdR",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-1TB-Arancione-Cosmico-pidILIIPHONE17PMAX1TBO?srsltid=AYCX9vLYu3jQM8eB_8t0eAX2Kavk2C_cZQrNy1e_2QQFgyvGV6NyCYBD",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -337,8 +337,8 @@
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:39:22Z",
-      "results_checked": 15
+      "checked_at": "2026-11-20T11:43:19Z",
+      "results_checked": 37
     },
     "pro-max-2tb": {
       "model": "Pro Max",
@@ -385,7 +385,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Blu-Profondo-pidAPLIPHONE17PMAX2TBB?srsltid=AYCX9vIwOpEh9yZEi-NikjagYDfM1y-inzQuSuCKiaMzdjmfSsbM1N53",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Blu-Profondo-pidAPLIPHONE17PMAX2TBB?srsltid=AYCX9vJpX9B6GexqNgPQO2rjcnk8i_PfmWPwgXae_SatU0tUB3tLKiLk",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -401,7 +401,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Argento-pidAPLIPHONE17PMAX2TBS?srsltid=AYCX9vIGj8zJbr9eWXa8VUYhjD_0Oy5_6UtI8ps5wHj9T0ipyEuIAjEb",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Argento-pidAPLIPHONE17PMAX2TBS?srsltid=AYCX9vKPxT7ax868JHKPCTSdRJXl1vSO0TbN-pt-InWY0H2d1d-sCo1o",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -417,7 +417,7 @@
           "shipping_eur": null,
           "total_eur": null,
           "shipping_known": false,
-          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Arancione-Cosmico-pidILIIPHONE17PMAX2TBO?srsltid=AYCX9vJsL7tQom5VU6aCwPJc8kOnJDSa3-kdk717sJdwbLAMl9xJSHoW",
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Arancione-Cosmico-pidILIIPHONE17PMAX2TBO?srsltid=AYCX9vKlfX4YAM9GdNV84evfAa7zcwP9O-MJ4p6_GcEIVS_MTUQ9GO-i",
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "check_on_store",
@@ -440,7 +440,7 @@
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:39:22Z",
+      "checked_at": "2026-11-20T11:43:19Z",
       "results_checked": 23
     }
   }
