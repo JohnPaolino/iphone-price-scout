@@ -213,6 +213,100 @@ def get_shopping(query: str, key: str, retry=2) -> list[dict]:
     return []
 
 
+def get_organic(query: str, key: str, retry: int = 2) -> list[dict]:
+    """Find direct product pages at approved Italian stores via Serper Search."""
+    request = urllib.request.Request(
+        "https://google.serper.dev/search",
+        data=json.dumps({"q": query, "gl": "it", "hl": "it", "num": 20}).encode(),
+        headers={"X-API-KEY": key, "Content-Type": "application/json",
+                 "User-Agent": "iphone-price-scout/1.1"},
+        method="POST",
+    )
+    for attempt in range(retry + 1):
+        try:
+            with urllib.request.urlopen(request, timeout=28) as response:
+                result = json.load(response)
+            if not isinstance(result.get("organic"), list):
+                raise RuntimeError("No organic results returned")
+            return result["organic"]
+        except (urllib.error.URLError, TimeoutError, RuntimeError) as exc:
+            if attempt == retry:
+                raise RuntimeError(f"Organic search failed: {exc}") from exc
+            time.sleep(2 ** attempt)
+    return []
+
+
+def merchant_from_url(raw_link: str, config: dict) -> str | None:
+    link = safe_link(raw_link)
+    if not link:
+        return None
+    host = (urllib.parse.urlsplit(link).hostname or "").lower().rstrip(".")
+    for merchant in config["trusted_merchants"]:
+        if any(host == domain or host.endswith("." + domain)
+               for domain in RETAILER_HOSTS.get(merchant, ())):
+            return merchant
+    return None
+
+
+def organic_price(item: dict, config: dict) -> float | None:
+    """Only accept a clearly labelled price; never infer it from instalments or MSRP."""
+    value = item.get("price")
+    if value is not None:
+        amount = parse_eur(value)
+        if amount is not None and config["min_price_eur"] <= amount <= config["max_price_eur"]:
+            return amount
+    snippet = str(item.get("snippet") or "")
+    patterns = (
+        r"(?:\\bora|prezzo\\s+(?:attuale|online|scontato)|nostro\\s+prezzo)\\s*[:\\-]?\\s*€?\\s*(\\d[\\d.,]*)(?:\\s*€)?",
+        r"€\\s*(\\d{1,2}(?:[.]\\d{3})+(?:[,]\\d{2})?)",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, snippet, re.I)
+        if match:
+            preceding = snippet[max(0, match.start() - 34):match.start()].lower()
+            if re.search(r"prezzo\\s+(?:precedente|consigliato|originale)|anzich[eé]|risparmia", preceding):
+                continue
+            amount = parse_eur(match.group(1))
+            if amount is not None and config["min_price_eur"] <= amount <= config["max_price_eur"]:
+                return amount
+    return None
+
+
+def normalize_organic(item: dict, model: str, gb: int, config: dict) -> dict | None:
+    """Direct merchant result: never treat Google snippets as checkout-confirmed."""
+    title = str(item.get("title") or "").split(" | ")[0].strip()
+    if not title_matches(title, model, gb):
+        return None
+    link = str(item.get("link") or "")
+    merchant = merchant_from_url(link, config)
+    if not merchant or link_quality(link, merchant) != "direct":
+        return None
+    path = urllib.parse.urlsplit(link).path.lower()
+    if any(chunk in path for chunk in ("/search", "/ricondizionati", "/outlet", "/usato", "/accessori/")):
+        return None
+    condition_blob = " ".join((title, str(item.get("snippet") or "")))
+    # Product pages can mention refurbished alternatives in snippets; exclude
+    # explicit used/refurbished *products* on the title or in URL, not every
+    # mention of a separate refurbished alternative on a normal product page.
+    if BAD_CONDITION.search(title + " " + path) or BAD_OFFER.search(title):
+        return None
+    price = organic_price(item, config)
+    return {
+        "variant_id": variant_id(model, gb), "model": model,
+        "storage": storage_label(gb), "title": title[:240],
+        "merchant": merchant, "price_eur": price,
+        "shipping_eur": None, "total_eur": None, "shipping_known": False,
+        "link": link,
+        # Search snippets may be outdated; do not treat their amounts as
+        # verified prices or trigger low-price alerts from them.
+        "trust": "review_seller" if price is not None or
+                 merchant in config["marketplace_review_merchants"] else "trusted_retailer",
+        "link_quality": "direct",
+        "price_status": "search_snippet_unverified" if price is not None else "check_on_store",
+        "condition": "not_declared_refurbished",
+    }
+
+
 def load_json(path: Path, default):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -296,6 +390,21 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                 if not isinstance(rows, list):
                     raise ValueError("Shopping result is not a list")
                 offers = [o for x in rows if (o := normalize_item(x, model, gb, config))]
+                # Shopping generally provides Google redirect links and often
+                # omits storage from titles. Complement it with direct URLs
+                # from major retailers' indexed product pages.
+                organic_query = (
+                    f'"iPhone 17 {model}" {storage_label(gb)} '
+                    '(site:unieuro.it OR site:mediaworld.it OR site:euronics.it '
+                    'OR site:comet.it OR site:trony.it OR site:expert.it '
+                    'OR site:rstore.it OR site:apple.com)'
+                )
+                try:
+                    organic_rows = [] if fixtures else get_organic(organic_query, api_key)
+                    offers.extend(o for x in organic_rows
+                                  if (o := normalize_organic(x, model, gb, config)))
+                except Exception as organic_exc:
+                    LOG.warning("Direct-retailer discovery unavailable for %s: %s", vid, organic_exc)
                 if rows and not offers:
                     # Diagnostic only; do not log API credentials, full links, or pricing.
                     samples = [
@@ -309,13 +418,13 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                 for offer in offers:
                     k = (offer["merchant"], offer["price_eur"], offer["link"])
                     unique[k] = offer
-                offers = sorted(unique.values(), key=lambda o: (o["price_eur"], o["merchant"]))
+                offers = sorted(unique.values(), key=lambda o: (o["price_eur"] is None, o["price_eur"] or 0, o["merchant"]))
                 trusted = [x for x in offers if x["trust"] == "trusted_retailer"]
                 review = [x for x in offers if x["trust"] == "review_seller"]
                 new_variants[vid] = {
                     "model": model, "storage": storage_label(gb), "status": "ok", "offers": offers,
-                    "best_trusted": trusted[0] if trusted else None,
-                    "best_review": review[0] if review else None,
+                    "best_trusted": next((o for o in trusted if o["price_eur"] is not None), None),
+                    "best_review": next((o for o in review if o["price_eur"] is not None), None),
                     "checked_at": now, "results_checked": len(rows),
                 }
             except Exception as exc:
