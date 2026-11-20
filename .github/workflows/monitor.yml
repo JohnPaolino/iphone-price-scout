@@ -1,1 +1,74 @@
+name: Hourly iPhone price monitor
 
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: iphone-price-scout
+  cancel-in-progress: false
+
+jobs:
+  monitor-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate code
+        run: python -m unittest discover -s tests -v
+
+      - name: Scan approved Italian sellers
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_IDS: ${{ vars.TELEGRAM_CHAT_IDS }}
+          DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          ALERT_PRO_256GB: ${{ vars.ALERT_PRO_256GB }}
+          ALERT_PRO_512GB: ${{ vars.ALERT_PRO_512GB }}
+          ALERT_PRO_1TB: ${{ vars.ALERT_PRO_1TB }}
+          ALERT_PRO_MAX_256GB: ${{ vars.ALERT_PRO_MAX_256GB }}
+          ALERT_PRO_MAX_512GB: ${{ vars.ALERT_PRO_MAX_512GB }}
+          ALERT_PRO_MAX_1TB: ${{ vars.ALERT_PRO_MAX_1TB }}
+          ALERT_PRO_MAX_2TB: ${{ vars.ALERT_PRO_MAX_2TB }}
+        run: python src/monitor.py
+
+      - name: Save price history to repository
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data/latest.json docs/data/history.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: hourly Italian iPhone price check'
+            git push origin HEAD:main
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Publish dashboard
+        id: publish
+        uses: actions/deploy-pages@v4
