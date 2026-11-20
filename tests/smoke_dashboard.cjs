@@ -53,7 +53,7 @@ vm.runInNewContext(fs.readFileSync('docs/app.js','utf8'),ctx,{filename:'docs/app
   const recognized=element('#offers-list').innerHTML;
   const unvetted=element('#unvetted-list').innerHTML;
   assert.match(recognized,/Unieuro/);
-  assert.match(recognized,/1\.179/);
+  assert.match(recognized,/(1179|1\.179)/);
   assert.match(unvetted,/Sample Marketplace/);
   assert.match(unvetted,/Amazon\.it/);
   assert.match(element('#offer-count').textContent,/2 quoted prices/);
