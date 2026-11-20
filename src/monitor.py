@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import logging
 import os
@@ -310,6 +311,90 @@ def normalize_organic(item: dict, model: str, gb: int, config: dict) -> dict | N
     }
 
 
+
+def _product_json_prices(data, model: str, gb: int, config: dict):
+    """Only take prices attached to a JSON-LD Product with the exact variant."""
+    if isinstance(data, list):
+        for value in data:
+            yield from _product_json_prices(value, model, gb, config)
+    elif isinstance(data, dict):
+        kind = data.get("@type", "")
+        kinds = kind if isinstance(kind, list) else [kind]
+        if "Product" in kinds and title_matches(str(data.get("name") or ""), model, gb):
+            offers = data.get("offers") or []
+            for offer in (offers if isinstance(offers, list) else [offers]):
+                if not isinstance(offer, dict):
+                    continue
+                # AggregateOffer may include third-party sellers, so ignore it.
+                if offer.get("@type") == "AggregateOffer":
+                    continue
+                condition = str(offer.get("itemCondition") or "")
+                if condition and "NewCondition" not in condition:
+                    continue
+                availability = str(offer.get("availability") or "")
+                if availability and any(z in availability for z in ("OutOfStock", "Discontinued", "PreOrder")):
+                    continue
+                if str(offer.get("priceCurrency") or "EUR").upper() != "EUR":
+                    continue
+                amount = parse_eur(offer.get("price"))
+                if amount and config["min_price_eur"] <= amount <= config["max_price_eur"]:
+                    yield amount
+        for nested in (data.get("@graph"), data.get("mainEntity")):
+            if nested:
+                yield from _product_json_prices(nested, model, gb, config)
+
+
+def extract_structured_store_price(raw_html: str, model: str, gb: int, config: dict) -> float | None:
+    """Restrict extraction to exact SKU in structured Product metadata."""
+    for match in re.finditer(
+        r'<script\b[^>]*\btype=["\x27]application/ld\+json["\x27][^>]*>(.*?)</script\s*>',
+        raw_html, re.I | re.S
+    ):
+        try:
+            data = json.loads(html.unescape(match.group(1)))
+        except (json.JSONDecodeError, ValueError):
+            continue
+        for amount in _product_json_prices(data, model, gb, config):
+            return amount
+    # Only trust product-price meta tags if the document title contains exact model/storage.
+    title = re.search(r'<title[^>]*>(.*?)</title>', raw_html, re.I | re.S)
+    if not title or not title_matches(html.unescape(re.sub(r'<[^>]+>', ' ', title.group(1))), model, gb):
+        return None
+    for match in re.finditer(r'<meta\b[^>]*>', raw_html, re.I):
+        tag = match.group(0)
+        if not re.search(r'(?:property|itemprop|name)\s*=\s*["\x27](?:product:price:amount|price)["\x27]', tag, re.I):
+            continue
+        value = re.search(r'content\s*=\s*["\x27]([^"\x27]+)', tag, re.I)
+        if value:
+            amount = parse_eur(value.group(1))
+            if amount and config["min_price_eur"] <= amount <= config["max_price_eur"]:
+                return amount
+    return None
+
+
+def fetch_retailer_price(link: str, merchant: str, model: str, gb: int, config: dict) -> float | None:
+    """One respectful request to a retailer's product page; no login/captcha bypass."""
+    if link_quality(link, merchant) != "direct":
+        return None
+    # Strip Google tracking tokens from product URLs.
+    parts = urllib.parse.urlsplit(link)
+    clean_link = urllib.parse.urlunsplit((parts.scheme, parts.netloc, parts.path, "", ""))
+    req = urllib.request.Request(clean_link, headers={
+        "User-Agent": "Mozilla/5.0 (compatible; PriceScout/1.2; +https://github.com/JohnPaolino/iphone-price-scout)"
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            if link_quality(resp.geturl(), merchant) != "direct":
+                return None
+            if "text/html" not in resp.headers.get("Content-Type", "").lower():
+                return None
+            body = resp.read(2_000_000).decode("utf-8", "replace")
+        return extract_structured_store_price(body, model, gb, config)
+    except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+        LOG.info("Retailer page price unavailable for %s: %s", merchant, type(exc).__name__)
+        return None
+
+
 def load_json(path: Path, default):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -401,6 +486,17 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                     organic_rows = [] if fixtures else get_organic(organic_query, api_key)
                     organic_offers = [o for x in organic_rows
                                       if (o := normalize_organic(x, model, gb, config))]
+                    # A direct product page may expose its CURRENT structured
+                    # retail price; search snippets alone are not price proof.
+                    for offer in organic_offers[:1]:
+                        if offer["price_eur"] is None:
+                            amount = fetch_retailer_price(offer["link"], offer["merchant"],
+                                                          model, gb, config)
+                            if amount is not None:
+                                offer["price_eur"] = amount
+                                offer["price_status"] = "retailer_structured_price"
+                                if offer["merchant"] not in config["marketplace_review_merchants"]:
+                                    offer["trust"] = "trusted_retailer"
                     offers.extend(organic_offers)
                     if organic_rows and not organic_offers:
                         samples = [
