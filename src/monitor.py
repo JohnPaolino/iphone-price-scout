@@ -404,8 +404,17 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                 )
                 try:
                     organic_rows = [] if fixtures else get_organic(organic_query, api_key)
-                    offers.extend(o for x in organic_rows
-                                  if (o := normalize_organic(x, model, gb, config)))
+                    organic_offers = [o for x in organic_rows
+                                      if (o := normalize_organic(x, model, gb, config))]
+                    offers.extend(organic_offers)
+                    if organic_rows and not organic_offers:
+                        samples = [
+                            {"title": str(x.get("title", ""))[:100],
+                             "host": urllib.parse.urlsplit(str(x.get("link") or "")).hostname}
+                            for x in organic_rows[:8] if isinstance(x, dict)
+                        ]
+                        LOG.warning("No direct retailer matches for %s; organic samples=%s",
+                                    vid, json.dumps(samples, ensure_ascii=False))
                 except Exception as organic_exc:
                     LOG.warning("Direct-retailer discovery unavailable for %s: %s", vid, organic_exc)
                 if rows and not offers:
