@@ -758,6 +758,11 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                         organic_offers = [o for x in organic_rows
                                           if (o := normalize_organic(x, model, gb, config))]
                         for offer in organic_offers[:2]:
+                            # Amazon/MediaWorld generally block unattended price
+                            # extraction. Keep their product URLs visible, but
+                            # skip futile requests that prolong every scan.
+                            if site_name in ("Amazon.it", "MediaWorld"):
+                                continue
                             amount = fetch_retailer_price(offer["link"], offer["merchant"], model, gb, config)
                             if amount is not None:
                                 offer["price_eur"] = amount
