@@ -375,6 +375,69 @@ def normalize_organic(item: dict, model: str, gb: int, config: dict) -> dict | N
 
 
 
+
+def normalize_web_price(item: dict, model: str, gb: int, config: dict) -> dict | None:
+    """Additional *indicative* indexed web price, not an audited checkout offer.
+
+    Accepts prices from a matching indexed product page or price-comparison
+    page. The displayed seller is the page host if we cannot identify the
+    actual fulfiller. This never enters trusted-price alerts.
+    """
+    title = str(item.get("title") or "").strip()
+    if not title_matches(title, model, gb):
+        return None
+    link = safe_link(item.get("link") or "")
+    if not link:
+        return None
+    parsed = urllib.parse.urlsplit(link)
+    host = (parsed.hostname or "").lower().removeprefix("www.")
+    lower_path = parsed.path.lower()
+    if (USED_ONLY_SELLERS.search(host) or
+        BAD_CONDITION.search(title + " " + lower_path) or
+        BAD_OFFER.search(title) or
+        any(x in lower_path for x in ("/ricondizionati", "/usato/", "/outlet/",
+                                     "/news/", "/blog/", "/support/"))):
+        return None
+    # Indexed snippets can contain adjacent refurbished offers: when the
+    # snippet labels the product as used/refurbished, omit rather than infer.
+    snippet = str(item.get("snippet") or "")
+    if BAD_CONDITION.search(snippet):
+        return None
+    price = organic_price(item, config)
+    if price is None:
+        for match in re.finditer(
+            r"(?:da|a\s+partire\s+da|prezzo)\s*(?:€\s*)?"
+            r"(\d{1,2}(?:[.,]\d{3})+(?:[.,]\d{2})?)\s*(?:€)?",
+            snippet, re.I
+        ):
+            amount = parse_eur(match.group(1))
+            if amount is not None and config["min_price_eur"] <= amount <= config["max_price_eur"]:
+                price = amount
+                break
+    if price is None:
+        return None
+    merchant = merchant_from_url(link, config)
+    comparison = any(host == domain or host.endswith("." + domain) for domain in (
+        "idealo.it", "trovaprezzi.it", "prezzo.org", "costodb.it",
+        "pricuro.com", "yespendapp.com", "bitradar.it",
+    ))
+    # Comparators provide an indicative "from" price; their page is NOT
+    # necessarily the merchant selling the handset.
+    label = ("Comparison: " + host) if comparison else (merchant or host)
+    return {
+        "variant_id": variant_id(model, gb),
+        "model": model, "storage": storage_label(gb),
+        "title": title[:240], "merchant": label[:90],
+        "source_label": "Indexed comparison price" if comparison else "Indexed web price",
+        "price_eur": price, "shipping_eur": None, "total_eur": None,
+        "shipping_known": False, "link": link,
+        "trust": "unverified_seller",
+        "link_quality": "indexed_result",
+        "price_status": "search_snippet_unverified",
+        "condition": "not_declared_refurbished",
+    }
+
+
 def _product_json_prices(data, model: str, gb: int, config: dict):
     """Only take prices attached to a JSON-LD Product with the exact variant."""
     if isinstance(data, list):
@@ -649,6 +712,22 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                         LOG.info("Direct %s listings for %s: %s", site_name, vid, len(organic_offers))
                     except Exception as organic_exc:
                         LOG.warning("%s discovery unavailable for %s: %s", site_name, vid, organic_exc)
+                # One more discovery path beyond the selected large chains:
+                # Google-indexed smaller merchants and comparison sites. All
+                # extracted prices are explicitly marked INDICATIVE/unverified.
+                broad_query = (
+                    f'"iPhone 17 {model}" "{storage_label(gb)}" prezzo nuovo '
+                    '-site:apple.com -site:amazon.it -site:unieuro.it '
+                    '-site:euronics.it -site:mediaworld.it'
+                )
+                try:
+                    broad_rows = [] if fixtures else get_organic(broad_query, api_key)
+                    extra = [o for row in broad_rows
+                             if (o := normalize_web_price(row, model, gb, config))]
+                    offers.extend(extra)
+                    LOG.info("Broad indexed prices for %s: %s", vid, len(extra))
+                except Exception as exc:
+                    LOG.warning("Broad web discovery unavailable for %s: %s", vid, exc)
                 if rows and not offers:
                     # Diagnostic only; do not log API credentials, full links, or pricing.
                     samples = [
@@ -701,7 +780,7 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
         "checked_at": now,
         "market": "Italy", "currency": "EUR", "source": "Google Shopping / Serper",
         "success_count": len(good), "error_count": len(errors), "errors": errors,
-        "methodology": "Approved merchants only; review-seller offers not counted as verified. Prices may exclude delivery costs; verify new/sealed status and seller at checkout.",
+        "methodology": "Google Shopping, direct retailer pages and indexed web comparison prices. Indexed and marketplace prices are NOT seller-verified; verify new/sealed condition and final checkout cost.",
         "variants": new_variants,
     }
     if not dry_run:
