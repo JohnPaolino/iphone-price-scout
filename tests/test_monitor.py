@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price
+from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price, extract_visible_unieuro_price
 
 CONFIG = json.loads((Path(__file__).parents[1] / 'config.json').read_text())
 
@@ -71,6 +71,17 @@ class TestPriceScout(unittest.TestCase):
         self.assertEqual(extract_structured_store_price(page, "Pro", 256, CONFIG), 1179)
         self.assertIsNone(extract_structured_store_price(page, "Pro Max", 256, CONFIG))
         self.assertIsNone(extract_structured_store_price(page, "Pro", 512, CONFIG))
+
+    def test_unieuro_visible_sale_price_over_list_price(self):
+        page = ('<html><head><title>Apple iPhone 17 Pro 256GB Blu | Unieuro</title></head>'
+                '<body><h1>Apple iPhone 17 Pro 256GB Blu</h1>'
+                '<div>Dettagli Servizi TECH COLLECTION Ora € 1.179,00 Iva inclusa '
+                'Prezzo consigliato 1.339,00</div></body></html>')
+        self.assertEqual(extract_visible_unieuro_price(page, 'Pro', 256, CONFIG), 1179)
+        self.assertIsNone(extract_visible_unieuro_price(page, 'Pro Max', 256, CONFIG))
+        self.assertIsNone(extract_visible_unieuro_price(page, 'Pro', 512, CONFIG))
+        only_old = page.replace('Ora € 1.179,00 Iva inclusa ', '')
+        self.assertIsNone(extract_visible_unieuro_price(only_old, 'Pro', 256, CONFIG))
 
     def test_aggregate_and_used_store_prices_rejected(self):
         page = ('<script type="application/ld+json">'
