@@ -40,8 +40,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate code
-        run: python -m unittest discover -s tests -v
+      - name: Validate code and dashboard
+        run: |
+          python -m unittest discover -s tests -v
+          node --check docs/app.js
 
       - name: Scan approved Italian sellers
         env:
