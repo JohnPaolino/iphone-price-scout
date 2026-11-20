@@ -396,12 +396,7 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                 # Shopping generally provides Google redirect links and often
                 # omits storage from titles. Complement it with direct URLs
                 # from major retailers' indexed product pages.
-                organic_query = (
-                    f'"iPhone 17 {model}" {storage_label(gb)} '
-                    '(site:unieuro.it OR site:mediaworld.it OR site:euronics.it '
-                    'OR site:comet.it OR site:trony.it OR site:expert.it '
-                    'OR site:rstore.it OR site:apple.com)'
-                )
+                organic_query = f'site:unieuro.it/online/ Apple iPhone 17 {model} {storage_label(gb)}'
                 try:
                     organic_rows = [] if fixtures else get_organic(organic_query, api_key)
                     organic_offers = [o for x in organic_rows
