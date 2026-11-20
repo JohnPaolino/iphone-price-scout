@@ -2,6 +2,13 @@ name: Hourly iPhone price monitor
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'config.json'
+      - '.github/workflows/monitor.yml'
   schedule:
     - cron: '17 * * * *'
 
