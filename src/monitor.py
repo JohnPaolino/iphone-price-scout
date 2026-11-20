@@ -287,7 +287,9 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
     for model, storages in config["storage_gb"].items():
         for gb in storages:
             vid = variant_id(model, gb)
-            query = f'Apple iPhone 17 {model} {storage_label(gb)} nuovo prezzo Italia -ricondizionato -usato -cover'
+            # Keep discovery broad; enforce condition/model/trust AFTER fetching
+            # results. Negative keywords drastically reduce Shopping coverage.
+            query = f'Apple iPhone 17 {model} {storage_label(gb)}'
             LOG.info("Checking %s", vid)
             try:
                 rows = raw_fixtures.get(vid, []) if fixtures else get_shopping(query, api_key)
