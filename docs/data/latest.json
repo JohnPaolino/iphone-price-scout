@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-20T11:37:47Z",
+  "checked_at": "2026-11-20T11:39:22Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Google Shopping / Serper",
@@ -12,41 +12,173 @@
       "model": "Pro",
       "storage": "256GB",
       "status": "ok",
-      "offers": [],
+      "offers": [
+        {
+          "variant_id": "pro-256gb",
+          "model": "Pro",
+          "storage": "256GB",
+          "title": "Apple iPhone 17 Pro 256GB Blu Profondo",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-256GB-Blu-Profondo-pidAPLIPHONE17PRO256B?srsltid=AYCX9vJieNQ1DR_7MxzskJ2WZGZFUS06HXHPdPvXZlwbYc_SKSr-hnUi",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-256gb",
+          "model": "Pro",
+          "storage": "256GB",
+          "title": "Apple iPhone 17 Pro 256GB Arancione Cosmico",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-256GB-Arancione-Cosmico-pidAPLIPHONE17PRO256O?srsltid=AYCX9vJUS05RudOHYs_ktU4cq9a09_AR2cQ84Fxzo10Vmbi-Vlu5-iyE",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        }
+      ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:37:47Z",
+      "checked_at": "2026-11-20T11:39:22Z",
       "results_checked": 40
     },
     "pro-512gb": {
       "model": "Pro",
       "storage": "512GB",
       "status": "ok",
-      "offers": [],
+      "offers": [
+        {
+          "variant_id": "pro-512gb",
+          "model": "Pro",
+          "storage": "512GB",
+          "title": "Apple iPhone 17 Pro 512GB Blu Profondo",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vKHrrP9nHNug335Es9ls1LB9FNNP2pp81jFQm1sT_dThHUvJp7Y",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-512gb",
+          "model": "Pro",
+          "storage": "512GB",
+          "title": "Apple iPhone 17 Pro 512GB Argento",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Argento-pidAPLIPHONE17PRO512S?srsltid=AYCX9vLkTKkzhzSzE6X2-2x1AezsHiGxbjR66bcYXwfbTpK_KcZf931w",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        }
+      ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:37:47Z",
+      "checked_at": "2026-11-20T11:39:22Z",
       "results_checked": 40
     },
     "pro-1tb": {
       "model": "Pro",
       "storage": "1TB",
       "status": "ok",
-      "offers": [],
+      "offers": [
+        {
+          "variant_id": "pro-1tb",
+          "model": "Pro",
+          "storage": "1TB",
+          "title": "Apple iPhone 17 Pro 1TB Argento - Unieuro",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-1TB-Argento-pidILIIPHONE17PRO1TBS?srsltid=AYCX9vJApfncbB6QDLvASSAsmjpvbCqP7glqR9acPOXuZgXEzv9MrReG",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        }
+      ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:37:47Z",
-      "results_checked": 26
+      "checked_at": "2026-11-20T11:39:22Z",
+      "results_checked": 40
     },
     "pro-max-256gb": {
       "model": "Pro Max",
       "storage": "256GB",
       "status": "ok",
-      "offers": [],
+      "offers": [
+        {
+          "variant_id": "pro-max-256gb",
+          "model": "Pro Max",
+          "storage": "256GB",
+          "title": "Apple iPhone 17 Pro Max 256GB Argento",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Argento-pidAPLIPHONE17PMAX256S?srsltid=AYCX9vIpMA4k9jAYskUcPpb3oYPQFhnYUPpfUgRo9gFy4M_bnozAKiqe",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-256gb",
+          "model": "Pro Max",
+          "storage": "256GB",
+          "title": "Apple iPhone 17 Pro Max 256GB Blu Profondo",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Blu-Profondo-pidAPLIPHONE17PMAX256B?srsltid=AYCX9vJVxDkaErYhNug0LtbsR3hgmCf9M8IAopDjB2W9kMxUZkcoQQPk",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-256gb",
+          "model": "Pro Max",
+          "storage": "256GB",
+          "title": "Apple iPhone 17 Pro Max 256GB Arancione Cosmico",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Arancione-Cosmico-pidAPLIPHONE17PMAX256O?srsltid=AYCX9vKduaQC731lo_-UwyOsWE1JHTLI40M07u_hwhIv0acRPkPmRHLJ",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        }
+      ],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:37:47Z",
-      "results_checked": 28
+      "checked_at": "2026-11-20T11:39:22Z",
+      "results_checked": 40
     },
     "pro-max-512gb": {
       "model": "Pro Max",
@@ -67,6 +199,54 @@
           "link_quality": "google_shopping",
           "condition": "not_declared_refurbished",
           "shipping_known": false
+        },
+        {
+          "variant_id": "pro-max-512gb",
+          "model": "Pro Max",
+          "storage": "512GB",
+          "title": "Apple iPhone 17 Pro Max 512GB Arancione Cosmico",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Arancione-Cosmico-pidAPLIPHONE17PMAX512O?srsltid=AYCX9vJbNw7OMFgORKQ3k2jTZ3wHaLLn8qd3GXvgqVxTY3ltjnC_AMXF",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-512gb",
+          "model": "Pro Max",
+          "storage": "512GB",
+          "title": "Apple iPhone 17 Pro Max 512GB Argento",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Argento-pidAPLIPHONE17PMAX512S?srsltid=AYCX9vIpkVnAUNcxFhmXSb8bl1lCCPhRy0p0lFQcKa6VyqVuIgk2TYBK",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-512gb",
+          "model": "Pro Max",
+          "storage": "512GB",
+          "title": "Apple iPhone 17 Pro Max 512GB Blu Profondo",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-512GB-Blu-Profondo-pidAPLIPHONE17PMAX512B?srsltid=AYCX9vLpLf-5dbGpPGBi8fRKZvyLe0K5y9oHNON7zt8mVMivKi5n87Lb",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
         }
       ],
       "best_trusted": null,
@@ -85,8 +265,8 @@
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:37:47Z",
-      "results_checked": 9
+      "checked_at": "2026-11-20T11:39:22Z",
+      "results_checked": 38
     },
     "pro-max-1tb": {
       "model": "Pro Max",
@@ -107,6 +287,38 @@
           "link_quality": "google_shopping",
           "condition": "not_declared_refurbished",
           "shipping_known": false
+        },
+        {
+          "variant_id": "pro-max-1tb",
+          "model": "Pro Max",
+          "storage": "1TB",
+          "title": "Apple iPhone 17 Pro Max 1TB Blu Profondo",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-1TB-Blu-Profondo-pidILIIPHONE17PMAX1TBB?srsltid=AYCX9vJDJrnyfTzPPGabewcwCjencYazoCaFMsJXfv7mrZpH4xH4hDD7",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-1tb",
+          "model": "Pro Max",
+          "storage": "1TB",
+          "title": "Apple iPhone 17 Pro Max 1TB Arancione Cosmico",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-1TB-Arancione-Cosmico-pidILIIPHONE17PMAX1TBO?srsltid=AYCX9vLAsOL0btaKG5NO0_53Gpxb-Hf_Jkz1c3ez2IcFQOLEEzo8vwdR",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
         }
       ],
       "best_trusted": null,
@@ -125,18 +337,111 @@
         "condition": "not_declared_refurbished",
         "shipping_known": false
       },
-      "checked_at": "2026-11-20T11:37:47Z",
-      "results_checked": 40
+      "checked_at": "2026-11-20T11:39:22Z",
+      "results_checked": 15
     },
     "pro-max-2tb": {
       "model": "Pro Max",
       "storage": "2TB",
       "status": "ok",
-      "offers": [],
+      "offers": [
+        {
+          "variant_id": "pro-max-2tb",
+          "model": "Pro Max",
+          "storage": "2TB",
+          "title": "Apple iPhone 17 Pro Max 2TB",
+          "merchant": "Unieuro",
+          "price_eur": 2279.0,
+          "shipping_eur": null,
+          "total_eur": null,
+          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+          "trust": "review_seller",
+          "link_quality": "google_shopping",
+          "condition": "not_declared_refurbished",
+          "shipping_known": false
+        },
+        {
+          "variant_id": "pro-max-2tb",
+          "model": "Pro Max",
+          "storage": "2TB",
+          "title": "Apple iPhone 17 Pro Max 2TB",
+          "merchant": "Comet",
+          "price_eur": 2299.0,
+          "shipping_eur": null,
+          "total_eur": null,
+          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+          "trust": "review_seller",
+          "link_quality": "google_shopping",
+          "condition": "not_declared_refurbished",
+          "shipping_known": false
+        },
+        {
+          "variant_id": "pro-max-2tb",
+          "model": "Pro Max",
+          "storage": "2TB",
+          "title": "Apple iPhone 17 Pro Max 2TB Blu Profondo",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Blu-Profondo-pidAPLIPHONE17PMAX2TBB?srsltid=AYCX9vIwOpEh9yZEi-NikjagYDfM1y-inzQuSuCKiaMzdjmfSsbM1N53",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-2tb",
+          "model": "Pro Max",
+          "storage": "2TB",
+          "title": "Apple iPhone 17 Pro Max 2TB Argento",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Argento-pidAPLIPHONE17PMAX2TBS?srsltid=AYCX9vIGj8zJbr9eWXa8VUYhjD_0Oy5_6UtI8ps5wHj9T0ipyEuIAjEb",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        },
+        {
+          "variant_id": "pro-max-2tb",
+          "model": "Pro Max",
+          "storage": "2TB",
+          "title": "Apple iPhone 17 Pro Max 2TB Arancione Cosmico",
+          "merchant": "Unieuro",
+          "price_eur": null,
+          "shipping_eur": null,
+          "total_eur": null,
+          "shipping_known": false,
+          "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Arancione-Cosmico-pidILIIPHONE17PMAX2TBO?srsltid=AYCX9vJsL7tQom5VU6aCwPJc8kOnJDSa3-kdk717sJdwbLAMl9xJSHoW",
+          "trust": "trusted_retailer",
+          "link_quality": "direct",
+          "price_status": "check_on_store",
+          "condition": "not_declared_refurbished"
+        }
+      ],
       "best_trusted": null,
-      "best_review": null,
-      "checked_at": "2026-11-20T11:37:47Z",
-      "results_checked": 9
+      "best_review": {
+        "variant_id": "pro-max-2tb",
+        "model": "Pro Max",
+        "storage": "2TB",
+        "title": "Apple iPhone 17 Pro Max 2TB",
+        "merchant": "Unieuro",
+        "price_eur": 2279.0,
+        "shipping_eur": null,
+        "total_eur": null,
+        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+        "trust": "review_seller",
+        "link_quality": "google_shopping",
+        "condition": "not_declared_refurbished",
+        "shipping_known": false
+      },
+      "checked_at": "2026-11-20T11:39:22Z",
+      "results_checked": 23
     }
   }
 }
