@@ -22,10 +22,38 @@ class TestPriceScout(unittest.TestCase):
 
     def test_unapproved_and_refurbished_excluded(self):
         base = {'title': 'Apple iPhone 17 Pro 256GB', 'price': '1.179,00 €', 'link': 'https://www.unieuro.it/online/test'}
-        self.assertIsNone(normalize_item({**base, 'source': 'Random-Shop'}, 'Pro', 256, CONFIG))
+        unknown = normalize_item({**base, 'source': 'Random-Shop'}, 'Pro', 256, CONFIG)
+        self.assertIsNotNone(unknown)
+        self.assertEqual(unknown['trust'], 'unverified_seller')
         self.assertIsNone(normalize_item({**base, 'title': base['title'] + ' ricondizionato', 'source': 'Unieuro'}, 'Pro', 256, CONFIG))
         self.assertIsNone(normalize_item({**base, 'title': 'Custodia iPhone 17 Pro 256GB', 'source': 'Unieuro'}, 'Pro', 256, CONFIG))
         self.assertIsNone(normalize_item({**base, 'title': 'Apple iPhone 17 Pro Max 256GB', 'source': 'Unieuro'}, 'Pro', 256, CONFIG))
+
+    def test_all_seller_prices_are_visible_but_not_trusted(self):
+        item = {'title':'Apple iPhone 17 Pro Max 256GB Nuovo',
+                'source':'Independent Mobile Store',
+                'price':'1.099,00 €',
+                'link':'https://www.google.com/search?ibp=oshop&q=iphone+17+pro+max'}
+        result = normalize_item(item, 'Pro Max', 256, CONFIG)
+        self.assertEqual(result['merchant'], 'Independent Mobile Store')
+        self.assertEqual(result['price_eur'], 1099)
+        self.assertEqual(result['trust'], 'unverified_seller')
+        self.assertIsNone(normalize_item({**item, 'title':'iPhone 17 Pro Max 256GB usato'},
+                                         'Pro Max', 256, CONFIG))
+        self.assertIsNone(normalize_item({**item, 'title':'iPhone 17 Pro Max 512GB'},
+                                         'Pro Max', 256, CONFIG))
+        self.assertIsNone(normalize_item({**item, 'price':'$1,099.00'},
+                                         'Pro Max', 256, CONFIG))
+
+    def test_marketplace_source_remains_review_only(self):
+        item = {'title':'Apple iPhone 17 Pro Max 512GB',
+                'source':'MediaWorld - Marketplace MediaWorld IT',
+                'price':'1.269,00 €',
+                'link':'https://www.google.com/shopping/product/123'}
+        result = normalize_item(item, 'Pro Max', 512, CONFIG)
+        self.assertEqual(result['merchant'], 'MediaWorld')
+        self.assertEqual(result['trust'], 'review_seller')
+        self.assertIn('Marketplace', result['source_label'])
 
     def test_marketplace_review_not_best(self):
         a = normalize_item({'title':'Apple iPhone 17 Pro 256GB', 'source':'MediaWorld', 'price':'999,00 €', 'link':'https://www.mediaworld.it/product'}, 'Pro', 256, CONFIG)
