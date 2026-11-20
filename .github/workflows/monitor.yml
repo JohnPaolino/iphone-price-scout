@@ -65,6 +65,8 @@ jobs:
           git add docs/data/latest.json docs/data/history.json
           if ! git diff --cached --quiet; then
             git commit -m 'data: hourly Italian iPhone price check'
+            git fetch origin main
+            git rebase origin/main
             git push origin HEAD:main
           fi
 
