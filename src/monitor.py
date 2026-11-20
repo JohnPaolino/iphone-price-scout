@@ -206,7 +206,7 @@ def normalize_item(item: dict, model: str, gb: int, config: dict) -> dict | None
     known = canonical_merchant(source, config)
     merchant = known or source[:90]
     raw_price = item.get("price")
-    if isinstance(raw_price, str) and re.search(r"[$£¥]|\\b(?:USD|GBP|JPY)\\b", raw_price, re.I):
+    if isinstance(raw_price, str) and re.search(r"[$£¥]|\b(?:USD|GBP|JPY)\b", raw_price, re.I):
         return None
     price = parse_eur(raw_price or item.get("extractedPrice") or item.get("extracted_price"))
     if price is None or not config["min_price_eur"] <= price <= config["max_price_eur"]:
@@ -236,7 +236,7 @@ def normalize_item(item: dict, model: str, gb: int, config: dict) -> dict | None
             quality = "unverified_direct"
     shipping = shipping_eur(item)
     marketplace = (known in config["marketplace_review_merchants"] or
-                   bool(re.search(r"marketplace|\\bseller\\b|venduto\\s+da\\s+terzi", source, re.I)))
+                   bool(re.search(r"marketplace|\bseller\b|venduto\s+da\s+terzi", source, re.I)))
     if not known:
         trust = "unverified_seller"
     elif marketplace or quality != "direct":
@@ -630,7 +630,7 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                         organic_rows = [] if fixtures else get_organic(organic_query, api_key)
                         organic_offers = [o for x in organic_rows
                                           if (o := normalize_organic(x, model, gb, config))]
-                        for offer in organic_offers[:1]:
+                        for offer in organic_offers[:2]:
                             amount = fetch_retailer_price(offer["link"], offer["merchant"], model, gb, config)
                             if amount is not None:
                                 offer["price_eur"] = amount
