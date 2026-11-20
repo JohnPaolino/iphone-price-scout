@@ -257,14 +257,14 @@ def organic_price(item: dict, config: dict) -> float | None:
             return amount
     snippet = str(item.get("snippet") or "")
     patterns = (
-        r"(?:\\bora|prezzo\\s+(?:attuale|online|scontato)|nostro\\s+prezzo)\\s*[:\\-]?\\s*€?\\s*(\\d[\\d.,]*)(?:\\s*€)?",
-        r"€\\s*(\\d{1,2}(?:[.]\\d{3})+(?:[,]\\d{2})?)",
+        r"(?:\bora|prezzo\s+(?:attuale|online|scontato)|nostro\s+prezzo)\s*[:\-]?\s*€?\s*(\d[\d.,]*)(?:\s*€)?",
+        r"€\s*(\d{1,2}(?:[.]\d{3})+(?:[,]\d{2})?)",
     )
     for pattern in patterns:
         match = re.search(pattern, snippet, re.I)
         if match:
             preceding = snippet[max(0, match.start() - 34):match.start()].lower()
-            if re.search(r"prezzo\\s+(?:precedente|consigliato|originale)|anzich[eé]|risparmia", preceding):
+            if re.search(r"prezzo\s+(?:precedente|consigliato|originale)|anzich[eé]|risparmia", preceding):
                 continue
             amount = parse_eur(match.group(1))
             if amount is not None and config["min_price_eur"] <= amount <= config["max_price_eur"]:
