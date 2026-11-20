@@ -8,8 +8,8 @@ A working, deployable **hourly** price-monitoring application, with a shareable 
 - iPhone 17 **Pro Max**: 256GB, 512GB, 1TB, 2TB.
 - Search region and language: Italy / Italian; prices in EUR.
 - Only exact model+storage matches; filters used/refurbished/renewed listings, accessories and contracts.
-- Trusted-retailer list: Apple, Unieuro, Euronics, Comet, Trony, Expert, plus **seller-review only** listings from Amazon.it and MediaWorld.
-- Prices in the dashboard are product prices. Shipping is listed separately when detected; checkout may differ.
+- **All matching Google Shopping seller quotes are now visible**, including marketplace and less-established sellers, explicitly flagged as unvetted or seller-verification required. Direct retailer pages are also found at Unieuro, MediaWorld and Euronics.
+- The dashboard defaults to **All listings**, ranked by quoted price (priced offers first); exact storage and new-condition filters remain active. Shipping is listed separately if detected, and checkout may differ.
 - Important: an offer appearing on Google Shopping is **not** proof of factory-sealed condition, stock availability, Italian warranty, or that the merchant is the actual seller. Check the listing before buying. Marketplaces are deliberately never included in the trusted best-price figure.
 
 ## Quick deployment (approx. 6 steps)
@@ -36,9 +36,9 @@ Notifications need a valid bot token and recipient chat ID. You can use the dash
 
 ## Usage & estimated search cost
 
-Seven Shopping searches every hour = **168 API searches per day**, or about **5,040 searches per 30 days**. Some Serper Shopping searches may consume more than one credit (e.g. 2 credits); check Serper's *live* consumption and pricing. To reduce cost, edit `storage_gb` in `config.json`, for example `[256]` for each model, which cuts searches to 48/day. Serper's introductory credits may not last a full month if monitoring all seven configurations every hour.
+Current full coverage uses **9 Shopping + 21 retailer-targeted Search API queries hourly** = about **720 requests per day** or **21,600 requests per 30 days**. Some Serper Shopping searches may consume more than one credit (e.g. 2 credits); check Serper's *live* consumption and pricing. To reduce cost, edit `storage_gb` in `config.json`, for example `[256]` for each model, which cuts searches to 48/day. Serper's introductory credits may not last a full month if monitoring all seven configurations every hour.
 
-Serper searches Google Shopping listings, which are not a complete registry of all Italian shops and can lag actual prices. The whitelist can be edited in `config.json`. Adding a merchant to the list means you have consciously accepted its trust risk, not that the software has independently vetted it.
+Serper searches Google Shopping listings, which are not a complete registry of all Italian shops and can lag actual prices. The established-retailer names in `config.json` now control classification rather than excluding every other seller: unknown merchants are shown with an **UNVETTED SELLER** warning, not presented as approved. Explicit refurbished/used results and dedicated refurbishing retailers remain excluded.
 
 ## Local test
 
@@ -58,7 +58,7 @@ The site initially shows **no fictional sample prices**. The first successful li
 
 ## Source code overview
 
-- `src/monitor.py`: Italian product search, filtering, normalisation, persistent price history, alerts.
+- `src/monitor.py`: Italian Google Shopping + retailer discovery, all-price listing with seller flags, strict model/capacity/condition matching, persistent price history and approved-retailer alerts.
 - `config.json`: products, retailer allowlist, thresholds, scanning preferences.
 - `.github/workflows/monitor.yml`: scheduled checks, history commit, GitHub Pages deployment.
 - `docs/index.html`, `docs/style.css`, `docs/app.js`: shareable responsive dashboard.
@@ -69,7 +69,7 @@ The site initially shows **no fictional sample prices**. The first successful li
 - Your Serper API key and Telegram bot token remain in GitHub repository Secrets, not in publicly served HTML.
 - A public repository and public GitHub Pages site **expose the observed price history** (not the secrets). Do not use the public site for private information.
 - The Telegram recipient must opt in by contacting the bot before it can message them.
-- Merchant trust classification is conservative but **not a security certification**. Third-party sellers or counterfeit/new-condition claims cannot be conclusively checked through Google Shopping metadata alone.
+- Listing prices from lesser-known or marketplace sellers are not endorsements. Merchant trust classification is **not a security certification**; factory-sealed status, Italian warranty, stock and the final delivered cost must be checked on the actual seller's site.
 
 ## Operational caveats
 
