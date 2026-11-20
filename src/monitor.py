@@ -217,7 +217,7 @@ def get_organic(query: str, key: str, retry: int = 2) -> list[dict]:
     """Find direct product pages at approved Italian stores via Serper Search."""
     request = urllib.request.Request(
         "https://google.serper.dev/search",
-        data=json.dumps({"q": query, "gl": "it", "hl": "it", "num": 20}).encode(),
+        data=json.dumps({"q": query, "gl": "it", "hl": "it", "num": 10}).encode(),
         headers={"X-API-KEY": key, "Content-Type": "application/json",
                  "User-Agent": "iphone-price-scout/1.1"},
         method="POST",
@@ -229,6 +229,9 @@ def get_organic(query: str, key: str, retry: int = 2) -> list[dict]:
             if not isinstance(result.get("organic"), list):
                 raise RuntimeError("No organic results returned")
             return result["organic"]
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", "replace")[:300]
+            raise RuntimeError(f"Organic search HTTP {exc.code}: {detail}") from exc
         except (urllib.error.URLError, TimeoutError, RuntimeError) as exc:
             if attempt == retry:
                 raise RuntimeError(f"Organic search failed: {exc}") from exc
