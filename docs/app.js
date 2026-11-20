@@ -18,16 +18,16 @@
     const isFresh=hasScan && Number.isFinite(lastMs) && (Date.now()-lastMs)<(150*60*1000);
     $('#last-checked').textContent=dateLabel(state.latest.checked_at);
     $('#footer-updated').textContent='Updated: '+dateLabel(state.latest.checked_at);
-    const offers=Object.values(state.latest.variants||{}).reduce((n,v)=>n+(v.offers?.length||0),0);
-    $('#offer-count').textContent=hasScan?`${offers} approved-source listings`:'Awaiting scan';
+    const offers=Object.values(state.latest.variants||{}).reduce((n,v)=>n+(v.offers?.filter(o=>typeof o.price_eur==='number').length||0),0);
+    $('#offer-count').textContent=hasScan?`${offers} quoted prices`:'Awaiting scan';
     const pill=$('#run-status');
     pill.classList.toggle('live',isFresh && !state.latest.error_count);
     pill.classList.toggle('error',hasScan && (!isFresh || !!state.latest.error_count));
     pill.textContent=!hasScan?'Awaiting first scan':!isFresh?'Scan overdue':state.latest.error_count?`Partial scan · ${state.latest.error_count} errors`:'Recent scan';
     for(const [id,prefix] of [['pro-256gb','pro'],['pro-max-256gb','max']]){
-      const v=state.latest.variants?.[id]; const best=v?.best_trusted || v?.best_review;
+      const v=state.latest.variants?.[id]; const best=(v?.offers||[]).filter(o=>typeof o.price_eur==='number').sort((a,b)=>a.price_eur-b.price_eur)[0];
       $(`#feature-${prefix}-price`).textContent=best?euro(best.price_eur):'—';
-      $(`#feature-${prefix}-seller`).textContent=v?.status==='error'?'Last available result · scan failed':!isFresh&&hasScan?'Last observed price · scan overdue':best?`${best.merchant} · ${v.best_trusted?'approved direct price':'indicative: verify'} · shipping may be extra`:hasScan?(v?.offers?.length?'Retailer listings found · check current prices':'No matching retailer pages found'):'Awaiting first scan';
+      $(`#feature-${prefix}-seller`).textContent=v?.status==='error'?'Last available result · scan failed':!isFresh&&hasScan?'Last observed price · scan overdue':best?`${best.merchant} · ${best.trust==='trusted_retailer'?'retailer price':'seller needs verification'} · excluding unknown shipping`:hasScan?(v?.offers?.length?'Retailer listings found · check current prices':'No matching retailer pages found'):'Awaiting first scan';
     }
   }
   function renderOffers(){
@@ -35,10 +35,10 @@
     $$('[data-trust]').forEach(btn=>{const selected=btn.dataset.trust===state.trust;btn.classList.toggle('selected',selected);btn.setAttribute('aria-pressed',String(selected));});
     $$('#storage option').forEach(opt=>{opt.disabled=state.model==='pro'&&opt.value==='2tb';});
     $('#storage').value=state.storage;
-    const v=current(), all=v.offers||[], offers=all.filter(x=>state.trust==='all'||x.trust===state.trust).sort((a,b)=>Number(a.price_eur==null)-Number(b.price_eur==null)||(a.price_eur??0)-(b.price_eur??0));
-    $('#view-summary').textContent=`${vTitle()} · ${offers.length} ${state.trust==='all'?'matching':'review-needed'} result${offers.length!==1?'s':''}${v.status==='error'?' · OUTDATED':''}`;
+    const v=current(), all=v.offers||[], offers=all.filter(x=>state.trust==='all'||x.trust===state.trust).sort((a,b)=>Number(a.price_eur==null)-Number(b.price_eur==null)||(a.price_eur??0)-(b.price_eur??0)||String(a.merchant).localeCompare(String(b.merchant)));
+    $('#view-summary').textContent=`${vTitle()} · ${offers.length} ${state.trust==='all'?'matching':state.trust==='trusted_retailer'?'direct-retailer':state.trust==='unverified_seller'?'unvetted-seller':'seller-check'} result${offers.length!==1?'s':''}${v.status==='error'?' · OUTDATED':''}`;
     $('#view-timestamp').textContent=v.checked_at?'Checked '+dateLabel(v.checked_at):'';
-    $('#result-caption').textContent=v.status==='error'?'WARNING: latest scan failed; previous listings are shown for reference only':state.trust==='review_seller'?'Seller or search price requires verification':state.trust==='all'?'Showing direct store pages and search prices; verify before buying':'Some listings require opening the store to see their price';
+    $('#result-caption').textContent=v.status==='error'?'WARNING: latest scan failed; previous listings are shown for reference only':state.trust==='review_seller'?'Seller or search price requires verification':state.trust==='all'?'Showing all quoted prices (including unvetted sellers); verify seller, condition and shipping':'Some listings require opening the store to see their price';
     if(!offers.length){
       $('#offers-list').innerHTML=`<div class="empty-state">${!state.latest.checked_at?'The monitor has not run yet. Results appear after the first scheduled check.':v.status==='error'?'The latest search failed. No fresh results available.':'No matching offers found in this category. Try a different storage size or seller-quality filter.'}</div>`;
       return;
@@ -46,11 +46,11 @@
     $('#offers-list').innerHTML=offers.map((o,i)=>{
       const shipping=o.shipping_eur===0?'Free shipping reported':typeof o.shipping_eur==='number'?`Shipping ${euro(o.shipping_eur)}`:'Shipping not confirmed';
       const link=validUrl(o.link);
-      return `<article class="offer-row ${o.trust==='review_seller'?'review':''}">
+      return `<article class="offer-row ${o.trust!=='trusted_retailer'?'review':''}">
         <div class="offer-index ${i===0 && o.price_eur!=null?'best':''}">${i===0 && o.price_eur!=null?'★':i+1}</div>
         <div><div class="offer-name">${safe(o.merchant)}</div><div class="offer-desc" title="${safe(o.title)}">${safe(o.title)}</div></div>
-        <div class="offer-merchant">${v.status==='error'?'Stale listing — not live':o.price_status==='check_on_store'?'Official store page · check price':o.price_status==='search_snippet_unverified'?'Search price · verify checkout':o.trust==='review_seller'?'Seller must be checked':'Approved retailer'}<small>${shipping}</small></div>
-        <div class="offer-price">${o.price_eur==null?'Check price':euro(o.price_eur)}<small>${o.price_status==='search_snippet_unverified'?'Indicative search result':o.price_eur==null?'Open retailer page':'Product price'}</small></div>
+        <div class="offer-merchant">${v.status==='error'?'Stale listing — not live':o.price_status==='check_on_store'?'Official store page · check price':o.trust==='unverified_seller'?'UNVETTED SELLER · verify independently':o.price_status==='search_snippet_unverified'?'Search price · verify checkout':o.trust==='review_seller'?'Marketplace / seller to verify':o.price_status==='retailer_structured_price'?'Retailer page price · verify checkout':'Retailer listing · verify checkout'}<small>${shipping}</small></div>
+        <div class="offer-price">${o.price_eur==null?'Check price':euro(o.price_eur)}<small>${o.price_status==='search_snippet_unverified'||o.price_status==='shopping_listing'?'Shopping/search quote':o.price_eur==null?'Open retailer page':'Retailer-advertised price'}</small></div>
         <a class="offer-link" href="${safe(link)}" target="_blank" rel="noopener noreferrer">Check listing ↗</a>
       </article>`;
     }).join('');
