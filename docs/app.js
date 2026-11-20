@@ -1,13 +1,13 @@
 (() => {
   'use strict';
-  const state = { model:'pro', storage:'256gb', trust:'all', latest:{variants:{}}, history:{} };
+  const state = { model:'all', storage:'all', latest:{variants:{}}, history:{} };
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
   const euro = (amount) => typeof amount === 'number' ? new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:2,minimumFractionDigits:0}).format(amount) : '—';
   const safe = (v) => String(v ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const validUrl = (s) => {try { const u=new URL(s);return u.protocol==='https:'?u.href:'#';}catch{return '#';}};
   const dateLabel = (date) => date ? new Date(date).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Rome'})+' CET/CEST' : 'Not yet scanned';
-  const variant = () => `${state.model==='max'?'pro-max':'pro'}-${state.storage}`;
+  const variant = () => `${state.model==='max'||(state.model==='all'&&state.storage==='2tb')?'pro-max':'pro'}-${state.storage==='all'?'256gb':state.storage}`;
   const current = () => state.latest.variants?.[variant()] || {};
   const vTitle = () => 'iPhone 17 Pro'+(state.model==='max'?' Max':'')+' · '+state.storage.toUpperCase();
   const showToast = (t) => {const el=$('#toast'); el.textContent=t;el.classList.add('visible');setTimeout(()=>el.classList.remove('visible'),2200);};
@@ -30,30 +30,74 @@
       $(`#feature-${prefix}-seller`).textContent=v?.status==='error'?'Last available result · scan failed':!isFresh&&hasScan?'Last observed price · scan overdue':best?`${best.merchant} · ${best.trust==='trusted_retailer'?'retailer price':'seller needs verification'} · excluding unknown shipping`:hasScan?(v?.offers?.length?'Retailer listings found · check current prices':'No matching retailer pages found'):'Awaiting first scan';
     }
   }
+
   function renderOffers(){
-    $$('[data-model]').forEach(btn=>{const selected=btn.dataset.model===state.model;btn.classList.toggle('selected',selected);btn.setAttribute('aria-pressed',String(selected));});
-    $$('[data-trust]').forEach(btn=>{const selected=btn.dataset.trust===state.trust;btn.classList.toggle('selected',selected);btn.setAttribute('aria-pressed',String(selected));});
+    $$('[data-model]').forEach(btn=>{
+      const selected=btn.dataset.model===state.model;
+      btn.classList.toggle('selected',selected);
+      btn.setAttribute('aria-pressed',String(selected));
+    });
     $$('#storage option').forEach(opt=>{opt.disabled=state.model==='pro'&&opt.value==='2tb';});
     $('#storage').value=state.storage;
-    const v=current(), all=v.offers||[], offers=all.filter(x=>state.trust==='all'||x.trust===state.trust).sort((a,b)=>Number(a.price_eur==null)-Number(b.price_eur==null)||(a.price_eur??0)-(b.price_eur??0)||String(a.merchant).localeCompare(String(b.merchant)));
-    $('#view-summary').textContent=`${vTitle()} · ${offers.length} ${state.trust==='all'?'matching':state.trust==='trusted_retailer'?'direct-retailer':state.trust==='unverified_seller'?'unvetted-seller':'seller-check'} result${offers.length!==1?'s':''}${v.status==='error'?' · OUTDATED':''}`;
-    $('#view-timestamp').textContent=v.checked_at?'Checked '+dateLabel(v.checked_at):'';
-    $('#result-caption').textContent=v.status==='error'?'WARNING: latest scan failed; previous listings are shown for reference only':state.trust==='review_seller'?'Seller or search price requires verification':state.trust==='all'?'Showing all quoted prices (including unvetted sellers); verify seller, condition and shipping':'Some listings require opening the store to see their price';
-    if(!offers.length){
-      $('#offers-list').innerHTML=`<div class="empty-state">${!state.latest.checked_at?'The monitor has not run yet. Results appear after the first scheduled check.':v.status==='error'?'The latest search failed. No fresh results available.':'No matching offers found in this category. Try a different storage size or seller-quality filter.'}</div>`;
-      return;
-    }
-    $('#offers-list').innerHTML=offers.map((o,i)=>{
-      const shipping=o.shipping_eur===0?'Free shipping reported':typeof o.shipping_eur==='number'?`Shipping ${euro(o.shipping_eur)}`:'Shipping not confirmed';
-      const link=validUrl(o.link);
-      return `<article class="offer-row ${o.trust!=='trusted_retailer'?'review':''}">
-        <div class="offer-index ${i===0 && o.price_eur!=null?'best':''}">${i===0 && o.price_eur!=null?'★':i+1}</div>
-        <div><div class="offer-name">${safe(o.merchant)}</div><div class="offer-desc" title="${safe(o.title)}">${safe(o.title)}</div></div>
-        <div class="offer-merchant">${v.status==='error'?'Stale listing — not live':o.price_status==='check_on_store'?'Official store page · check price':o.trust==='unverified_seller'?'UNVETTED SELLER · verify independently':o.price_status==='search_snippet_unverified'?'Search price · verify checkout':o.trust==='review_seller'?'Marketplace / seller to verify':o.price_status==='retailer_structured_price'?'Retailer page price · verify checkout':'Retailer listing · verify checkout'}<small>${shipping}</small></div>
-        <div class="offer-price">${o.price_eur==null?'Check price':euro(o.price_eur)}<small>${o.price_status==='search_snippet_unverified'||o.price_status==='shopping_listing'?'Shopping/search quote':o.price_eur==null?'Open retailer page':'Retailer-advertised price'}</small></div>
-        <a class="offer-link" href="${safe(link)}" target="_blank" rel="noopener noreferrer">Check listing ↗</a>
-      </article>`;
-    }).join('');
+    const all=Object.values(state.latest.variants||{}).flatMap(v=>(v.offers||[]).map(o=>({...o,stale:v.status==='error'})));
+    const selected=all.filter(o=>
+      (state.model==='all'||(state.model==='pro'&&o.model==='Pro')||(state.model==='max'&&o.model==='Pro Max'))&&
+      (state.storage==='all'||o.storage?.toLowerCase()===state.storage)
+    );
+    const priced=selected.filter(o=>typeof o.price_eur==='number'&&Number.isFinite(o.price_eur))
+      .sort((a,b)=>a.price_eur-b.price_eur||String(a.merchant).localeCompare(String(b.merchant)));
+    const recognized=priced.filter(o=>o.trust==='trusted_retailer');
+    const toCheck=priced.filter(o=>o.trust!=='trusted_retailer');
+    const unpriced=selected.filter(o=>o.price_eur==null).sort((a,b)=>String(a.merchant).localeCompare(String(b.merchant)));
+    $('#retailer-count').textContent='('+recognized.length+')';
+    $('#unvetted-count').textContent='('+toCheck.length+')';
+    $('#view-summary').textContent=priced.length+' quoted prices across '+new Set(priced.map(o=>o.merchant)).size+
+      ' seller names'+(unpriced.length?' · '+unpriced.length+' more store links without prices':'');
+    $('#view-timestamp').textContent=state.latest.checked_at?'Checked '+dateLabel(state.latest.checked_at):'';
+    $('#result-caption').textContent='All quoted prices in EUR; shipping and checkout availability may differ';
+
+    const statusText=(o)=>{
+      if(o.stale)return 'STALE · scan failed';
+      if(o.trust==='unverified_seller')return 'UNVETTED SELLER · verify identity';
+      if(o.trust==='review_seller')return 'MARKETPLACE / SELLER TO VERIFY';
+      return o.price_status==='shopping_listing'?'Recognized retailer · Shopping quote':'Recognized retailer · product page';
+    };
+    const rowMarkup=(rows)=>{
+      return rows.map((o,i)=>{
+        const link=validUrl(o.link);
+        const shipping=o.shipping_eur===0?'Free delivery reported':typeof o.shipping_eur==='number'?'Delivery '+euro(o.shipping_eur):'Delivery cost unconfirmed';
+        const source=(o.source_label&&o.source_label!==o.merchant)?o.source_label:'';
+        return `<article class="offer-row ${o.trust!=='trusted_retailer'?'review':''}">
+          <div class="offer-index ${i===0 && o.price_eur!=null?'best':''}">${i===0&&o.price_eur!=null?'★':i+1}</div>
+          <div><div class="offer-name">${safe(o.merchant)}</div>
+            <div class="offer-desc">${safe('iPhone 17 '+o.model+' · '+o.storage)} · ${safe(o.title)}</div>
+            ${source?'<div class="offer-source">'+safe(source)+'</div>':''}
+          </div>
+          <div class="offer-merchant">${statusText(o)}<small>${shipping}</small></div>
+          <div class="offer-price">${o.price_eur==null?'Check store':euro(o.price_eur)}
+            <small>${o.price_eur==null?'Price not provided':o.price_status==='shopping_listing'?'Google Shopping quote':o.price_status==='search_snippet_unverified'?'Search snippet price':'Product-page quote'}</small>
+          </div>
+          <a class="offer-link" href="${safe(link)}" target="_blank" rel="noopener noreferrer">View listing ↗</a>
+        </article>`;
+      }).join('');
+    };
+    $('#offers-list').innerHTML=recognized.length?rowMarkup(recognized):
+      '<div class="empty-state">No numeric prices from recognized retailer pages for this selection. Other sellers and store links appear below.</div>';
+    $('#unvetted-list').innerHTML=toCheck.length?rowMarkup(toCheck):
+      '<div class="empty-state">No matching marketplace or unvetted prices in the latest feed.</div>';
+    $('#unpriced-summary').textContent=unpriced.length+' store listing'+(unpriced.length===1?'':'s')+' without a readable price';
+    $('#unpriced-list').innerHTML=unpriced.length?rowMarkup(unpriced):
+      '<div class="empty-state">No additional store links for this selection.</div>';
+
+    const amazon=selected.filter(o=>/^amazon(?:\.it)?(?:$|\s|\s*-)/i.test(o.merchant||o.source_label||''));
+    const amazonPriced=amazon.filter(o=>typeof o.price_eur==='number');
+    const amazonQuery='Apple iPhone 17 Pro'+(state.model==='max'?' Max':'')+
+      (state.storage==='all'?'':' '+state.storage.toUpperCase());
+    const amazonLink='https://www.amazon.it/s?k='+encodeURIComponent(amazonQuery);
+    $('#amazon-note').innerHTML=amazonPriced.length===0?
+      'Amazon.it: no reliably matched numeric price returned for this selection by the current feed. '+
+      'This does not mean the product is unavailable. <a href="'+safe(amazonLink)+'" target="_blank" rel="noopener noreferrer">Check Amazon.it directly ↗</a>':
+      'Amazon.it offers are shown under Marketplace & sellers to verify. Confirm the actual “Sold by” merchant and product condition before purchasing.';
   }
   function renderChart(){
     $('#chart-name').textContent=vTitle();
@@ -73,10 +117,9 @@
       ${lines}<path d="${area}" fill="url(#pricefill)"/><path d="${path}" stroke="#a2e9c7" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="${dotx}" cy="${doty}" r="6" fill="#b5f2d4" stroke="#17231f" stroke-width="3"/>${ticks}</svg>`;
   }
   function render(){renderSummary();renderOffers();renderChart();}
-  $$('[data-model]').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;if(state.model==='pro'&&state.storage==='2tb')state.storage='1tb';render();}));
-  $$('[data-trust]').forEach(btn=>btn.addEventListener('click',()=>{state.trust=btn.dataset.trust;render();}));
+  $('[data-model]').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;if(state.model==='pro'&&state.storage==='2tb')state.storage='all';render();}));
   $('#storage').addEventListener('change',e=>{state.storage=e.target.value;render();});
-  $$('.choose-model').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;state.storage=btn.dataset.storage;state.trust='all';render();$('#offers').scrollIntoView({behavior:'smooth',block:'start'});}));
+  $$('.choose-model').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;state.storage=btn.dataset.storage;render();$('#offers').scrollIntoView({behavior:'smooth',block:'start'});}));
   $('#share-button').addEventListener('click',async()=>{
     try{await navigator.clipboard.writeText(location.href);showToast('Dashboard link copied');}
     catch{showToast('Copy this page URL from your browser');}
