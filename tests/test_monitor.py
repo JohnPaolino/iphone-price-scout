@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run
+from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price
 
 CONFIG = json.loads((Path(__file__).parents[1] / 'config.json').read_text())
 
@@ -60,6 +60,24 @@ class TestPriceScout(unittest.TestCase):
         # Normal Google searches are not product-listing links.
         item['link'] = 'https://www.google.com/search?q=iphone+17+pro'
         self.assertIsNone(normalize_item(item, 'Pro', 256, CONFIG))
+
+    def test_exact_store_product_price_is_extracted(self):
+        page = ('<html><title>Apple iPhone 17 Pro 256GB Blu</title>'
+                '<script type="application/ld+json">'
+                '{"@type":"Product","name":"Apple iPhone 17 Pro 256GB Blu",'
+                '"offers":{"@type":"Offer","price":"1179.00","priceCurrency":"EUR",'
+                '"itemCondition":"https://schema.org/NewCondition"}}'
+                '</script></html>')
+        self.assertEqual(extract_structured_store_price(page, "Pro", 256, CONFIG), 1179)
+        self.assertIsNone(extract_structured_store_price(page, "Pro Max", 256, CONFIG))
+        self.assertIsNone(extract_structured_store_price(page, "Pro", 512, CONFIG))
+
+    def test_aggregate_and_used_store_prices_rejected(self):
+        page = ('<script type="application/ld+json">'
+                '{"@type":"Product","name":"Apple iPhone 17 Pro 256GB",'
+                '"offers":{"@type":"AggregateOffer","lowPrice":"650.00","priceCurrency":"EUR"}}'
+                '</script>')
+        self.assertIsNone(extract_structured_store_price(page, "Pro", 256, CONFIG))
 
     def test_stale_error_must_not_trigger_alerts(self):
         item = {'merchant':'Unieuro', 'price_eur':999, 'trust':'trusted_retailer', 'link':'https://www.unieuro.it/buy'}
