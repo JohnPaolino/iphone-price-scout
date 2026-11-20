@@ -132,6 +132,13 @@ class TestPriceScout(unittest.TestCase):
         variants = {'pro-256gb':{'status':'error','model':'Pro','storage':'256GB','offers':[item]}}
         self.assertEqual(make_alerts(variants, {}, {}, {**CONFIG,'alert_on_first_discovery':True}, ''), [])
 
+    def test_unpriced_retailer_link_does_not_trigger_alert(self):
+        unpriced = {'merchant':'Unieuro', 'trust':'trusted_retailer',
+                    'price_eur':None, 'link':'https://www.unieuro.it/online/phone'}
+        current = {'pro-256gb':{'status':'ok','model':'Pro','storage':'256GB',
+                                'offers':[unpriced]}}
+        self.assertEqual(make_alerts(current, {}, {}, CONFIG, ''), [])
+
     def test_shipping(self):
         self.assertEqual(shipping_eur({'delivery':'Spedizione gratuita'}), 0)
         self.assertEqual(shipping_eur({'delivery':'Spedizione € 4,99'}), 4.99)
