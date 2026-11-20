@@ -1,11 +1,82 @@
 {
-  "checked_at": null,
+  "checked_at": "2026-11-20T11:18:24Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Google Shopping / Serper",
-  "success_count": 0,
+  "success_count": 7,
   "error_count": 0,
   "errors": [],
-  "methodology": "Awaiting first live scheduled run. No sample or invented prices are shown.",
-  "variants": {}
+  "methodology": "Approved merchants only; review-seller offers not counted as verified. Prices may exclude delivery costs; verify new/sealed status and seller at checkout.",
+  "variants": {
+    "pro-256gb": {
+      "model": "Pro",
+      "storage": "256GB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 2
+    },
+    "pro-512gb": {
+      "model": "Pro",
+      "storage": "512GB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 1
+    },
+    "pro-1tb": {
+      "model": "Pro",
+      "storage": "1TB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 3
+    },
+    "pro-max-256gb": {
+      "model": "Pro Max",
+      "storage": "256GB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 4
+    },
+    "pro-max-512gb": {
+      "model": "Pro Max",
+      "storage": "512GB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 2
+    },
+    "pro-max-1tb": {
+      "model": "Pro Max",
+      "storage": "1TB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 1
+    },
+    "pro-max-2tb": {
+      "model": "Pro Max",
+      "storage": "2TB",
+      "status": "ok",
+      "offers": [],
+      "best_trusted": null,
+      "best_review": null,
+      "checked_at": "2026-11-20T11:18:24Z",
+      "results_checked": 2
+    }
+  }
 }
