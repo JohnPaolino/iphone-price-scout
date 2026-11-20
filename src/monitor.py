@@ -392,6 +392,32 @@ class VisiblePriceText(HTMLParser):
                 self.fragments.append(piece)
 
 
+
+def extract_visible_unieuro_price(raw_html: str, model: str, gb: int, config: dict) -> float | None:
+    """Unieuro's visible 'Ora € ...' selling price, not 'Prezzo consigliato'."""
+    title = re.search(r'<title[^>]*>(.*?)</title>', raw_html, re.I | re.S)
+    if not title or not title_matches(html.unescape(title.group(1)), model, gb):
+        return None
+    parser = VisiblePriceText()
+    parser.feed(raw_html)
+    visible = " ".join(parser.fragments)
+    phrase = f"Apple iPhone 17 {model} {storage_label(gb)}"
+    # Page title must be the exact SKU. The nearby 'Ora' label indicates
+    # the current advertised price, not a struck-through list price.
+    found = visible.casefold().find(phrase.casefold())
+    if found < 0:
+        return None
+    text_window = visible[found + len(phrase):found + len(phrase) + 360]
+    match = re.search(r"\bOra\s*€\s*(\d{1,3}(?:\.\d{3})*(?:,\d{2})?)\b",
+                      text_window, re.I)
+    if not match:
+        return None
+    amount = parse_eur(match.group(1))
+    if amount is None or not config["min_price_eur"] <= amount <= config["max_price_eur"]:
+        return None
+    return amount
+
+
 def fetch_retailer_price(link: str, merchant: str, model: str, gb: int, config: dict) -> float | None:
     """One respectful request to a retailer's product page; no login/captcha bypass."""
     if link_quality(link, merchant) != "direct":
@@ -410,6 +436,8 @@ def fetch_retailer_price(link: str, merchant: str, model: str, gb: int, config: 
                 return None
             body = resp.read(2_000_000).decode("utf-8", "replace")
         amount = extract_structured_store_price(body, model, gb, config)
+        if amount is None and merchant == "Unieuro":
+            amount = extract_visible_unieuro_price(body, model, gb, config)
         if amount is None and model == "Pro" and gb == 256:
             parser = VisiblePriceText()
             parser.feed(body)
