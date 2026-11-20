@@ -50,6 +50,17 @@ class TestPriceScout(unittest.TestCase):
         got = normalize_item(item, 'Pro', 256, CONFIG)
         self.assertEqual(got['trust'], 'review_seller')
 
+    def test_google_shopping_overlay_requires_seller_review(self):
+        item = {'title':'Apple iPhone 17 Pro 256GB', 'price':'1.149,00 €',
+                'source':'Apple', 'link':'https://www.google.com/search?ibp=oshop&q=iphone+17+pro'}
+        got = normalize_item(item, 'Pro', 256, CONFIG)
+        self.assertIsNotNone(got)
+        self.assertEqual(got['link_quality'], 'google_shopping')
+        self.assertEqual(got['trust'], 'review_seller')
+        # Normal Google searches are not product-listing links.
+        item['link'] = 'https://www.google.com/search?q=iphone+17+pro'
+        self.assertIsNone(normalize_item(item, 'Pro', 256, CONFIG))
+
     def test_stale_error_must_not_trigger_alerts(self):
         item = {'merchant':'Unieuro', 'price_eur':999, 'trust':'trusted_retailer', 'link':'https://www.unieuro.it/buy'}
         variants = {'pro-256gb':{'status':'error','model':'Pro','storage':'256GB','offers':[item]}}
