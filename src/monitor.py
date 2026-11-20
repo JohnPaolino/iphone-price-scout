@@ -557,7 +557,9 @@ def make_alerts(latest: dict, previous: dict, history: dict, config: dict, dashb
         # Never send an alert for a stale result carried forward after an API failure.
         if current.get("status") != "ok":
             continue
-        trusted = [x for x in current["offers"] if x["trust"] == "trusted_retailer"]
+        trusted = [x for x in current["offers"]
+                   if x["trust"] == "trusted_retailer"
+                   and isinstance(x.get("price_eur"), (int, float))]
         if not trusted:
             continue
         best = trusted[0]
