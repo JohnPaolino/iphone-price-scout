@@ -138,8 +138,13 @@ def link_quality(raw: str, merchant: str) -> str | None:
     if any(host == domain or host.endswith("." + domain) for domain in RETAILER_HOSTS[merchant]):
         return "direct"
     # Google Shopping is a recognized intermediary, but not verified as the seller.
-    if host in ("google.com", "www.google.com", "shopping.google.com") and (u.path == "/shopping" or u.path.startswith("/shopping/")):
-        return "google_shopping"
+    if host in ("google.com", "www.google.com", "shopping.google.com"):
+        if u.path == "/shopping" or u.path.startswith("/shopping/"):
+            return "google_shopping"
+        # Serper Shopping frequently links to the Google shopping overlay,
+        # not the merchant. Display these only in the seller-review category.
+        if u.path == "/search" and "oshop" in urllib.parse.parse_qs(u.query).get("ibp", []):
+            return "google_shopping"
     return None
 
 
@@ -289,6 +294,15 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                 if not isinstance(rows, list):
                     raise ValueError("Shopping result is not a list")
                 offers = [o for x in rows if (o := normalize_item(x, model, gb, config))]
+                if rows and not offers:
+                    # Diagnostic only; do not log API credentials, full links, or pricing.
+                    samples = [
+                        {"source": str(x.get("source", ""))[:40],
+                         "title": str(x.get("title", ""))[:100],
+                         "link_host": urllib.parse.urlsplit(str(x.get("link") or "")).hostname}
+                        for x in rows[:4] if isinstance(x, dict)
+                    ]
+                    LOG.warning("No accepted offers for %s; sample results=%s", vid, json.dumps(samples, ensure_ascii=False))
                 unique = {}
                 for offer in offers:
                     k = (offer["merchant"], offer["price_eur"], offer["link"])
