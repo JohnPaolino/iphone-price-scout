@@ -38,6 +38,12 @@ BAD_OFFER = re.compile(
     r"acconto|anticipo|rata\s+mensile|rate\s+mensili|mese|"
     r"abbonamento|contratto|con\s+permuta|trade.in|no\s+iphone)\b", re.I
 )
+# Reject dedicated refurbished/used-phone merchants even when their listings
+# omit the item's condition.
+USED_ONLY_SELLERS = re.compile(
+    r"swappie|refurbed|back\s*market|certideal|mresell|re.?buy|"
+    r"trendevice|shop\s*ricondizionati|ricondizionat|rigenerat", re.I
+)
 MAX_WORDS = re.compile(r"\b(?:pro\s*max|promax)\b", re.I)
 MODEL_RE = re.compile(r"\biphone\s*17\s*pro\b", re.I)
 
@@ -193,7 +199,9 @@ def normalize_item(item: dict, model: str, gb: int, config: dict) -> dict | None
     if BAD_CONDITION.search(condition_blob) or BAD_OFFER.search(condition_blob):
         return None
     source = str(item.get("source") or "").strip()
-    if not source or len(source) > 120 or source.casefold() in ("google", "google shopping"):
+    if (not source or len(source) > 120 or
+            source.casefold() in ("google", "google shopping") or
+            USED_ONLY_SELLERS.search(source)):
         return None
     known = canonical_merchant(source, config)
     merchant = known or source[:90]
@@ -593,40 +601,46 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
             query = f'Apple iPhone 17 {model} {storage_label(gb)}'
             LOG.info("Checking %s", vid)
             try:
-                rows = raw_fixtures.get(vid, []) if fixtures else get_shopping(query, api_key)
-                if not isinstance(rows, list):
-                    raise ValueError("Shopping result is not a list")
+                rows = []
+                shopping_queries = [query]
+                # 256GB Shopping results often omit storage; a second query
+                # increases the number of exact-capacity offers found.
+                if gb == 256:
+                    shopping_queries.append(f'iPhone 17 {model} 256 GB smartphone nuovo')
+                for i, shopping_query in enumerate(shopping_queries):
+                    try:
+                        found = raw_fixtures.get(vid, []) if fixtures else get_shopping(shopping_query, api_key)
+                        if not isinstance(found, list):
+                            raise ValueError("Shopping response is not a list")
+                        rows.extend(found)
+                    except Exception as search_exc:
+                        if i == 0:
+                            raise
+                        LOG.warning("Additional Shopping query failed for %s: %s", vid, search_exc)
                 offers = [o for x in rows if (o := normalize_item(x, model, gb, config))]
-                # Shopping generally provides Google redirect links and often
-                # omits storage from titles. Complement it with direct URLs
-                # from major retailers' indexed product pages.
-                organic_query = f'site:unieuro.it/online/ Apple iPhone 17 {model} {storage_label(gb)}'
-                try:
-                    organic_rows = [] if fixtures else get_organic(organic_query, api_key)
-                    organic_offers = [o for x in organic_rows
-                                      if (o := normalize_organic(x, model, gb, config))]
-                    # A direct product page may expose its CURRENT structured
-                    # retail price; search snippets alone are not price proof.
-                    for offer in organic_offers[:1]:
-                        if offer["price_eur"] is None:
-                            amount = fetch_retailer_price(offer["link"], offer["merchant"],
-                                                          model, gb, config)
+                # Cover three major Italian retailers with targeted search,
+                # keeping direct links even where prices require checkout.
+                organic_queries = [
+                    ("Unieuro", f'site:unieuro.it/online/ Apple iPhone 17 {model} {storage_label(gb)}'),
+                    ("MediaWorld", f'site:mediaworld.it/it/product/ iPhone 17 {model} {storage_label(gb)}'),
+                    ("Euronics", f'site:euronics.it/telefonia/smartphone-e-cellulari/iphone/ iPhone 17 {model} {storage_label(gb)}'),
+                ]
+                for site_name, organic_query in organic_queries:
+                    try:
+                        organic_rows = [] if fixtures else get_organic(organic_query, api_key)
+                        organic_offers = [o for x in organic_rows
+                                          if (o := normalize_organic(x, model, gb, config))]
+                        for offer in organic_offers[:1]:
+                            amount = fetch_retailer_price(offer["link"], offer["merchant"], model, gb, config)
                             if amount is not None:
                                 offer["price_eur"] = amount
-                                offer["price_status"] = "retailer_structured_price"
+                                offer["price_status"] = "retailer_page_price"
                                 if offer["merchant"] not in config["marketplace_review_merchants"]:
                                     offer["trust"] = "trusted_retailer"
-                    offers.extend(organic_offers)
-                    if organic_rows and not organic_offers:
-                        samples = [
-                            {"title": str(x.get("title", ""))[:100],
-                             "host": urllib.parse.urlsplit(str(x.get("link") or "")).hostname}
-                            for x in organic_rows[:8] if isinstance(x, dict)
-                        ]
-                        LOG.warning("No direct retailer matches for %s; organic samples=%s",
-                                    vid, json.dumps(samples, ensure_ascii=False))
-                except Exception as organic_exc:
-                    LOG.warning("Direct-retailer discovery unavailable for %s: %s", vid, organic_exc)
+                        offers.extend(organic_offers)
+                        LOG.info("Direct %s listings for %s: %s", site_name, vid, len(organic_offers))
+                    except Exception as organic_exc:
+                        LOG.warning("%s discovery unavailable for %s: %s", site_name, vid, organic_exc)
                 if rows and not offers:
                     # Diagnostic only; do not log API credentials, full links, or pricing.
                     samples = [
