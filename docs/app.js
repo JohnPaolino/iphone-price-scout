@@ -82,9 +82,13 @@
     catch{showToast('Copy this page URL from your browser');}
   });
   $('#whatsapp-link').href='https://wa.me/?text='+encodeURIComponent('iPhone price tracking in Italy — live dashboard: '+location.href);
-  Promise.all([
-    fetch('./data/latest.json?cache='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Cannot load prices');return r.json();}),
-    fetch('./data/history.json?cache='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():{})
-  ]).then(([latest,history])=>{state.latest=latest;state.history=history;render();})
-    .catch(()=>{render();$('#run-status').textContent='Data unavailable';$('#run-status').classList.add('error');});
+  function refreshPrices(){
+    return Promise.all([
+      fetch('./data/latest.json?cache='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Cannot load prices');return r.json();}),
+      fetch('./data/history.json?cache='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():{})
+    ]).then(([latest,history])=>{state.latest=latest;state.history=history;render();})
+      .catch(()=>{render();$('#run-status').textContent='Data unavailable';$('#run-status').classList.add('error');});
+  }
+  refreshPrices();
+  setInterval(refreshPrices,5*60*1000);
 })();
