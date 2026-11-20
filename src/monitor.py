@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import html
+from html.parser import HTMLParser
 import json
 import logging
 import os
@@ -372,6 +373,25 @@ def extract_structured_store_price(raw_html: str, model: str, gb: int, config: d
     return None
 
 
+
+class VisiblePriceText(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.fragments = []
+        self.hidden = 0
+    def handle_starttag(self, tag, attrs):
+        if tag in ("script", "style", "noscript", "template"):
+            self.hidden += 1
+    def handle_endtag(self, tag):
+        if tag in ("script", "style", "noscript", "template"):
+            self.hidden = max(0, self.hidden - 1)
+    def handle_data(self, value):
+        if not self.hidden:
+            piece = value.strip()
+            if piece:
+                self.fragments.append(piece)
+
+
 def fetch_retailer_price(link: str, merchant: str, model: str, gb: int, config: dict) -> float | None:
     """One respectful request to a retailer's product page; no login/captcha bypass."""
     if link_quality(link, merchant) != "direct":
@@ -390,6 +410,16 @@ def fetch_retailer_price(link: str, merchant: str, model: str, gb: int, config: 
                 return None
             body = resp.read(2_000_000).decode("utf-8", "replace")
         amount = extract_structured_store_price(body, model, gb, config)
+        if amount is None and model == "Pro" and gb == 256:
+            parser = VisiblePriceText()
+            parser.feed(body)
+            visible = " ".join(parser.fragments)
+            found = visible.lower().find("iphone 17 pro 256gb")
+            for term in ("Ora", "€", "Prezzo"):
+                m = re.search(r"(?i)\b" + re.escape(term) + r"\b", visible[max(found, 0):])
+                if m:
+                    origin = max(found, 0) + m.start()
+                    LOG.info("Retailer visible text near %s: %s", term, visible[max(0, origin - 90):origin + 230])
         if amount is None:
             page_title = re.search(r"<title[^>]*>(.*?)</title>", body, re.I | re.S)
             title_short = re.sub(r"<[^>]*>", "", html.unescape(page_title.group(1)))[:90] if page_title else "NO TITLE"
