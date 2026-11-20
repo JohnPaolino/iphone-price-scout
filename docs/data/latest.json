@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-20T11:18:24Z",
+  "checked_at": "2026-11-20T11:23:19Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Google Shopping / Serper",
@@ -15,8 +15,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
-      "results_checked": 2
+      "checked_at": "2026-11-20T11:23:19Z",
+      "results_checked": 1
     },
     "pro-512gb": {
       "model": "Pro",
@@ -25,7 +25,7 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
+      "checked_at": "2026-11-20T11:23:19Z",
       "results_checked": 1
     },
     "pro-1tb": {
@@ -35,7 +35,7 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
+      "checked_at": "2026-11-20T11:23:19Z",
       "results_checked": 3
     },
     "pro-max-256gb": {
@@ -45,8 +45,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
-      "results_checked": 4
+      "checked_at": "2026-11-20T11:23:19Z",
+      "results_checked": 5
     },
     "pro-max-512gb": {
       "model": "Pro Max",
@@ -55,8 +55,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
-      "results_checked": 2
+      "checked_at": "2026-11-20T11:23:19Z",
+      "results_checked": 7
     },
     "pro-max-1tb": {
       "model": "Pro Max",
@@ -65,8 +65,8 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
-      "results_checked": 1
+      "checked_at": "2026-11-20T11:23:19Z",
+      "results_checked": 3
     },
     "pro-max-2tb": {
       "model": "Pro Max",
@@ -75,7 +75,7 @@
       "offers": [],
       "best_trusted": null,
       "best_review": null,
-      "checked_at": "2026-11-20T11:18:24Z",
+      "checked_at": "2026-11-20T11:23:19Z",
       "results_checked": 2
     }
   }
