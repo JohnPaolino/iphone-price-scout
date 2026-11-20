@@ -389,7 +389,16 @@ def fetch_retailer_price(link: str, merchant: str, model: str, gb: int, config: 
             if "text/html" not in resp.headers.get("Content-Type", "").lower():
                 return None
             body = resp.read(2_000_000).decode("utf-8", "replace")
-        return extract_structured_store_price(body, model, gb, config)
+        amount = extract_structured_store_price(body, model, gb, config)
+        if amount is None:
+            page_title = re.search(r"<title[^>]*>(.*?)</title>", body, re.I | re.S)
+            title_short = re.sub(r"<[^>]*>", "", html.unescape(page_title.group(1)))[:90] if page_title else "NO TITLE"
+            LOG.info("Store page diagnostic %s %s: bytes=%s jsonld=%s price_meta=%s title=%s",
+                     merchant, variant_id(model, gb), len(body),
+                     len(re.findall("application/ld\\+json", body, re.I)),
+                     len(re.findall("product:price:amount", body, re.I)),
+                     title_short)
+        return amount
     except (urllib.error.URLError, TimeoutError, ValueError) as exc:
         LOG.info("Retailer page price unavailable for %s: %s", merchant, type(exc).__name__)
         return None
