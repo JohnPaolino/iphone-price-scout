@@ -601,6 +601,62 @@ def save_json(path: Path, payload) -> None:
     tmp.replace(path)
 
 
+
+def save_plain_price_table(latest: dict, out_path: Path) -> None:
+    """An always-visible, JavaScript-free list of every numeric price quote."""
+    esc = html.escape
+    listings = []
+    for variant in latest.get("variants", {}).values():
+        for offer in variant.get("offers", []):
+            if isinstance(offer.get("price_eur"), (int, float)):
+                listings.append(offer)
+    listings.sort(key=lambda x: (x["price_eur"], x.get("merchant", "")))
+    rows = []
+    for offer in listings:
+        name = "iPhone 17 " + str(offer.get("model", "")) + " " + str(offer.get("storage", ""))
+        status = {
+            "trusted_retailer": "Recognized retailer (not seller-verified)",
+            "review_seller": "Marketplace / seller verification required",
+            "unverified_seller": "Unvetted seller / comparison quote",
+        }.get(offer.get("trust"), "Review seller")
+        link = safe_link(offer.get("link", "")) or "#"
+        price = f"€ {offer['price_eur']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        rows.append(
+            "<tr><td>" + esc(name) + "</td><td>" + esc(offer.get("merchant", "")) +
+            "</td><td><strong>" + esc(price) + "</strong></td><td>" +
+            esc(status) + "</td><td>" + esc(offer.get("price_status") or "quoted") +
+            "</td><td><a rel='noopener noreferrer' target='_blank' href='" +
+            esc(link, quote=True) + "'>See listing</a></td></tr>"
+        )
+    at = esc(latest.get("checked_at") or "not yet scanned")
+    body = "\n".join(rows) if rows else "<tr><td colspan='6'>No numeric prices in latest scan.</td></tr>"
+    page = """<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Price Scout - All iPhone prices</title>
+<style>
+*{box-sizing:border-box}body{font:15px/1.5 system-ui,sans-serif;background:#0e1520;color:#eef4f6;margin:0;padding:20px}
+main{max-width:1450px;margin:auto}h1{font-size:clamp(26px,4vw,40px);margin:12px 0}
+p{color:#b9c7d4}a{color:#b0e7d1}table{width:100%;border-collapse:collapse;margin-top:24px}
+th,td{text-align:left;border-bottom:1px solid #394252;padding:13px 12px;vertical-align:top}
+th{background:#253443;color:#c0e8d6;position:sticky;top:0}
+td strong{font-size:18px;white-space:nowrap;color:#e3f4dc}
+tbody tr:nth-child(odd){background:#192230}
+.scroller{overflow:auto;border:1px solid #354453;border-radius:10px}
+.note{padding:12px 15px;border:1px solid #6b5135;border-radius:8px;background:#2a261f;color:#eed2aa}
+</style></head><body><main><p><a href="../">← Main dashboard</a></p>
+<h1>All available iPhone 17 Pro / Pro Max prices</h1>
+<p>Last scan: """ + at + """ (UTC) · """ + str(len(listings)) + """ quoted prices · Sorted lowest price first</p>
+<p class="note">Quotes only. Not independently checked at checkout; some are marketplace or comparison-index prices.
+All listings explicitly marked used/refurbished are excluded, but new/sealed condition cannot be guaranteed.
+Verify the model, storage, actual seller, stock, warranty and shipping on the seller's site.</p>
+<div class="scroller"><table><thead><tr><th>Model</th><th>Seller/source</th>
+<th>Price</th><th>Seller classification</th><th>Price source</th><th>Visit</th>
+</tr></thead><tbody>""" + body + """</tbody></table></div>
+</main></body></html>"""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(page, encoding="utf-8")
+
+
 def telegram_send(token: str, chat_id: str, message: str) -> None:
     if not token or not chat_id:
         return
@@ -786,6 +842,7 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
     if not dry_run:
         save_json(out_dir / "latest.json", latest)
         save_json(out_dir / "history.json", history)
+        save_plain_price_table(latest, out_dir / "prices.html")
         token = os.getenv("TELEGRAM_BOT_TOKEN", "")
         chat_ids = [x.strip() for x in os.getenv("TELEGRAM_CHAT_IDS", "").split(",") if x.strip()]
         for chat in chat_ids:
