@@ -1,0 +1,68 @@
+{
+  "market": "it",
+  "language": "it",
+  "currency": "EUR",
+  "storage_gb": {
+    "Pro": [
+      256,
+      512,
+      1024
+    ],
+    "Pro Max": [
+      256,
+      512,
+      1024,
+      2048
+    ]
+  },
+  "trusted_merchants": {
+    "Apple": [
+      "apple",
+      "apple store"
+    ],
+    "Unieuro": [
+      "unieuro",
+      "unieuro.it"
+    ],
+    "Euronics": [
+      "euronics",
+      "euronics.it"
+    ],
+    "Comet": [
+      "comet",
+      "comet.it"
+    ],
+    "Trony": [
+      "trony",
+      "trony.it"
+    ],
+    "Expert": [
+      "expert",
+      "expert.it",
+      "expert italy"
+    ],
+    "MediaWorld": [
+      "mediaworld",
+      "mediaworld.it"
+    ],
+    "Amazon.it": [
+      "amazon",
+      "amazon.it"
+    ],
+    "R-Store": [
+      "r-store",
+      "rstore",
+      "rstore.it",
+      "r-store.it"
+    ]
+  },
+  "marketplace_review_merchants": [
+    "MediaWorld",
+    "Amazon.it"
+  ],
+  "max_price_eur": 4500,
+  "min_price_eur": 650,
+  "max_history_points_per_variant": 1440,
+  "alert_min_drop_eur": 5,
+  "alert_on_first_discovery": false
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0c101a" />
+<meta name="description" content="Track trusted Italian prices for new iPhone 17 Pro and Pro Max, with hourly checks and a shareable dashboard." />
+<title>Price Scout — iPhone 17 Pro / Pro Max</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+<link rel="stylesheet" href="./style.css" />
+<script defer src="./app.js"></script>
+</head>
+<body>
+<div class="site-shell">
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Price Scout home"><span class="brand-mark">⌁</span><span>PRICE<span class="brand-light">SCOUT</span></span></a>
+    <div class="top-right"><span class="country"><span class="flag">🇮🇹</span> Italy · EUR</span><span class="status-pip" id="run-status">Awaiting first scan</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow"><span class="orb"></span> PRICE INTELLIGENCE / APPLE</div>
+        <h1>Smart price hunting.<br><em>Trusted sellers first.</em></h1>
+        <p>Monitoring new iPhone 17 Pro and Pro Max listings in Italy. Only approved retailer domains compete for the best-price spot; marketplace offers stay separate until their sellers are verified.</p>
+        <div class="hero-pills"><span>⏱ Hourly scans</span><span>✓ Approved retailers</span><span>↗ Shareable results</span></div>
+      </div>
+      <div class="phone-visual" aria-hidden="true">
+        <div class="glow"></div>
+        <div class="phone-back"><div class="camera-bump"><i></i><i></i><i></i><b></b></div><div class="apple-glyph">●</div><span>pro</span></div>
+        <div class="phone-front"><div class="island"></div><div class="screen-shine"></div><div class="screen-text">17<span>PRO</span></div></div>
+      </div>
+    </section>
+
+    <div class="summary-bar">
+      <div><span class="summary-label">LAST SUCCESSFUL SCAN</span><strong id="last-checked">Not yet scanned</strong></div>
+      <div><span class="summary-label">TRACKED CONFIGURATIONS</span><strong>7 variants</strong></div>
+      <div><span class="summary-label">RESULTS</span><strong id="offer-count">—</strong></div>
+      <div class="summary-right"><button class="share-button" id="share-button">↗ Share dashboard</button><a class="whatsapp-button" id="whatsapp-link" href="https://wa.me/" target="_blank" rel="noopener noreferrer">Send via WhatsApp ↗</a></div>
+    </div>
+
+    <section class="section models-section">
+      <div class="section-heading"><div><div class="overline">THE SHORTLIST</div><h2>Best trusted offers</h2></div><p>256GB baseline · updated when the monitor runs</p></div>
+      <div class="model-grid">
+        <article class="model-card" data-feature="pro-256gb">
+          <div class="model-top"><span class="model-icon">▯</span><span class="chip">6.3” Display</span></div>
+          <div class="model-name">iPhone 17 <strong>Pro</strong></div><div class="model-sub">256 GB · any colour</div>
+          <div class="price-caption">BEST APPROVED-RETAILER PRICE</div><div class="big-price" id="feature-pro-price">—</div>
+          <div class="merchant-line" id="feature-pro-seller">Awaiting first scan</div>
+          <button class="choose-model" data-model="pro" data-storage="256gb">Explore prices <span>↗</span></button>
+        </article>
+        <article class="model-card" data-feature="pro-max-256gb">
+          <div class="model-top"><span class="model-icon taller">▯</span><span class="chip">6.9” Display</span></div>
+          <div class="model-name">iPhone 17 <strong>Pro Max</strong></div><div class="model-sub">256 GB · any colour</div>
+          <div class="price-caption">BEST APPROVED-RETAILER PRICE</div><div class="big-price" id="feature-max-price">—</div>
+          <div class="merchant-line" id="feature-max-seller">Awaiting first scan</div>
+          <button class="choose-model" data-model="max" data-storage="256gb">Explore prices <span>↗</span></button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section offers-section" id="offers">
+      <div class="section-heading"><div><div class="overline">DEEPER DIVE</div><h2>Explore the market</h2></div><p id="result-caption">Prices shown before unverified delivery charges</p></div>
+      <div class="filters">
+        <div class="filter-pair"><span class="filter-label">MODEL</span><div class="segmented"><button data-model="pro" class="selected" aria-pressed="true">17 Pro</button><button data-model="max" aria-pressed="false">17 Pro Max</button></div></div>
+        <div class="filter-pair"><label class="filter-label" for="storage">STORAGE</label><select id="storage"><option value="256gb">256 GB</option><option value="512gb">512 GB</option><option value="1tb">1 TB</option><option value="2tb">2 TB</option></select></div>
+        <div class="filter-pair grow"><span class="filter-label">SELLER QUALITY</span><div class="segmented"><button data-trust="trusted_retailer" class="selected" aria-pressed="true">Approved retailers</button><button data-trust="review_seller" aria-pressed="false">Seller to verify</button></div></div>
+      </div>
+      <div class="offers-meta"><span id="view-summary">No offers yet</span><span id="view-timestamp"></span></div>
+      <div id="offers-list" class="offers-list" aria-live="polite"><div class="empty-state">The monitor has not run yet. Once configured, this page will update every hour.</div></div>
+      <div id="exclusion-note" class="notice"><span>ⓘ</span> Approved retailer means an established chain, not a guarantee about a particular listing. Always verify seller, sealed/new condition, warranty, total shipping, and availability at checkout. Amazon and MediaWorld offers require additional marketplace-seller verification.</div>
+    </section>
+
+    <section class="section history-section">
+      <div class="section-heading"><div><div class="overline">WATCH THE TREND</div><h2>Price history</h2></div><p>Best approved-retailer advertised price, by hour</p></div>
+      <div class="chart-panel"><div class="chart-header"><div><div class="chart-name" id="chart-name">iPhone 17 Pro · 256GB</div><span id="chart-detail">No observations yet</span></div><div class="trend"><span class="trend-dot"></span> Best price over time</div></div><div id="chart" class="chart-content"><div class="chart-empty">Price history begins with the first hourly check.</div></div></div>
+    </section>
+
+    <section class="methodology"><div class="methodology-icon">◎</div><div><h3>How we keep it trustworthy</h3><p>Searches cover Google Shopping listings for Italy, filtered to exact model and storage. Refurbished, used, accessories, subscriptions, and unknown merchants are excluded. Large retailers that host third-party sellers are placed in a separate review list. A search result cannot prove that a box is factory sealed, and shipping charges are included only when explicitly available.</p></div><a href="https://github.com/" target="_blank" rel="noreferrer">Built for GitHub Pages ↗</a></section>
+  </main>
+  <footer><span>PRICE<span class="brand-light">SCOUT</span> / ITALY</span><span>Independent price-monitoring dashboard · Not affiliated with Apple</span><span id="footer-updated">Awaiting initial sync</span></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

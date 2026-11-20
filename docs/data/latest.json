@@ -1,0 +1,11 @@
+{
+  "checked_at": null,
+  "market": "Italy",
+  "currency": "EUR",
+  "source": "Google Shopping / Serper",
+  "success_count": 0,
+  "error_count": 0,
+  "errors": [],
+  "methodology": "Awaiting first live scheduled run. No sample or invented prices are shown.",
+  "variants": {}
+}
