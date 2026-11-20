@@ -49,8 +49,10 @@
     const recognized=priced.filter(o=>o.trust==='trusted_retailer');
     const toCheck=priced.filter(o=>o.trust!=='trusted_retailer');
     const unpriced=selected.filter(o=>o.price_eur==null).sort((a,b)=>String(a.merchant).localeCompare(String(b.merchant)));
+    const amazonWithoutQuote=unpriced.filter(o=>o.merchant==='Amazon.it');
+    const otherUnpriced=unpriced.filter(o=>o.merchant!=='Amazon.it');
     $('#retailer-count').textContent='('+recognized.length+')';
-    $('#unvetted-count').textContent='('+toCheck.length+')';
+    $('#unvetted-count').textContent='('+toCheck.length+' priced / '+amazonWithoutQuote.length+' Amazon links)';
     $('#view-summary').textContent=priced.length+' quoted prices across '+new Set(priced.map(o=>o.merchant)).size+
       ' seller names'+(unpriced.length?' · '+unpriced.length+' more store links without prices':'');
     $('#view-timestamp').textContent=state.latest.checked_at?'Checked '+dateLabel(state.latest.checked_at):'';
@@ -83,10 +85,14 @@
     };
     $('#offers-list').innerHTML=recognized.length?rowMarkup(recognized):
       '<div class="empty-state">No numeric prices from recognized retailer pages for this selection. Other sellers and store links appear below.</div>';
-    $('#unvetted-list').innerHTML=toCheck.length?rowMarkup(toCheck):
-      '<div class="empty-state">No matching marketplace or unvetted prices in the latest feed.</div>';
-    $('#unpriced-summary').textContent=unpriced.length+' store listing'+(unpriced.length===1?'':'s')+' without a readable price';
-    $('#unpriced-list').innerHTML=unpriced.length?rowMarkup(unpriced):
+    $('#unvetted-list').innerHTML=(toCheck.length?rowMarkup(toCheck):'')+
+      (amazonWithoutQuote.length?
+        '<div class="amazon-links-heading">Amazon.it product pages — price must be checked on Amazon</div>'+
+        rowMarkup(amazonWithoutQuote):'')+
+      (!toCheck.length&&!amazonWithoutQuote.length?
+        '<div class="empty-state">No matching marketplace or unvetted prices in the latest feed.</div>':'');
+    $('#unpriced-summary').textContent=otherUnpriced.length+' other store listing'+(otherUnpriced.length===1?'':'s')+' without a readable price';
+    $('#unpriced-list').innerHTML=otherUnpriced.length?rowMarkup(otherUnpriced):
       '<div class="empty-state">No additional store links for this selection.</div>';
 
     const amazon=selected.filter(o=>/^amazon(?:\.it)?(?:$|\s|\s*-)/i.test(o.merchant||o.source_label||''));
