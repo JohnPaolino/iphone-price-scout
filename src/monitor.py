@@ -107,6 +107,10 @@ def canonical_merchant(source: str, config: dict) -> str | None:
             ac = re.sub(r"[^a-z0-9]+", "", alias.casefold())
             if cleaned == ac:
                 return name
+            # Google Shopping calls marketplaces "MediaWorld - Marketplace ..."
+            # or "Amazon.it - Seller". Keep source detail to flag it for review.
+            if source.casefold().startswith(alias.casefold() + " -"):
+                return name
     return None
 
 
@@ -153,46 +157,94 @@ def link_quality(raw: str, merchant: str) -> str | None:
 def safe_link(raw: str) -> str | None:
     if not raw or not isinstance(raw, str):
         return None
-    parsed = urllib.parse.urlparse(raw)
-    if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+    try:
+        parsed = urllib.parse.urlsplit(raw)
+        host = (parsed.hostname or "").lower().rstrip(".")
+        if (parsed.scheme != "https" or not host or parsed.username or parsed.password
+                or parsed.port not in (None, 443) or len(raw) > 3000):
+            return None
+        # Never expose unsafe local/private endpoints as clickable shop links.
+        if host in ("localhost",) or host.endswith(".local") or host.endswith(".internal"):
+            return None
+        if re.fullmatch(r"\d{1,3}(?:\.\d{1,3}){3}", host):
+            return None
+        return raw
+    except ValueError:
         return None
-    return raw
 
 
 def normalize_item(item: dict, model: str, gb: int, config: dict) -> dict | None:
+    """Preserve ALL exact-model new-condition Shopping prices, with seller flags.
+
+    Unknown retailers are visible as unverified, never counted as approved.
+    Do not infer missing capacity from the search query: Google returns variants
+    of the wrong capacity in the same search response.
+    """
     title = str(item.get("title") or "").strip()
     if not title_matches(title, model, gb):
         return None
     secondhand = item.get("secondHandCondition", item.get("second_hand_condition"))
     if secondhand is True or (isinstance(secondhand, dict) and secondhand):
         return None
-    condition_blob = " ".join(map(str, [title, item.get("snippet", ""), item.get("condition", ""), secondhand or "", item.get("tag", "")]))
+    condition_blob = " ".join(map(str, [
+        title, item.get("snippet", ""), item.get("condition", ""),
+        secondhand or "", item.get("tag", "")
+    ]))
     if BAD_CONDITION.search(condition_blob) or BAD_OFFER.search(condition_blob):
         return None
     source = str(item.get("source") or "").strip()
-    merchant = canonical_merchant(source, config)
-    if not merchant:
+    if not source or len(source) > 120 or source.casefold() in ("google", "google shopping"):
         return None
-    price = parse_eur(item.get("price") or item.get("extractedPrice") or item.get("extracted_price"))
-    if not price or not config["min_price_eur"] <= price <= config["max_price_eur"]:
+    known = canonical_merchant(source, config)
+    merchant = known or source[:90]
+    raw_price = item.get("price")
+    if isinstance(raw_price, str) and re.search(r"[$£¥]|\\b(?:USD|GBP|JPY)\\b", raw_price, re.I):
+        return None
+    price = parse_eur(raw_price or item.get("extractedPrice") or item.get("extracted_price"))
+    if price is None or not config["min_price_eur"] <= price <= config["max_price_eur"]:
         return None
     link = safe_link(item.get("link") or item.get("productLink") or item.get("product_link") or "")
-    quality = link_quality(link, merchant)
-    if not quality:
+    if not link:
         return None
+    if known:
+        quality = link_quality(link, known)
+        if not quality:
+            return None
+    else:
+        # Allow direct new-product listings too, but NEVER label unreviewed
+        # stores as trusted. Users must assess these before purchasing.
+        parsed = urllib.parse.urlsplit(link)
+        host = (parsed.hostname or "").lower()
+        google = host in ("google.com", "www.google.com", "shopping.google.com")
+        if google:
+            if parsed.path.startswith("/shopping/") or parsed.path == "/shopping":
+                quality = "google_shopping"
+            elif (parsed.path == "/search" and
+                  "oshop" in urllib.parse.parse_qs(parsed.query).get("ibp", [])):
+                quality = "google_shopping"
+            else:
+                return None
+        else:
+            quality = "unverified_direct"
     shipping = shipping_eur(item)
-    review = merchant in config["marketplace_review_merchants"] or quality != "direct"
+    marketplace = (known in config["marketplace_review_merchants"] or
+                   bool(re.search(r"marketplace|\\bseller\\b|venduto\\s+da\\s+terzi", source, re.I)))
+    if not known:
+        trust = "unverified_seller"
+    elif marketplace or quality != "direct":
+        trust = "review_seller"
+    else:
+        trust = "trusted_retailer"
     return {
-        "variant_id": variant_id(model, gb), "model": model, "storage": storage_label(gb),
-        "title": title[:240], "merchant": merchant, "price_eur": price,
+        "variant_id": variant_id(model, gb), "model": model,
+        "storage": storage_label(gb), "title": title[:240],
+        "merchant": merchant, "source_label": source[:120], "price_eur": price,
         "shipping_eur": shipping,
         "total_eur": round(price + shipping, 2) if shipping is not None else None,
-        "link": link, "trust": "review_seller" if review else "trusted_retailer",
-        "link_quality": quality,
-        "condition": "not_declared_refurbished",  # Search results cannot prove sealed/new stock.
-        "shipping_known": shipping is not None,
+        "link": link, "trust": trust, "link_quality": quality,
+        "price_status": "shopping_listing",
+        "condition": "not_declared_refurbished", "shipping_known": shipping is not None,
     }
-
 
 def get_shopping(query: str, key: str, retry=2) -> list[dict]:
     req = urllib.request.Request(
