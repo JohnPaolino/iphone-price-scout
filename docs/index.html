@@ -60,14 +60,37 @@
     </section>
 
     <section class="section offers-section" id="offers">
-      <div class="section-heading"><div><div class="overline">DEEPER DIVE</div><h2>Explore the market</h2></div><p id="result-caption">Prices shown before unverified delivery charges</p></div>
+      <div class="section-heading"><div><div class="overline">DEEPER DIVE</div><h2>Explore the market</h2></div><p id="result-caption">All quoted prices, excluding unconfirmed shipping</p></div>
       <div class="filters">
-        <div class="filter-pair"><span class="filter-label">MODEL</span><div class="segmented"><button data-model="pro" class="selected" aria-pressed="true">17 Pro</button><button data-model="max" aria-pressed="false">17 Pro Max</button></div></div>
-        <div class="filter-pair"><label class="filter-label" for="storage">STORAGE</label><select id="storage"><option value="256gb">256 GB</option><option value="512gb">512 GB</option><option value="1tb">1 TB</option><option value="2tb">2 TB</option></select></div>
-        <div class="filter-pair grow"><span class="filter-label">VIEW</span><div class="segmented"><button data-trust="all" class="selected" aria-pressed="true">All listings</button><button data-trust="trusted_retailer" aria-pressed="false">Direct retailers</button><button data-trust="review_seller" aria-pressed="false">Seller to verify</button><button data-trust="unverified_seller" aria-pressed="false">Unvetted stores</button></div></div>
+        <div class="filter-pair"><span class="filter-label">MODEL</span>
+          <div class="segmented">
+            <button data-model="all" class="selected" aria-pressed="true">All models</button>
+            <button data-model="pro" aria-pressed="false">17 Pro</button>
+            <button data-model="max" aria-pressed="false">17 Pro Max</button>
+          </div>
+        </div>
+        <div class="filter-pair"><label class="filter-label" for="storage">STORAGE</label>
+          <select id="storage">
+            <option value="all">All storage sizes</option>
+            <option value="256gb">256 GB</option>
+            <option value="512gb">512 GB</option>
+            <option value="1tb">1 TB</option>
+            <option value="2tb">2 TB</option>
+          </select>
+        </div>
+        <div class="filter-pair grow"><span class="filter-label">SORT ORDER</span><strong class="price-sort-label">Lowest quoted price first</strong></div>
       </div>
-      <div class="offers-meta"><span id="view-summary">No offers yet</span><span id="view-timestamp"></span></div>
-      <div id="offers-list" class="offers-list" aria-live="polite"><div class="empty-state">The monitor has not run yet. Once configured, this page will update every hour.</div></div>
+      <div class="offers-meta"><span id="view-summary">Loading quoted prices…</span><span id="view-timestamp"></span></div>
+      <div class="price-section-head"><h3>Recognized retailer prices <span id="retailer-count"></span></h3>
+        <p>Prices from matching retailer product pages or established retailer storefronts. This is NOT verification of an individual seller.</p></div>
+      <div id="offers-list" class="offers-list" aria-live="polite"><div class="empty-state">Loading retailer prices…</div></div>
+      <div class="price-section-head price-check-head"><h3>Marketplace &amp; unvetted sellers <span id="unvetted-count"></span></h3>
+        <p>All other observed prices, including third-party marketplace quotes and sellers we have not independently assessed. Compare them, but verify before purchase.</p></div>
+      <div id="unvetted-list" class="offers-list" aria-live="polite"></div>
+      <div id="amazon-note" class="market-note"></div>
+      <details class="unpriced-details"><summary id="unpriced-summary">Store listings with no readable price</summary>
+        <div id="unpriced-list" class="offers-list"></div>
+      </details>
       <div id="exclusion-note" class="notice"><span>ⓘ</span> All prices are observed quotes, not guaranteed checkout offers. Unknown and marketplace sellers are labelled separately and are NOT endorsements. Explicitly refurbished/used results are excluded; a listing alone cannot prove new/sealed condition. Verify exact model, storage, seller, stock, warranty, delivery and final cost.</div>
     </section>
 
