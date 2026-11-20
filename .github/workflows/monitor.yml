@@ -8,6 +8,9 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'config.json'
+      - 'docs/*.html'
+      - 'docs/*.js'
+      - 'docs/*.css'
       - '.github/workflows/monitor.yml'
   schedule:
     - cron: '17 * * * *'
