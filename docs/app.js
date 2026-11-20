@@ -123,7 +123,7 @@
       ${lines}<path d="${area}" fill="url(#pricefill)"/><path d="${path}" stroke="#a2e9c7" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="${dotx}" cy="${doty}" r="6" fill="#b5f2d4" stroke="#17231f" stroke-width="3"/>${ticks}</svg>`;
   }
   function render(){renderSummary();renderOffers();renderChart();}
-  $('[data-model]').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;if(state.model==='pro'&&state.storage==='2tb')state.storage='all';render();}));
+  $$('[data-model]').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;if(state.model==='pro'&&state.storage==='2tb')state.storage='all';render();}));
   $('#storage').addEventListener('change',e=>{state.storage=e.target.value;render();});
   $$('.choose-model').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;state.storage=btn.dataset.storage;render();$('#offers').scrollIntoView({behavior:'smooth',block:'start'});}));
   $('#share-button').addEventListener('click',async()=>{
