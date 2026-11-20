@@ -22,7 +22,7 @@ permissions:
 
 concurrency:
   group: iphone-price-scout
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   monitor-and-publish:
