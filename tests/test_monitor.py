@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price, extract_visible_unieuro_price
+from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price, extract_visible_unieuro_price, normalize_web_price
 
 CONFIG = json.loads((Path(__file__).parents[1] / 'config.json').read_text())
 
@@ -138,6 +138,21 @@ class TestPriceScout(unittest.TestCase):
         current = {'pro-256gb':{'status':'ok','model':'Pro','storage':'256GB',
                                 'offers':[unpriced]}}
         self.assertEqual(make_alerts(current, {}, {}, CONFIG, ''), [])
+
+    def test_indexed_web_prices_visible_as_unverified(self):
+        sample = {
+            'title':'Apple iPhone 17 Pro Max 256GB Cosmic Orange',
+            'link':'https://www.idealo.it/confronta-prezzi/207674129/iphone.html',
+            'snippet':'Confronta offerte a partire da € 1.138,00'
+        }
+        result = normalize_web_price(sample, 'Pro Max', 256, CONFIG)
+        self.assertEqual(result['price_eur'], 1138)
+        self.assertEqual(result['trust'], 'unverified_seller')
+        self.assertIn('Comparison:', result['merchant'])
+        self.assertIsNone(normalize_web_price({**sample,'title':'iPhone 17 Pro 256GB'},
+                                              'Pro Max', 256, CONFIG))
+        self.assertIsNone(normalize_web_price({**sample,'title':sample['title']+' ricondizionato'},
+                                              'Pro Max', 256, CONFIG))
 
     def test_shipping(self):
         self.assertEqual(shipping_eur({'delivery':'Spedizione gratuita'}), 0)
