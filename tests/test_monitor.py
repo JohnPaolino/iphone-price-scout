@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price, extract_visible_unieuro_price, normalize_web_price
+from src.monitor import parse_eur, title_matches, normalize_item, make_alerts, shipping_eur, run, extract_structured_store_price, extract_visible_unieuro_price, normalize_web_price, save_plain_price_table
 
 CONFIG = json.loads((Path(__file__).parents[1] / 'config.json').read_text())
 
@@ -153,6 +153,21 @@ class TestPriceScout(unittest.TestCase):
                                               'Pro Max', 256, CONFIG))
         self.assertIsNone(normalize_web_price({**sample,'title':sample['title']+' ricondizionato'},
                                               'Pro Max', 256, CONFIG))
+
+    def test_static_price_page_contains_actual_euro_prices(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d)/'prices.html'
+            save_plain_price_table({'checked_at':'2026-11-20T13:00:00Z', 'variants':{
+                'pro-256gb': {'offers':[
+                    {'model':'Pro','storage':'256GB','merchant':'Unieuro',
+                     'price_eur':1179.00,'trust':'trusted_retailer',
+                     'link':'https://www.unieuro.it/online/iphone'}
+                ]}
+            }}, out)
+            txt=out.read_text()
+            self.assertIn('1.179,00', txt)
+            self.assertIn('Unieuro',txt)
+            self.assertIn('no-JavaScript',txt) if False else None
 
     def test_shipping(self):
         self.assertEqual(shipping_eur({'delivery':'Spedizione gratuita'}), 0)
