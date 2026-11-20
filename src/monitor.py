@@ -355,7 +355,9 @@ def normalize_organic(item: dict, model: str, gb: int, config: dict) -> dict | N
     # mention of a separate refurbished alternative on a normal product page.
     if BAD_CONDITION.search(title + " " + path) or BAD_OFFER.search(title):
         return None
-    price = organic_price(item, config)
+    # Amazon organic search snippets often contain prices for unrelated
+    # recommendations. Only accept a price read from the exact product page.
+    price = None if merchant == "Amazon.it" else organic_price(item, config)
     return {
         "variant_id": variant_id(model, gb), "model": model,
         "storage": storage_label(gb), "title": title[:240],
@@ -604,7 +606,10 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
             LOG.info("Checking %s", vid)
             try:
                 rows = []
-                shopping_queries = [query]
+                shopping_queries = [
+                    query,
+                    f'Amazon.it Apple iPhone 17 {model} {storage_label(gb)}',
+                ]
                 # 256GB Shopping results often omit storage; a second query
                 # increases the number of exact-capacity offers found.
                 if gb == 256:
@@ -626,6 +631,7 @@ def run(config_path: Path, out_dir: Path, *, api_key: str, dry_run: bool, fixtur
                     ("Unieuro", f'site:unieuro.it/online/ Apple iPhone 17 {model} {storage_label(gb)}'),
                     ("MediaWorld", f'site:mediaworld.it/it/product/ iPhone 17 {model} {storage_label(gb)}'),
                     ("Euronics", f'site:euronics.it/telefonia/smartphone-e-cellulari/iphone/ iPhone 17 {model} {storage_label(gb)}'),
+                    ("Amazon.it", f'site:amazon.it/ Apple iPhone 17 {model} {storage_label(gb)}'),
                 ]
                 for site_name, organic_query in organic_queries:
                     try:
