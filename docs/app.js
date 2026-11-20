@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const state = { model:'pro', storage:'256gb', trust:'trusted_retailer', latest:{variants:{}}, history:{} };
+  const state = { model:'pro', storage:'256gb', trust:'all', latest:{variants:{}}, history:{} };
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
   const euro = (amount) => typeof amount === 'number' ? new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:2,minimumFractionDigits:0}).format(amount) : '—';
@@ -25,9 +25,9 @@
     pill.classList.toggle('error',hasScan && (!isFresh || !!state.latest.error_count));
     pill.textContent=!hasScan?'Awaiting first scan':!isFresh?'Scan overdue':state.latest.error_count?`Partial scan · ${state.latest.error_count} errors`:'Recent scan';
     for(const [id,prefix] of [['pro-256gb','pro'],['pro-max-256gb','max']]){
-      const v=state.latest.variants?.[id]; const best=v?.best_trusted;
+      const v=state.latest.variants?.[id]; const best=v?.best_trusted || v?.best_review;
       $(`#feature-${prefix}-price`).textContent=best?euro(best.price_eur):'—';
-      $(`#feature-${prefix}-seller`).textContent=v?.status==='error'?'Last available result · scan failed':!isFresh&&hasScan?'Last observed price · scan overdue':best?`${best.merchant} · ${v.offers.length} listings · delivery may be extra`:hasScan?'No approved retailer found':'Awaiting first scan';
+      $(`#feature-${prefix}-seller`).textContent=v?.status==='error'?'Last available result · scan failed':!isFresh&&hasScan?'Last observed price · scan overdue':best?`${best.merchant} · ${v.best_trusted?'approved direct price':'indicative: verify'} · shipping may be extra`:hasScan?(v?.offers?.length?'Retailer listings found · check current prices':'No matching retailer pages found'):'Awaiting first scan';
     }
   }
   function renderOffers(){
@@ -35,10 +35,10 @@
     $$('[data-trust]').forEach(btn=>{const selected=btn.dataset.trust===state.trust;btn.classList.toggle('selected',selected);btn.setAttribute('aria-pressed',String(selected));});
     $$('#storage option').forEach(opt=>{opt.disabled=state.model==='pro'&&opt.value==='2tb';});
     $('#storage').value=state.storage;
-    const v=current(), all=v.offers||[], offers=all.filter(x=>x.trust===state.trust).sort((a,b)=>a.price_eur-b.price_eur);
-    $('#view-summary').textContent=`${vTitle()} · ${offers.length} ${state.trust==='review_seller'?'seller-review':'approved-retailer'} result${offers.length!==1?'s':''}${v.status==='error'?' · OUTDATED':''}`;
+    const v=current(), all=v.offers||[], offers=all.filter(x=>state.trust==='all'||x.trust===state.trust).sort((a,b)=>Number(a.price_eur==null)-Number(b.price_eur==null)||(a.price_eur??0)-(b.price_eur??0));
+    $('#view-summary').textContent=`${vTitle()} · ${offers.length} ${state.trust==='all'?'matching':'review-needed'} result${offers.length!==1?'s':''}${v.status==='error'?' · OUTDATED':''}`;
     $('#view-timestamp').textContent=v.checked_at?'Checked '+dateLabel(v.checked_at):'';
-    $('#result-caption').textContent=v.status==='error'?'WARNING: latest scan failed; previous listings are shown for reference only':state.trust==='review_seller'?'Marketplace listings: third-party seller not verified':'Prices shown before unverified delivery charges';
+    $('#result-caption').textContent=v.status==='error'?'WARNING: latest scan failed; previous listings are shown for reference only':state.trust==='review_seller'?'Seller or search price requires verification':state.trust==='all'?'Showing direct store pages and search prices; verify before buying':'Some listings require opening the store to see their price';
     if(!offers.length){
       $('#offers-list').innerHTML=`<div class="empty-state">${!state.latest.checked_at?'The monitor has not run yet. Results appear after the first scheduled check.':v.status==='error'?'The latest search failed. No fresh results available.':'No matching offers found in this category. Try a different storage size or seller-quality filter.'}</div>`;
       return;
@@ -46,11 +46,11 @@
     $('#offers-list').innerHTML=offers.map((o,i)=>{
       const shipping=o.shipping_eur===0?'Free shipping reported':typeof o.shipping_eur==='number'?`Shipping ${euro(o.shipping_eur)}`:'Shipping not confirmed';
       const link=validUrl(o.link);
-      return `<article class="offer-row ${state.trust==='review_seller'?'review':''}">
-        <div class="offer-index ${i===0?'best':''}">${i===0?'★':i+1}</div>
+      return `<article class="offer-row ${o.trust==='review_seller'?'review':''}">
+        <div class="offer-index ${i===0 && o.price_eur!=null?'best':''}">${i===0 && o.price_eur!=null?'★':i+1}</div>
         <div><div class="offer-name">${safe(o.merchant)}</div><div class="offer-desc" title="${safe(o.title)}">${safe(o.title)}</div></div>
-        <div class="offer-merchant">${v.status==='error'?'Stale listing — not live':state.trust==='review_seller'?'Seller must be checked':'Approved retailer'}<small>${shipping}</small></div>
-        <div class="offer-price">${euro(o.price_eur)}<small>Product price</small></div>
+        <div class="offer-merchant">${v.status==='error'?'Stale listing — not live':o.price_status==='check_on_store'?'Official store page · check price':o.price_status==='search_snippet_unverified'?'Search price · verify checkout':o.trust==='review_seller'?'Seller must be checked':'Approved retailer'}<small>${shipping}</small></div>
+        <div class="offer-price">${o.price_eur==null?'Check price':euro(o.price_eur)}<small>${o.price_status==='search_snippet_unverified'?'Indicative search result':o.price_eur==null?'Open retailer page':'Product price'}</small></div>
         <a class="offer-link" href="${safe(link)}" target="_blank" rel="noopener noreferrer">Check listing ↗</a>
       </article>`;
     }).join('');
@@ -76,7 +76,7 @@
   $$('[data-model]').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;if(state.model==='pro'&&state.storage==='2tb')state.storage='1tb';render();}));
   $$('[data-trust]').forEach(btn=>btn.addEventListener('click',()=>{state.trust=btn.dataset.trust;render();}));
   $('#storage').addEventListener('change',e=>{state.storage=e.target.value;render();});
-  $$('.choose-model').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;state.storage=btn.dataset.storage;state.trust='trusted_retailer';render();$('#offers').scrollIntoView({behavior:'smooth',block:'start'});}));
+  $$('.choose-model').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;state.storage=btn.dataset.storage;state.trust='all';render();$('#offers').scrollIntoView({behavior:'smooth',block:'start'});}));
   $('#share-button').addEventListener('click',async()=>{
     try{await navigator.clipboard.writeText(location.href);showToast('Dashboard link copied');}
     catch{showToast('Copy this page URL from your browser');}
