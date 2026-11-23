@@ -319,6 +319,11 @@
       "at": "2026-11-23T15:28:17Z",
       "merchant": "Unieuro",
       "price_eur": 1179.0
+    },
+    {
+      "at": "2026-11-23T16:14:54Z",
+      "merchant": "Unieuro",
+      "price_eur": 1179.0
     }
   ],
   "pro-512gb": [
@@ -639,6 +644,11 @@
     },
     {
       "at": "2026-11-23T15:28:17Z",
+      "merchant": "Unieuro",
+      "price_eur": 1429.0
+    },
+    {
+      "at": "2026-11-23T16:14:54Z",
       "merchant": "Unieuro",
       "price_eur": 1429.0
     }
@@ -963,6 +973,11 @@
       "at": "2026-11-23T15:28:17Z",
       "merchant": "Euronics",
       "price_eur": 1699.0
+    },
+    {
+      "at": "2026-11-23T16:14:54Z",
+      "merchant": "Euronics",
+      "price_eur": 1699.0
     }
   ],
   "pro-max-256gb": [
@@ -1285,6 +1300,11 @@
       "at": "2026-11-23T15:28:17Z",
       "merchant": "Unieuro",
       "price_eur": 1329.0
+    },
+    {
+      "at": "2026-11-23T16:14:54Z",
+      "merchant": "Unieuro",
+      "price_eur": 1329.0
     }
   ],
   "pro-max-512gb": [
@@ -1605,6 +1625,11 @@
     },
     {
       "at": "2026-11-23T15:28:17Z",
+      "merchant": "Unieuro",
+      "price_eur": 1569.0
+    },
+    {
+      "at": "2026-11-23T16:14:54Z",
       "merchant": "Unieuro",
       "price_eur": 1569.0
     }
@@ -2159,6 +2184,11 @@
     },
     {
       "at": "2026-11-23T15:28:17Z",
+      "merchant": "Unieuro",
+      "price_eur": 2279.0
+    },
+    {
+      "at": "2026-11-23T16:14:54Z",
       "merchant": "Unieuro",
       "price_eur": 2279.0
     }
