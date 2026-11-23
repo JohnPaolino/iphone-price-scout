@@ -24,6 +24,15 @@ LOG = logging.getLogger("market")
 ROOT = Path(__file__).resolve().parent.parent
 MONEY = re.compile(r"(?<!\d)(\d{1,2}(?:\.\d{3})+(?:,\d{2})?|\d{3,4},\d{2})\s*€|€\s*(\d{1,2}(?:\.\d{3})+(?:,\d{2})?|\d{3,4},\d{2})", re.I)
 TROVA_BASE = "https://www.trovaprezzi.it/cellulari/prezzi-scheda-prodotto/"
+IDEALO_URLS = {
+    "pro-256gb": "https://www.idealo.it/confronta-prezzi/207674129/apple-iphone-17-pro-256gb-deep-blue.html",
+    "pro-512gb": "https://www.idealo.it/confronta-prezzi/207702142/apple-iphone-17-pro-512gb-deep-blue.html",
+    "pro-1tb": "https://www.idealo.it/confronta-prezzi/207702145/apple-iphone-17-pro-1000gb-deep-blue.html",
+    "pro-max-256gb": "https://www.idealo.it/confronta-prezzi/207674128/apple-iphone-17-pro-max-256gb-deep-blue.html",
+    "pro-max-512gb": "https://www.idealo.it/confronta-prezzi/207702160/apple-iphone-17-pro-max-512gb-deep-blue.html",
+    "pro-max-1tb": "https://www.idealo.it/confronta-prezzi/207702161/apple-iphone-17-pro-max-1000gb-deep-blue.html",
+    "pro-max-2tb": "https://www.idealo.it/confronta-prezzi/207702168/apple-iphone-17-pro-max-2000gb-deep-blue.html",
+}
 INTERNAL_SHOPS = ("Apple", "Unieuro", "Euronics", "Comet", "Trony", "Expert", "MediaWorld", "Amazon.it", "R-Store")
 BANNED_SHOP = re.compile(r"refurbed|swappie|back.market|ricondizionat|usato|second.hand|trendevice|certideal|rebuy", re.I)
 MISC_LABEL = re.compile(r"prezzo|offert|availability|disponibil|sped|paypal|mastercard|visa|trusted|feedaty|satispay|vedi|acquist|negozio|recension|iPhone|nuovo|promozion|rate|fattura|bonifico|totale|gratuita|gratuito|€", re.I)
@@ -283,6 +292,20 @@ def run():
             except Exception as e:
                 s=sources.setdefault("trovaprezzi",{"status":"partial","variants":0,"offers":0,"errors":[]})
                 s["status"]="partial";s.setdefault("errors",[]).append(vid+": "+str(e)[:120])
+            # Independent price-comparison product page: one exact-capacity
+            # colour variant per SKU. Quotes are indicative, not audited.
+            idealo_url=IDEALO_URLS.get(vid)
+            if idealo_url:
+                try:
+                    raw=fetch_html(idealo_url)
+                    entries=parse_comparison_html(raw,idealo_url,model,gb,scan,"Idealo")
+                    offers.extend(entries)
+                    any_fresh=any_fresh or bool(entries)
+                    st=sources.setdefault("idealo",{"status":"ok","variants":0,"offers":0})
+                    st["variants"]+=1;st["offers"]+=len(entries)
+                except Exception as e:
+                    st=sources.setdefault("idealo",{"status":"partial","variants":0,"offers":0,"errors":[]})
+                    st["status"]="partial";st.setdefault("errors",[]).append(vid+": "+str(e)[:120])
             # Last known direct store URLs (such as Unieuro) are useful even
             # during paid-provider outage. Recheck a limited set; omit broken
             # pages without claiming their old price is current.
