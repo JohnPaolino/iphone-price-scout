@@ -31,6 +31,18 @@ class TestMultiSource(unittest.TestCase):
         cur["pro-256gb"]["offers"][0]["stale"]=True
         self.assertEqual([],m.calculate_alerts(cur,previous,{},config))
 
+    def test_keepa_italian_market_new_prices_only(self):
+        known={'B0FQG7CLN2':('Pro',512)}
+        data=[{'productType':0,'asin':'B0FQG7CLN2',
+               'title':'Apple iPhone 17 Pro 512GB Argento',
+               'stats':{'current':[139900,129900,59000]}}]
+        offers=m.keepa_prices(data,known,"2026-11-23T08:00:00Z")
+        self.assertEqual(2,len(offers))
+        self.assertEqual({1399.0,1299.0},{x['price_eur'] for x in offers})
+        self.assertTrue(all(x["trust"]=="review_seller" for x in offers))
+        # An apparently attractive USED price (index 2) must never appear.
+        self.assertNotIn(590.0,[x["price_eur"] for x in offers])
+
     def test_exact_target_url(self):
         self.assertEqual("https://www.trovaprezzi.it/cellulari/prezzi-scheda-prodotto/apple_iphone_17_pro_max_1tb-v",
                          m.trobaprezzi_url("Pro Max",1024))
