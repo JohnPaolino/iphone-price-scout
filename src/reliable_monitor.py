@@ -545,7 +545,14 @@ def run():
     base.save_json(out/"latest.json",doc)
     base.save_json(out/"history.json",history)
     base.save_json(out/"alerts.json",newly_sent)
-    base.save_plain_price_table(doc,out/"prices.html")
+    # The plain static view is used for quick buying decisions: NEVER mix
+    # stale historical prices into its current cheapest-price ranking.
+    active_only=dict(doc)
+    active_only["variants"]={
+        vid:{**variant,"offers":[o for o in variant["offers"] if not o.get("stale")]}
+        for vid,variant in new.items()
+    }
+    base.save_plain_price_table(active_only,out/"prices.html")
     LOG.info("HEALTH %s; fresh prices=%s; alert ready=%s; alerts=%s; sent=%s",
              health,price_count,ready,len(alerts),delivered)
     LOG.info("SOURCES %s",json.dumps(sources)[:2500])
