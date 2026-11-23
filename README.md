@@ -1,92 +1,77 @@
-# Price Scout — new iPhone 17 Pro / Pro Max in Italy
+# iPhone Price Scout — Italy · Operational Guide
 
-A working, deployable **hourly** price-monitoring application, with a shareable GitHub Pages dashboard and optional Telegram price-drop alerts. Backend uses the **Serper Google Shopping API** rather than fragile store scraping. This project uses only Python's standard library and a static HTML/CSS/JS front-end.
+## Current deployment
+Website: https://johnpaolino.github.io/iphone-price-scout/
+Plain HTML price table: https://johnpaolino.github.io/iphone-price-scout/data/prices.html
+Actions: https://github.com/JohnPaolino/iphone-price-scout/actions
 
-## What it monitors
+**Last audited 23 November 2026:** The scanner and GitHub Pages deployment work, but coverage is **degraded**. GitHub's most recent verified scan found 11 fresh numeric prices from retailer pages. Serper responded with `{"message":"Not enough credits"}`; Trovaprezzi and Idealo returned HTTP 403 to GitHub's runner. No Telegram alert recipient is configured. The site's health banner reports these failures and separates fresh and stale prices.
 
-- iPhone 17 **Pro**: 256GB, 512GB, 1TB.
-- iPhone 17 **Pro Max**: 256GB, 512GB, 1TB, 2TB.
-- Search region and language: Italy / Italian; prices in EUR.
-- Only exact model+storage matches; filters used/refurbished/renewed listings, accessories and contracts.
-- **All matching Google Shopping seller quotes are now visible**, including marketplace and less-established sellers, explicitly flagged as unvetted or seller-verification required. Direct retailer pages are also found at Unieuro, MediaWorld and Euronics.
-- The dashboard defaults to **All listings**, ranked by quoted price (priced offers first); exact storage and new-condition filters remain active. Shipping is listed separately if detected, and checkout may differ.
-- Important: an offer appearing on Google Shopping is **not** proof of factory-sealed condition, stock availability, Italian warranty, or that the merchant is the actual seller. Check the listing before buying. Marketplaces are deliberately never included in the trusted best-price figure.
+No search system can guarantee checking literally every online shop or buying the cheapest phone the moment its price changes. Search listings can lag merchants, and GitHub's schedule is best-effort.
 
-## Quick deployment (approx. 6 steps)
+## What runs now
+- `src/reliable_monitor.py` is the production price monitor.
+- Runs at approximately **:07, :22, :37 and :52 UTC** each hour via GitHub Actions. GitHub may delay executions.
+- Every run checks public comparison pages (when accessible) and previously found direct retailer product pages. A 403 is reported, never bypassed.
+- Every hour, a Serper Google Shopping scan is attempted, **if Serper has credits**.
+- Optional secondary Google Shopping source: SerpApi (`SERPAPI_API_KEY`).
+- Optional Amazon.it new-price source: Keepa API (`KEEPA_API_KEY`). Keepa is necessary for structured Amazon pricing; Amazon product pages often omit readable numeric prices.
+- Seven iPhone variants: Pro 256/512GB/1TB, Pro Max 256/512GB/1TB/2TB.
+- All prices are visible, including unvetted/marketplace sources, with warning labels; explicit used/refurbished products are excluded.
+- The bot displays the source status, number of *fresh* prices, and alert configuration; old observations are retained as **STALE**, not counted as current bargains.
+- A JavaScript-free `docs/data/prices.html` is updated each run.
 
-1. Create a GitHub repository called `iphone-price-scout` with the **main** default branch. A public repository is simplest for a shareable public site.
-2. Upload **all contents** of this package into that repository (including the hidden `.github/workflows/monitor.yml` folder). Do not upload the ZIP as one file.
-3. Sign up at [Serper.dev](https://serper.dev/), obtain a Google Shopping API key. In the GitHub repo go to **Settings → Secrets and variables → Actions → New repository secret**. Add `SERPER_API_KEY` with its value. Keep the key secret.
-4. In **Settings → Pages**, set **Build and deployment → Source: GitHub Actions**. In **Settings → Actions → General → Workflow permissions**, allow **Read and write permissions** (required for saving price history). Verify your plan allows Pages/Actions in the chosen repository.
-5. Go to **Actions → Hourly iPhone price monitor → Run workflow** to trigger the first run. The job checks the products, commits refreshed data, and publishes the dashboard.
-6. Share `https://YOUR-GITHUB-USERNAME.github.io/iphone-price-scout/` with anyone. The page has Share and WhatsApp controls.
+## Step 1 — Restore broad discovery (REQUIRED)
+1. Sign in at https://serper.dev/ and open the **billing / credits** screen.
+2. Your existing `SERPER_API_KEY` GitHub secret is configured, but its balance is depleted. **Top up the Serper account**; there is no need to replace the secret if the key is still valid.
+3. Open https://github.com/JohnPaolino/iphone-price-scout/actions/workflows/monitor.yml and run the workflow manually. Look at the published health banner and `docs/data/latest.json` source statuses.
+4. Monitor actual Serper credit consumption. Hourly paid searches are seven Shopping queries per hour (~168 per day before provider-specific multipliers), not the original expensive 30+ query implementation.
 
-The schedule is `17 * * * *` (around minute 17 every hour, UTC). **GitHub may delay or occasionally skip scheduled Actions runs**, so this is an hourly requested cadence, not an SLA. Public repositories' scheduled workflows can also be disabled after prolonged inactivity. Check the repository Actions tab periodically.
+**Alternative:** If you prefer SerpApi, obtain an API key at https://serpapi.com/ and create a repository secret named `SERPAPI_API_KEY`. The bot can use it as a second independent Google Shopping data source. It is also paid and its balance/limits need monitoring. Both sources may return overlapping offers and lag actual checkout prices.
 
-## Optional Telegram alerts (you or another person)
+## Step 2 — Activate prompt price alerts (REQUIRED)
+The bot cannot send a message to a person until you configure an actual destination.
 
-1. On Telegram, chat with [@BotFather](https://t.me/BotFather); create a bot and get the bot token.
-2. Recipient must **start a chat with the bot** first; otherwise Telegram will reject direct messages. To retrieve their numeric chat ID, use the Telegram Bot API's `getUpdates` endpoint after they send `/start`. Handle bot tokens privately; never paste them into a public file or chat.
-3. Add `TELEGRAM_BOT_TOKEN` as a repository **secret**.
-4. Add `TELEGRAM_CHAT_IDS` as a repository **variable**: one numeric chat ID, or comma-separated numeric chat IDs for multiple recipients.
+1. Create a Telegram bot through https://t.me/BotFather and privately copy its bot token.
+2. Add **GitHub repository secret** `TELEGRAM_BOT_TOKEN` with the bot token.
+3. Ask the intended recipient to open the bot and send `/start` in Telegram.
+4. Retrieve that recipient's chat ID through Telegram Bot API `getUpdates`, and add repository **Actions variable** `TELEGRAM_CHAT_IDS` with that numeric ID. Multiple chat IDs can be separated with commas.
+5. Run the workflow manually and confirm the GitHub log says `alert ready=True`. The site health banner must show **Telegram alerts configured**. Initial discoveries are enabled by default; subsequent lower quotes alert when the best observed price falls at least €2.
+6. The monitor keeps `docs/data/alerts.json` with prices **acknowledged by Telegram** so the same offer is not re-alerted every 15 minutes.
 
-By default messages are sent only when an **approved-retailer price drops at least €5 below the previous recorded all-time minimum**, not every hour. To alert whenever a specific price ceiling is first crossed, add optional repository variables `ALERT_PRO_256GB` and/or `ALERT_PRO_MAX_256GB` with euro values, e.g. `1100` and `1250`. Other variants accept `ALERT_PRO_512GB`, `ALERT_PRO_1TB`, `ALERT_PRO_MAX_512GB`, `ALERT_PRO_MAX_1TB`, and `ALERT_PRO_MAX_2TB`. Alerts for first-discovery prices are off by default; toggle `alert_on_first_discovery` in `config.json` if you want an initial baseline message.
+Never put tokens/API keys into public repository files, emails, or the website.
 
-Notifications need a valid bot token and recipient chat ID. You can use the dashboard **without Telegram**.
+## Step 3 — Amazon.it prices (OPTIONAL; STRONGLY RECOMMENDED)
+The Keepa API offers price statistics for Amazon.it products, including Amazon's own price and the lowest new marketplace offer. Keepa documents marketplace **NEW** and **AMAZON** price series separately from USED and REFURBISHED. Subscribe at https://keepa.com/ (an API-enabled plan), copy your Keepa API key, and create the GitHub repository secret `KEEPA_API_KEY`. The bot uses known, matching ASINs discovered in earlier Amazon.it product URLs; no price is invented for an ASIN without an eligible new offer.
 
-## Usage & estimated search cost
+These optional subscriptions may incur costs. Review provider terms and budgets. Pricing updates reflect data-source refresh times and cannot guarantee instant merchant-price capture.
 
-Current full coverage uses **9 Shopping + 21 retailer-targeted Search API queries hourly** = about **720 requests per day** or **21,600 requests per 30 days**. Some Serper Shopping searches may consume more than one credit (e.g. 2 credits); check Serper's *live* consumption and pricing. To reduce cost, edit `storage_gb` in `config.json`, for example `[256]` for each model, which cuts searches to 48/day. Serper's introductory credits may not last a full month if monitoring all seven configurations every hour.
+## How we classify sellers
+- **Recognized retailer:** Link domain and retailer name match known chains (Apple, Unieuro, Euronics, Comet, etc.). This does not verify the actual seller.
+- **Marketplace / seller to verify:** Google Shopping intermediary links, Amazon/MediaWorld marketplace, or Keepa new offers.
+- **Unvetted:** Unknown shops and public comparison-page prices. These may be legitimate but are *not* verified.
+- **Excluded:** Listings explicitly used, refurbished, open-box, accessories, or monthly installment-only offers.
+- We do **not** guarantee factory seals, VAT/warranty compliance, EU/Italian stock, delivery date, or final checkout totals.
 
-Serper searches Google Shopping listings, which are not a complete registry of all Italian shops and can lag actual prices. The established-retailer names in `config.json` now control classification rather than excluding every other seller: unknown merchants are shown with an **UNVETTED SELLER** warning, not presented as approved. Explicit refurbished/used results and dedicated refurbishing retailers remain excluded.
+## Troubleshooting
+- GitHub Actions failed: inspect the step `Scan Italian prices from independent sources` and the source report under the health banner.
+- Health says **Not enough credits**: top up Serper or connect SerpApi. A secret being set does not replenish API credits.
+- Trovaprezzi/Idealo HTTP 403: automated access is being refused. The bot will not bypass restrictions; comparison prices require a licensed API or separately approved integration.
+- Alerts not configured: configure BOTH `TELEGRAM_BOT_TOKEN` (secret) and `TELEGRAM_CHAT_IDS` (variable); the bot must have an open chat with the recipient.
+- All prices stale: the price feed cannot currently observe new quotes; do **not** use the old minimum to assume a bargain exists.
+- Need a guaranteed 1-minute reaction? GitHub Actions is not a real-time service. Deploy the same monitor on a continuously running platform with a paid low-latency feed and proper alerting.
 
-## Local test
+## Files
+- `src/reliable_monitor.py` — live multi-source monitor, Keepa/SerpApi adapters, alert deduplication, explicit source health.
+- `src/monitor.py` — original parsing helpers and legacy tests.
+- `config.json` — models, trusted retailer aliases, alert sensitivity.
+- `docs/data/latest.json` — recent and stale listing data, plus source health.
+- `docs/data/history.json` — price history.
+- `docs/data/alerts.json` — acknowledged Telegram-alert baselines.
+- `docs/data/prices.html` — static price table.
+- `docs/app.js` — dashboard that shows status and fresh vs stale.
+- `.github/workflows/monitor.yml` — schedule, tests, scan and deployment.
+- `tests/...` — 23+ Python and browser smoke tests.
 
-Requirements: Python 3.12+; no pip packages.
-
-```bash
-python -m unittest discover -s tests -v
-export SERPER_API_KEY='YOUR_API_KEY'
-python src/monitor.py
-python -m http.server 8000 --directory docs
-# Browse http://localhost:8000
-```
-
-On Windows PowerShell use `$env:SERPER_API_KEY="YOUR_API_KEY"` instead of `export`.
-
-The site initially shows **no fictional sample prices**. The first successful live run fills `docs/data/latest.json` and `docs/data/history.json`.
-
-## Source code overview
-
-- `src/monitor.py`: Italian Google Shopping + retailer discovery, all-price listing with seller flags, strict model/capacity/condition matching, persistent price history and approved-retailer alerts.
-- `config.json`: products, retailer allowlist, thresholds, scanning preferences.
-- `.github/workflows/monitor.yml`: scheduled checks, history commit, GitHub Pages deployment.
-- `docs/index.html`, `docs/style.css`, `docs/app.js`: shareable responsive dashboard.
-- `tests/test_monitor.py`: basic protection against mismatched SKUs, unapproved merchants, and price parsing problems.
-
-## Privacy and safety
-
-- Your Serper API key and Telegram bot token remain in GitHub repository Secrets, not in publicly served HTML.
-- A public repository and public GitHub Pages site **expose the observed price history** (not the secrets). Do not use the public site for private information.
-- The Telegram recipient must opt in by contacting the bot before it can message them.
-- Listing prices from lesser-known or marketplace sellers are not endorsements. Merchant trust classification is **not a security certification**; factory-sealed status, Italian warranty, stock and the final delivered cost must be checked on the actual seller's site.
-
-## Operational caveats
-
-- Google Shopping result links sometimes point to a Google shopping panel rather than directly to a retailer; this is still clickable but requires checking the seller.
-- Delivery costs may not be included; the dashboard does not misrepresent unknown shipping as free.
-- If a particular model fails its search, its last available data stays visible only with an explicit stale/error status; all-variant failure stops publication.
-- When Google Shopping changes its response schema, the monitor may need a code update.
-
-## Faster deployment from Windows (GitHub CLI)
-
-If you have [Git for Windows](https://git-scm.com/downloads/win) and the [GitHub CLI](https://cli.github.com/) installed, extract the ZIP, open PowerShell in the extracted `iphone-price-scout` folder, and run:
-
-```powershell
-gh auth login
-powershell -ExecutionPolicy Bypass -File .\deploy-windows.ps1
-```
-
-The helper creates a **public** GitHub repository, pushes the code, tries to enable GitHub Pages, asks for your `SERPER_API_KEY` securely through `gh secret set`, and requests the first monitor run. If Pages setup or initial workflow dispatch fails, the helper prints the exact GitHub page to finish it manually. Do **not** share your API key with another person; share only the public dashboard link.
-
-If you are deploying through a GitHub organization rather than a personal account, use the manual instructions above.
+### Important
+This monitoring system helps you react **soon after the next successful observation**, not guarantee the absolute cheapest price across the entire web in real time. You must still verify stock, seller, new-condition status, shipping and final price before buying.
