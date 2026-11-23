@@ -1,17 +1,17 @@
 {
-  "checked_at": "2026-11-23T18:01:58Z",
+  "checked_at": "2026-11-23T18:26:15Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Independent public comparisons + retailer pages + optional Serper",
-  "success_count": 5,
-  "error_count": 2,
+  "success_count": 6,
+  "error_count": 1,
   "errors": [],
   "variants": {
     "pro-256gb": {
       "model": "Pro",
       "storage": "256GB",
       "status": "ok",
-      "checked_at": "2026-11-23T18:01:58Z",
+      "checked_at": "2026-11-23T18:26:15Z",
       "offers": [
         {
           "variant_id": "pro-256gb",
@@ -66,7 +66,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -85,7 +85,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -178,7 +178,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-23T18:01:58Z",
+        "observed_at": "2026-11-23T18:26:15Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -187,8 +187,8 @@
     "pro-512gb": {
       "model": "Pro",
       "storage": "512GB",
-      "status": "stale",
-      "checked_at": "2026-11-23T17:29:51Z",
+      "status": "ok",
+      "checked_at": "2026-11-23T18:26:15Z",
       "offers": [
         {
           "variant_id": "pro-512gb",
@@ -222,11 +222,11 @@
           "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vLOgrSZJpri4MDUjRY-WAeSzEc0OtWbik0Wd-L0rrJIj--ow540",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "historical_price",
+          "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T17:29:51Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
-          "stale": true
+          "stale": false
         },
         {
           "variant_id": "pro-512gb",
@@ -266,14 +266,32 @@
         }
       ],
       "results_checked": 4,
-      "best_trusted": null,
+      "best_trusted": {
+        "variant_id": "pro-512gb",
+        "model": "Pro",
+        "storage": "512GB",
+        "title": "Apple iPhone 17 Pro 512GB Blu Profondo",
+        "merchant": "Unieuro",
+        "price_eur": 1429.0,
+        "shipping_eur": null,
+        "total_eur": null,
+        "shipping_known": false,
+        "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vLOgrSZJpri4MDUjRY-WAeSzEc0OtWbik0Wd-L0rrJIj--ow540",
+        "trust": "trusted_retailer",
+        "link_quality": "direct",
+        "price_status": "retailer_page_price",
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-23T18:26:15Z",
+        "provider": "retailer_page",
+        "stale": false
+      },
       "best_review": null
     },
     "pro-1tb": {
       "model": "Pro",
       "storage": "1TB",
       "status": "ok",
-      "checked_at": "2026-11-23T18:01:58Z",
+      "checked_at": "2026-11-23T18:26:15Z",
       "offers": [
         {
           "variant_id": "pro-1tb",
@@ -366,7 +384,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -385,7 +403,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -478,7 +496,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-23T18:01:58Z",
+        "observed_at": "2026-11-23T18:26:15Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -488,7 +506,7 @@
       "model": "Pro Max",
       "storage": "256GB",
       "status": "ok",
-      "checked_at": "2026-11-23T18:01:58Z",
+      "checked_at": "2026-11-23T18:26:15Z",
       "offers": [
         {
           "variant_id": "pro-max-256gb",
@@ -524,7 +542,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -543,7 +561,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -618,7 +636,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-23T18:01:58Z",
+        "observed_at": "2026-11-23T18:26:15Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -628,7 +646,7 @@
       "model": "Pro Max",
       "storage": "512GB",
       "status": "ok",
-      "checked_at": "2026-11-23T18:01:58Z",
+      "checked_at": "2026-11-23T18:26:15Z",
       "offers": [
         {
           "variant_id": "pro-max-512gb",
@@ -645,7 +663,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -683,7 +701,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -760,7 +778,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-23T18:01:58Z",
+        "observed_at": "2026-11-23T18:26:15Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -818,7 +836,7 @@
       "model": "Pro Max",
       "storage": "2TB",
       "status": "ok",
-      "checked_at": "2026-11-23T18:01:58Z",
+      "checked_at": "2026-11-23T18:26:15Z",
       "offers": [
         {
           "variant_id": "pro-max-2tb",
@@ -854,7 +872,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -873,7 +891,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-23T18:01:58Z",
+          "observed_at": "2026-11-23T18:26:15Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -1039,7 +1057,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-23T18:01:58Z",
+        "observed_at": "2026-11-23T18:26:15Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -1048,7 +1066,7 @@
   },
   "health": {
     "status": "degraded",
-    "live_prices": 10,
+    "live_prices": 11,
     "sources": {
       "keepa": {
         "status": "skipped",
@@ -1083,16 +1101,16 @@
         ]
       },
       "serper_shopping": {
-        "status": "error",
-        "reason": "Serper HTTP 400: {\"message\":\"Not enough credits\",\"statusCode\":400}"
+        "status": "skipped",
+        "reason": "Hourly paid search disabled on interim check"
       },
       "serpapi_shopping": {
         "status": "skipped",
-        "reason": "Optional SERPAPI_API_KEY not configured"
+        "reason": "Hourly paid search disabled on interim check"
       }
     },
     "alerts_configured": false,
-    "alerts_found": 5,
+    "alerts_found": 6,
     "alerts_sent": 0,
     "notes": "Stale prices and comparison quotes are not confirmed checkout prices."
   },
