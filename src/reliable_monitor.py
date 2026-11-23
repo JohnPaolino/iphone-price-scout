@@ -453,18 +453,34 @@ def run():
     token=os.environ.get("TELEGRAM_BOT_TOKEN","")
     chatids=[x.strip() for x in os.environ.get("TELEGRAM_CHAT_IDS","").split(",") if x.strip()]
     ready=bool(token and chatids)
-    alerts=calculate_alerts(new,old,history,config)
+    last_sent=base.load_json(out/"alerts.json",{})
+    # Alert baselines are based on ACKNOWLEDGED deliveries, not on an
+    # unconfigured bot's observations. This makes setup immediately useful.
+    acknowledged={}
+    for vid,record in last_sent.items():
+        amount=record.get("last_notified_price_eur")
+        if isinstance(amount,(int,float)):
+            acknowledged[vid]={"offers":[{"price_eur":amount}]}
+    alerts=calculate_alerts(new,acknowledged,history,config)
     delivered=0
+    newly_sent=dict(last_sent)
     errors=[]
     # Don't claim notification success from telegram_send() which deliberately
     # swallows errors; direct HTTP verification is in follow-up improvements.
     for a in alerts:
         if ready:
+            received=0
             for cid in chatids:
                 try:
-                    if telegram_send_safe(token,cid,a["message"]):delivered+=1
+                    if telegram_send_safe(token,cid,a["message"]):
+                        delivered+=1;received+=1
                 except Exception as e:
                     errors.append("Telegram: "+type(e).__name__)
+            if received==len(chatids):
+                newly_sent[a["variant_id"]]={
+                    "last_notified_price_eur":a["price_eur"],
+                    "notified_at":scan,"merchant":a["merchant"],
+                }
     for vid,v in new.items():
         best=next((x for x in v["offers"] if x.get("price_eur") is not None and not x.get("stale")),None)
         if best:
@@ -482,6 +498,7 @@ def run():
     out.mkdir(parents=True,exist_ok=True)
     base.save_json(out/"latest.json",doc)
     base.save_json(out/"history.json",history)
+    base.save_json(out/"alerts.json",newly_sent)
     base.save_plain_price_table(doc,out/"prices.html")
     LOG.info("HEALTH %s; fresh prices=%s; alert ready=%s; alerts=%s; sent=%s",
              health,price_count,ready,len(alerts),delivered)
