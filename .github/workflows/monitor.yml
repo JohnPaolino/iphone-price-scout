@@ -53,6 +53,7 @@ jobs:
       - name: Scan Italian prices from independent sources
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
           KEEPA_API_KEY: ${{ secrets.KEEPA_API_KEY }}
           RUN_PAID_SEARCH: ${{ github.event_name != 'schedule' || github.event.schedule == '7 * * * *' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
