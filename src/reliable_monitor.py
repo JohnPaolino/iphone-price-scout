@@ -100,6 +100,10 @@ def parse_comparison_html(raw, page_url, model, gb, scanned, source="Trovaprezzi
     # Candidate pages without explicit storage are never treated as an exact SKU.
     for i,(label,href) in enumerate(tokens):
         title=label
+        # Product-page heading is not a sale offer; it would duplicate the
+        # first genuine listing when the next price appears in the page.
+        if "trovaprezzi" in title.lower() or "confronta prezzi" in title.lower():
+            continue
         if not base.title_matches(title,model,gb):
             continue
         if base.BAD_CONDITION.search(title) or base.BAD_OFFER.search(title):
@@ -200,8 +204,18 @@ def unique_offers(items):
 def telegram_send_safe(token, chat_id, msg):
     if not token or not chat_id:
         return False
-    base.telegram_send(token,chat_id,msg)
-    return True
+    body=urllib.parse.urlencode({"chat_id":chat_id,"text":msg,"disable_web_page_preview":"true"}).encode()
+    req=urllib.request.Request("https://api.telegram.org/bot"+token+"/sendMessage",
+                               data=body,method="POST")
+    try:
+        with urllib.request.urlopen(req,timeout=10) as resp:
+            answer=json.load(resp)
+        if not answer.get("ok"):
+            raise RuntimeError("Telegram delivery was not acknowledged")
+        return True
+    except Exception:
+        # Never print the URL because it contains the Telegram token.
+        raise RuntimeError("Telegram delivery failed; check bot token and recipient chat ID") from None
 
 def calculate_alerts(current,prev,history,config):
     """Alerts on observed new best or a threshold, never on stale observations.
@@ -346,7 +360,7 @@ def run():
         if ready:
             for cid in chatids:
                 try:
-                    telegram_send_safe(token,cid,a["message"]);delivered+=1
+                    if telegram_send_safe(token,cid,a["message"]):delivered+=1
                 except Exception as e:
                     errors.append("Telegram: "+type(e).__name__)
     for vid,v in new.items():
