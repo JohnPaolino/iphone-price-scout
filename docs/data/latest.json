@@ -1,19 +1,17 @@
 {
-  "checked_at": "2026-11-21T15:58:15Z",
+  "checked_at": "2026-11-23T07:28:49Z",
   "market": "Italy",
   "currency": "EUR",
-  "source": "Google Shopping / Serper",
+  "source": "Independent public comparisons + retailer pages + optional Serper",
   "success_count": 6,
   "error_count": 1,
-  "errors": [
-    "pro-max-2tb: Shopping API failed: HTTP Error 400: Bad Request"
-  ],
-  "methodology": "Google Shopping, direct retailer pages and indexed web comparison prices. Indexed and marketplace prices are NOT seller-verified; verify new/sealed condition and final checkout cost.",
+  "errors": [],
   "variants": {
     "pro-256gb": {
       "model": "Pro",
       "storage": "256GB",
       "status": "ok",
+      "checked_at": "2026-11-23T07:28:49Z",
       "offers": [
         {
           "variant_id": "pro-256gb",
@@ -29,8 +27,10 @@
           "link": "https://www.trovaprezzi.it/cellulari/prezzi-scheda-prodotto/apple_iphone_17_pro_256gb-v",
           "trust": "unverified_seller",
           "link_quality": "indexed_result",
-          "price_status": "search_snippet_unverified",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-256gb",
@@ -45,9 +45,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+256GB&prds=localAnnotatedOfferId:1,catalogid:11913542695853702893,gpcid:13208358742778044889,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "unverified_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-256gb",
@@ -63,7 +65,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-256gb",
@@ -79,7 +84,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-256gb",
@@ -94,8 +102,10 @@
           "link": "https://www.amazon.it/Apple-iPhone-Pro-256-precedenti/dp/B0FQFQ7544",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-256gb",
@@ -110,8 +120,10 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-256gb-argento-391204.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-256gb",
@@ -126,8 +138,10 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-256gb-blu-profondo-391206.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-256gb",
@@ -142,10 +156,13 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-256-gb-arancione-162799919.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         }
       ],
+      "results_checked": 8,
       "best_trusted": {
         "variant_id": "pro-256gb",
         "model": "Pro",
@@ -160,16 +177,18 @@
         "trust": "trusted_retailer",
         "link_quality": "direct",
         "price_status": "retailer_page_price",
-        "condition": "not_declared_refurbished"
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-23T07:28:49Z",
+        "provider": "retailer_page",
+        "stale": false
       },
-      "best_review": null,
-      "checked_at": "2026-11-21T15:58:15Z",
-      "results_checked": 50
+      "best_review": null
     },
     "pro-512gb": {
       "model": "Pro",
       "storage": "512GB",
       "status": "ok",
+      "checked_at": "2026-11-23T07:28:49Z",
       "offers": [
         {
           "variant_id": "pro-512gb",
@@ -185,8 +204,10 @@
           "link": "https://www.google.com/goto?url=CAESlAEBxCJF17u5D7FxZFp469l9AQi9a5KNPobwXqa23OjOCxoEoHDVq7ujywbvH_Ic10IVsomZYsEPGYl459D_YBj-o5h4L0KMUfMLYZYLMB0U1l5PuFXswJqflkXrxid_cHDAe6RmV-1S5FaWlj0GT2VYQwrEU3xDrlyTUvG6ZdgLN_uMLPbc2fpe6LIF2vh5LR1dsvnz&gsessionid=Azo95FktTe956jQLeeh_3l_i-udUC3BW_B8C79vY9VoMYguCGkHDoQ",
           "trust": "unverified_seller",
           "link_quality": "indexed_result",
-          "price_status": "search_snippet_unverified",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-512gb",
@@ -202,7 +223,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-512gb",
@@ -217,8 +241,10 @@
           "link": "https://www.euronics.it/telefonia/smartphone-e-cellulari/iphone/apple---iphone-17-pro-512gb-argento/252011578.html",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-512gb",
@@ -233,10 +259,13 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-512-gb-arancione-162801356.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         }
       ],
+      "results_checked": 4,
       "best_trusted": {
         "variant_id": "pro-512gb",
         "model": "Pro",
@@ -251,16 +280,18 @@
         "trust": "trusted_retailer",
         "link_quality": "direct",
         "price_status": "retailer_page_price",
-        "condition": "not_declared_refurbished"
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-23T07:28:49Z",
+        "provider": "retailer_page",
+        "stale": false
       },
-      "best_review": null,
-      "checked_at": "2026-11-21T15:58:15Z",
-      "results_checked": 51
+      "best_review": null
     },
     "pro-1tb": {
       "model": "Pro",
       "storage": "1TB",
       "status": "ok",
+      "checked_at": "2026-11-23T07:28:49Z",
       "offers": [
         {
           "variant_id": "pro-1tb",
@@ -275,9 +306,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+1TB&prds=localAnnotatedOfferId:1,catalogid:5541202884177057090,gpcid:2734127876482643184,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "unverified_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -292,9 +325,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Amazon.it+Apple+iPhone+17+Pro+1TB&prds=localAnnotatedOfferId:1,catalogid:15718044704345456687,gpcid:5109345407455531247,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "unverified_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -310,8 +345,10 @@
           "link": "https://www.google.com/goto?url=CAESkgEBxCJF18AqgUW05FLs26aSaWMJrJstRgH5Nja13WElhsEmjBsSWNmXsLcjdONRN1EMqaPNWkR8kr4Vz0PGwbpczYzoXrj6p6PnDe_Ov1Iaa8Y_AW0Q8s8gesH_zihKN7_2fRvMbTiry5Mbw_tWJ0dL3U8rvoDJm4qT4-iQlT2OlntgklHz0Mhu3XR80xNVDLy2XA&gsessionid=1n3vgLoecdNnDlXasSrMTBPk8XoEYnXJvb4_fKpk3lWA_qV_dj_4TQ",
           "trust": "unverified_seller",
           "link_quality": "indexed_result",
-          "price_status": "search_snippet_unverified",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -326,9 +363,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Amazon.it+Apple+iPhone+17+Pro+1TB&prds=localAnnotatedOfferId:1,catalogid:7970611248419336773,gpcid:15105096054954621005,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "unverified_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -344,7 +383,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-1tb",
@@ -360,7 +402,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-1tb",
@@ -375,8 +420,10 @@
           "link": "https://www.amazon.it/Apple-iPhone-Pro-1TB-precedenti/dp/B0FQGZQN7D",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -391,8 +438,10 @@
           "link": "https://www.amazon.it/-/en/Apple-iPhone-Pro-1TB-Unparalleled/dp/B0FQGDQDBG",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -407,8 +456,10 @@
           "link": "https://www.amazon.it/Apple-iPhone-Pro-precedenti-fotocamere/dp/B0FQGDQDBG",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-1tb",
@@ -423,10 +474,13 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-1-tb-blu-162799684.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         }
       ],
+      "results_checked": 10,
       "best_trusted": {
         "variant_id": "pro-1tb",
         "model": "Pro",
@@ -441,16 +495,18 @@
         "trust": "trusted_retailer",
         "link_quality": "direct",
         "price_status": "retailer_page_price",
-        "condition": "not_declared_refurbished"
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-23T07:28:49Z",
+        "provider": "retailer_page",
+        "stale": false
       },
-      "best_review": null,
-      "checked_at": "2026-11-21T15:58:15Z",
-      "results_checked": 44
+      "best_review": null
     },
     "pro-max-256gb": {
       "model": "Pro Max",
       "storage": "256GB",
       "status": "ok",
+      "checked_at": "2026-11-23T07:28:49Z",
       "offers": [
         {
           "variant_id": "pro-max-256gb",
@@ -466,8 +522,10 @@
           "link": "https://www.google.com/goto?url=CAESmAEBxCJF111N_rUDTIDFxNTdQ2sZB61pE2oNj9aVY05mEdtvwSh2SHIaUz0Ide5w2W4JiV5L-cUjR3Dj2iy4qdvziVBRhdkxK99PpS33SG-s7x4MvNhMJZZsC6Hc6XYqD3rW3n0h2zun2biyX0cmiMAEoRi6XH4_5Q2uHwU4zEz92vG6h-M57Ss8GegrHx8FEVeh07S4jgqSKA&gsessionid=T1guFSw5q0id9fEfJ6vYGdSpMJaLpLOkN1gUx9fIQUdtCT7eHF_syw",
           "trust": "unverified_seller",
           "link_quality": "indexed_result",
-          "price_status": "search_snippet_unverified",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-256gb",
@@ -483,7 +541,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-max-256gb",
@@ -499,7 +560,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-max-256gb",
@@ -514,8 +578,10 @@
           "link": "https://www.amazon.it/Apple-iPhone-Pro-Max-256/dp/B0FQFQ6TDZ",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-256gb",
@@ -530,8 +596,10 @@
           "link": "https://www.amazon.it/-/en/Apple-iPhone-Pro-Max-256GB/dp/B0FQFQ6TDZ",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-256gb",
@@ -546,10 +614,13 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-max-25600-gb-argento-163014409.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         }
       ],
+      "results_checked": 6,
       "best_trusted": {
         "variant_id": "pro-max-256gb",
         "model": "Pro Max",
@@ -564,34 +635,19 @@
         "trust": "trusted_retailer",
         "link_quality": "direct",
         "price_status": "retailer_page_price",
-        "condition": "not_declared_refurbished"
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-23T07:28:49Z",
+        "provider": "retailer_page",
+        "stale": false
       },
-      "best_review": null,
-      "checked_at": "2026-11-21T15:58:15Z",
-      "results_checked": 40
+      "best_review": null
     },
     "pro-max-512gb": {
       "model": "Pro Max",
       "storage": "512GB",
       "status": "ok",
+      "checked_at": "2026-11-23T07:28:49Z",
       "offers": [
-        {
-          "variant_id": "pro-max-512gb",
-          "model": "Pro Max",
-          "storage": "512GB",
-          "title": "Apple iPhone 17 pro max tim 512GB",
-          "merchant": "Unieuro",
-          "source_label": "Unieuro",
-          "price_eur": 1569.0,
-          "shipping_eur": null,
-          "total_eur": null,
-          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:579993473427194908,gpcid:2048058991081880728,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-          "trust": "review_seller",
-          "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
-          "condition": "not_declared_refurbished",
-          "shipping_known": false
-        },
         {
           "variant_id": "pro-max-512gb",
           "model": "Pro Max",
@@ -606,7 +662,29 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
+        },
+        {
+          "variant_id": "pro-max-512gb",
+          "model": "Pro Max",
+          "storage": "512GB",
+          "title": "Apple iPhone 17 pro max tim 512GB",
+          "merchant": "Unieuro",
+          "source_label": "Unieuro",
+          "price_eur": 1569.0,
+          "shipping_eur": null,
+          "total_eur": null,
+          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:579993473427194908,gpcid:2048058991081880728,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+          "trust": "review_seller",
+          "link_quality": "google_shopping",
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-512gb",
@@ -622,7 +700,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-max-512gb",
@@ -637,9 +718,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:16148245744705273692,gpcid:6747500198235643599,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "review_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-512gb",
@@ -654,9 +737,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:5954370918046650290,gpcid:5464039235052625402,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "unverified_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-512gb",
@@ -671,10 +756,13 @@
           "link": "https://www.amazon.it/-/en/Apple-iPhone-Pro-Max-512GB/dp/B0FQG27G2T",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         }
       ],
+      "results_checked": 6,
       "best_trusted": {
         "variant_id": "pro-max-512gb",
         "model": "Pro Max",
@@ -689,32 +777,18 @@
         "trust": "trusted_retailer",
         "link_quality": "direct",
         "price_status": "retailer_page_price",
-        "condition": "not_declared_refurbished"
-      },
-      "best_review": {
-        "variant_id": "pro-max-512gb",
-        "model": "Pro Max",
-        "storage": "512GB",
-        "title": "Apple iPhone 17 pro max tim 512GB",
-        "merchant": "Unieuro",
-        "source_label": "Unieuro",
-        "price_eur": 1569.0,
-        "shipping_eur": null,
-        "total_eur": null,
-        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+512GB&prds=localAnnotatedOfferId:1,catalogid:579993473427194908,gpcid:2048058991081880728,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-        "trust": "review_seller",
-        "link_quality": "google_shopping",
-        "price_status": "shopping_listing",
         "condition": "not_declared_refurbished",
-        "shipping_known": false
+        "observed_at": "2026-11-23T07:28:49Z",
+        "provider": "retailer_page",
+        "stale": false
       },
-      "checked_at": "2026-11-21T15:58:15Z",
-      "results_checked": 51
+      "best_review": null
     },
     "pro-max-1tb": {
       "model": "Pro Max",
       "storage": "1TB",
-      "status": "ok",
+      "status": "stale",
+      "checked_at": "2026-11-21T15:58:15Z",
       "offers": [
         {
           "variant_id": "pro-max-1tb",
@@ -729,9 +803,11 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+1TB&prds=localAnnotatedOfferId:1,catalogid:15813478741918400343,gpcid:2304623865099272155,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
           "trust": "review_seller",
           "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         },
         {
           "variant_id": "pro-max-1tb",
@@ -746,35 +822,21 @@
           "link": "https://www.amazon.it/Apple-iPhone-Pro-Max-fotocamere/dp/B0FQG846V4",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:58:15Z"
         }
       ],
+      "results_checked": 2,
       "best_trusted": null,
-      "best_review": {
-        "variant_id": "pro-max-1tb",
-        "model": "Pro Max",
-        "storage": "1TB",
-        "title": "Apple iPhone 17 Pro Max 1TB Arancione Cosmico",
-        "merchant": "Unieuro",
-        "source_label": "Unieuro",
-        "price_eur": 1849.0,
-        "shipping_eur": null,
-        "total_eur": null,
-        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+1TB&prds=localAnnotatedOfferId:1,catalogid:15813478741918400343,gpcid:2304623865099272155,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-        "trust": "review_seller",
-        "link_quality": "google_shopping",
-        "price_status": "shopping_listing",
-        "condition": "not_declared_refurbished",
-        "shipping_known": false
-      },
-      "checked_at": "2026-11-21T15:58:15Z",
-      "results_checked": 14
+      "best_review": null
     },
     "pro-max-2tb": {
       "model": "Pro Max",
       "storage": "2TB",
-      "status": "error",
+      "status": "ok",
+      "checked_at": "2026-11-23T07:28:49Z",
       "offers": [
         {
           "variant_id": "pro-max-2tb",
@@ -790,25 +852,10 @@
           "link": "https://www.google.com/goto?url=CAESlgEBxCJF16pAz44U8pzjpJrjAHPn_RiW9sz9sd4rgVkNrbOt0_dr2fWhnV05k8Fnj2TQF6YqJLNQqV6vg8UnhCCjr5VF5-_x0GgsSDYr3JGSROelsrl_OOydHiHNAHmX7dXZgJoB9o8xDOaSXkwzn9ZAUH40vy4mU8BkxsWnj__dKnrLXyoHZ7tT9XarBDEajR2pUIsQpR4&gsessionid=B9re_DohIZW-BGncyhI_KjCAWoxwl7XdAiLplXthJaVBBTpT6J_mnw",
           "trust": "unverified_seller",
           "link_quality": "indexed_result",
-          "price_status": "search_snippet_unverified",
-          "condition": "not_declared_refurbished"
-        },
-        {
-          "variant_id": "pro-max-2tb",
-          "model": "Pro Max",
-          "storage": "2TB",
-          "title": "Apple iPhone 17 Pro Max 2TB",
-          "merchant": "Unieuro",
-          "source_label": "Unieuro",
-          "price_eur": 2279.0,
-          "shipping_eur": null,
-          "total_eur": null,
-          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-          "trust": "review_seller",
-          "link_quality": "google_shopping",
-          "price_status": "shopping_listing",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
-          "shipping_known": false
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -824,7 +871,10 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
         },
         {
           "variant_id": "pro-max-2tb",
@@ -840,7 +890,29 @@
           "trust": "trusted_retailer",
           "link_quality": "direct",
           "price_status": "retailer_page_price",
-          "condition": "not_declared_refurbished"
+          "condition": "not_declared_refurbished",
+          "observed_at": "2026-11-23T07:28:49Z",
+          "provider": "retailer_page",
+          "stale": false
+        },
+        {
+          "variant_id": "pro-max-2tb",
+          "model": "Pro Max",
+          "storage": "2TB",
+          "title": "Apple iPhone 17 Pro Max 2TB",
+          "merchant": "Unieuro",
+          "source_label": "Unieuro",
+          "price_eur": 2279.0,
+          "shipping_eur": null,
+          "total_eur": null,
+          "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
+          "trust": "review_seller",
+          "link_quality": "google_shopping",
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "shipping_known": false,
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -855,8 +927,10 @@
           "link": "https://www.euronics.it/telefonia/smartphone-e-cellulari/iphone/apple---iphone-17-pro-max-2tb-blu-profondo/252011552.html?showAvailability=true",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "search_snippet_unverified",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -871,8 +945,10 @@
           "link": "https://www.euronics.it/telefonia/smartphone-e-cellulari/iphone/apple---iphone-17-pro-max-2tb-blu-profondo/252011552.html",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -887,8 +963,10 @@
           "link": "https://www.euronics.it/telefonia/smartphone-e-cellulari/iphone/apple---iphone-17-pro-max-2tb-arancione-cosmico/252011551.html",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -903,8 +981,10 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-max-200000-gb-blu-164558379.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -919,8 +999,10 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-max-200000-gb-arancione-164558288.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -935,8 +1017,10 @@
           "link": "https://www.mediaworld.it/it/product/_apple-iphone-17-pro-max-200000-gb-argento-163779007.html",
           "trust": "review_seller",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         },
         {
           "variant_id": "pro-max-2tb",
@@ -951,10 +1035,13 @@
           "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Arancione-Cosmico-pidILIIPHONE17PMAX2TBO?srsltid=AYCX9vIlNZE8Mgthpbdeye0q9id9UHBz24fQjtYEmETbtkF8HmVpU5UN",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "check_on_store",
-          "condition": "not_declared_refurbished"
+          "price_status": "historical_price",
+          "condition": "not_declared_refurbished",
+          "stale": true,
+          "observed_at": "2026-11-21T15:04:33Z"
         }
       ],
+      "results_checked": 11,
       "best_trusted": {
         "variant_id": "pro-max-2tb",
         "model": "Pro Max",
@@ -969,27 +1056,41 @@
         "trust": "trusted_retailer",
         "link_quality": "direct",
         "price_status": "retailer_page_price",
-        "condition": "not_declared_refurbished"
-      },
-      "best_review": {
-        "variant_id": "pro-max-2tb",
-        "model": "Pro Max",
-        "storage": "2TB",
-        "title": "Apple iPhone 17 Pro Max 2TB",
-        "merchant": "Unieuro",
-        "source_label": "Unieuro",
-        "price_eur": 2279.0,
-        "shipping_eur": null,
-        "total_eur": null,
-        "link": "https://www.google.com/search?ibp=oshop&q=Apple+iPhone+17+Pro+Max+2TB&prds=localAnnotatedOfferId:1,catalogid:16951739281351315905,gpcid:16020160991373709421,pvo:2,pvt:hg&gl=it&udm=28&pvorigin=2",
-        "trust": "review_seller",
-        "link_quality": "google_shopping",
-        "price_status": "shopping_listing",
         "condition": "not_declared_refurbished",
-        "shipping_known": false
+        "observed_at": "2026-11-23T07:28:49Z",
+        "provider": "retailer_page",
+        "stale": false
       },
-      "checked_at": "2026-11-21T15:04:33Z",
-      "results_checked": 0
+      "best_review": null
     }
-  }
+  },
+  "health": {
+    "status": "degraded",
+    "live_prices": 11,
+    "sources": {
+      "trovaprezzi": {
+        "status": "partial",
+        "variants": 0,
+        "offers": 0,
+        "errors": [
+          "pro-256gb: HTTP 403",
+          "pro-512gb: HTTP 403",
+          "pro-1tb: HTTP 403",
+          "pro-max-256gb: HTTP 403",
+          "pro-max-512gb: HTTP 403",
+          "pro-max-1tb: HTTP 403",
+          "pro-max-2tb: HTTP 403"
+        ]
+      },
+      "serper_shopping": {
+        "status": "error",
+        "reason": "Serper HTTP 400: {\"message\":\"Not enough credits\",\"statusCode\":400}"
+      }
+    },
+    "alerts_configured": false,
+    "alerts_found": 0,
+    "alerts_sent": 0,
+    "notes": "Stale prices and comparison quotes are not confirmed checkout prices."
+  },
+  "methodology": "All exact-model prices shown; comparison/marketplace prices require seller checks, used/refurb excluded."
 }
