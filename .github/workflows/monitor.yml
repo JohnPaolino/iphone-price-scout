@@ -13,7 +13,8 @@ on:
       - 'docs/*.css'
       - '.github/workflows/monitor.yml'
   schedule:
-    - cron: '17 * * * *'
+    - cron: '7 * * * *'
+    - cron: '22,37,52 * * * *'
 
 permissions:
   contents: write
@@ -49,9 +50,10 @@ jobs:
           node --check docs/app.js
           node tests/smoke_dashboard.cjs
 
-      - name: Scan approved Italian sellers
+      - name: Scan Italian prices from independent sources
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          RUN_PAID_SEARCH: ${{ github.event_name != 'schedule' || github.event.schedule == '7 * * * *' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_IDS: ${{ vars.TELEGRAM_CHAT_IDS }}
           DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
@@ -62,7 +64,7 @@ jobs:
           ALERT_PRO_MAX_512GB: ${{ vars.ALERT_PRO_MAX_512GB }}
           ALERT_PRO_MAX_1TB: ${{ vars.ALERT_PRO_MAX_1TB }}
           ALERT_PRO_MAX_2TB: ${{ vars.ALERT_PRO_MAX_2TB }}
-        run: python src/monitor.py
+        run: python -m src.reliable_monitor
 
       - name: Save price history to repository
         run: |
@@ -87,3 +89,16 @@ jobs:
       - name: Publish dashboard
         id: publish
         uses: actions/deploy-pages@v4
+
+      - name: Check scan health after publishing
+        run: |
+          python - <<'PY'
+          import json,sys
+          d=json.load(open("docs/data/latest.json",encoding="utf-8"))
+          h=d.get("health",{})
+          print("Scan health:", h)
+          if h.get("live_prices",0) < 1:
+              print("ERROR: No fresh prices obtained from any provider.")
+              sys.exit(1)
+          PY
+
