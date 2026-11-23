@@ -192,6 +192,60 @@ def serp_request(endpoint, query, key):
         # Surface the reason in job logs and health, never credentials.
         raise RuntimeError("Serper HTTP "+str(e.code)+": "+detail[:220]) from e
 
+
+def keepa_prices(products, variant_asin_map, scan):
+    """Keepa public marketplace NEW prices. Do not use used/refurbished series."""
+    items=[]
+    for item in products:
+        if not isinstance(item,dict) or item.get("productType")!=0:
+            continue
+        asin=str(item.get("asin") or "").upper()
+        details=variant_asin_map.get(asin)
+        if details is None:
+            continue
+        model,gb=details
+        title=str(item.get("title") or "")
+        if not base.title_matches(title,model,gb):
+            continue
+        stats=item.get("stats") or {}
+        current=stats.get("current") or []
+        for index,label in ((0,"Amazon.it (sold by Amazon)"),
+                            (1,"Amazon.it (lowest new marketplace offer)")):
+            if len(current)<=index or not isinstance(current[index],(int,float)):
+                continue
+            cents=current[index]
+            if cents<65000 or cents>450000:
+                continue
+            amount=round(cents/100.0,2)
+            items.append({
+                "variant_id":base.variant_id(model,gb),"model":model,"storage":base.storage_label(gb),
+                "title":title[:240],"merchant":label,"source_label":"Keepa Amazon.it NEW price",
+                "price_eur":amount,"shipping_eur":None,"total_eur":None,
+                "shipping_known":False,"link":"https://www.amazon.it/dp/"+asin,
+                "trust":"review_seller","link_quality":"direct",
+                "price_status":"keepa_new_price","condition":"new_as_classified_by_keepa",
+                "observed_at":scan,"provider":"keepa",
+            })
+    return items
+
+def keepa_request(key, asin_map, scan):
+    if not asin_map:
+        return []
+    # Keepa API domainId 8 = Italy; stats.current[0] AMAZON, [1] NEW.
+    query=urllib.parse.urlencode({"key":key,"domain":8,
+        "asin":",".join(sorted(asin_map)),"stats":1,"update":60})
+    req=urllib.request.Request("https://api.keepa.com/product?"+query,
+                               headers={"User-Agent":UAGENT})
+    try:
+        with urllib.request.urlopen(req,timeout=19) as resp:
+            result=json.load(resp)
+    except Exception:
+        # Never disclose Keepa URLs: the key is part of the URL.
+        raise RuntimeError("Keepa API request failed; check subscription and rate limits") from None
+    if result.get("error"):
+        raise RuntimeError("Keepa API error (key and subscription status should be checked)")
+    return keepa_prices(result.get("products") or [],asin_map,scan)
+
 def offer_key(o):
     normalized_link=(o.get("link") or "").split("?")[0]
     return (o.get("variant_id"),o.get("merchant","").casefold(),normalized_link,
@@ -276,10 +330,35 @@ def run():
     any_fresh=False
     paid_available=bool(key and paid)
     serper_outage=None
+    keepa_key=os.environ.get("KEEPA_API_KEY","").strip()
+    known_asins={}
+    for vid,variant in old.items():
+        model=variant.get("model")
+        label=variant.get("storage","")
+        try:
+            gb=int(re.search(r"\d+",label).group())*(1024 if "TB" in label.upper() else 1)
+        except Exception:
+            continue
+        for offer in variant.get("offers",[]):
+            if "amazon.it" not in str(offer.get("link","")).lower():
+                continue
+            m=re.search(r"/dp/([A-Z0-9]{10})",offer["link"],re.I)
+            if m and model in ("Pro","Pro Max"):
+                known_asins[m.group(1).upper()]=(model,gb)
+    amazon_offers=[]
+    if keepa_key:
+        try:
+            amazon_offers=keepa_request(keepa_key,known_asins,scan)
+            sources["keepa"]={"status":"ok","offers":len(amazon_offers)}
+            any_fresh=any_fresh or bool(amazon_offers)
+        except Exception as e:
+            sources["keepa"]={"status":"error","reason":str(e)[:150]}
+    else:
+        sources["keepa"]={"status":"skipped","reason":"Optional KEEPA_API_KEY not configured"}
     for model,storages in config["storage_gb"].items():
         for gb in storages:
             vid=base.variant_id(model,gb)
-            offers=[]
+            offers=[x for x in amazon_offers if x["variant_id"]==vid]
             page=trobaprezzi_url(model,gb)
             try:
                 raw=fetch_html(page)
