@@ -12,20 +12,39 @@
   const vTitle = () => 'iPhone 17 Pro'+(state.model==='max'?' Max':'')+' · '+state.storage.toUpperCase();
   const showToast = (t) => {const el=$('#toast'); el.textContent=t;el.classList.add('visible');setTimeout(()=>el.classList.remove('visible'),2200);};
 
+  function renderHealth(){
+    const h=state.latest.health || {};
+    const stateName=h.status || (state.latest.checked_at?'legacy':'unknown');
+    const stamp=state.latest.checked_at || '';
+    const fresh=stamp && (Date.now()-Date.parse(stamp))<55*60*1000;
+    const box=$('#health-panel');
+    if(!box)return;
+    const src=h.sources || {};
+    const failed=Object.entries(src).filter(([k,v])=>v.status==='error'||v.status==='partial'||v.status==='unconfigured');
+    box.classList.toggle('unhealthy',stateName!=='healthy'||!fresh);
+    const heading=!fresh?'SCAN OVERDUE':stateName==='healthy'?'MONITOR ACTIVE':stateName==='degraded'?'PARTIAL COVERAGE':stateName==='outage'?'PRICE SOURCES UNAVAILABLE':'MONITOR STATUS';
+    $('#health-title').textContent=heading;
+    const hasAlerts=h.alerts_configured===true;
+    const failures=failed.map(([k,v])=>k+': '+(v.reason||v.status)).join(' · ');
+    $('#health-details').textContent=
+      (h.live_prices ?? 'Unknown')+' fresh prices · '+(hasAlerts?'Telegram alerts configured':'ALERTS NOT CONFIGURED')+
+      (failures?' · '+failures.slice(0,280):'')+
+      ' · Last scan '+dateLabel(stamp);
+  }
   function renderSummary(){
     const hasScan=!!state.latest.checked_at;
     const lastMs=Date.parse(state.latest.checked_at || '');
     const isFresh=hasScan && Number.isFinite(lastMs) && (Date.now()-lastMs)<(150*60*1000);
     $('#last-checked').textContent=dateLabel(state.latest.checked_at);
     $('#footer-updated').textContent='Updated: '+dateLabel(state.latest.checked_at);
-    const offers=Object.values(state.latest.variants||{}).reduce((n,v)=>n+(v.offers?.filter(o=>typeof o.price_eur==='number').length||0),0);
+    const offers=Object.values(state.latest.variants||{}).reduce((n,v)=>n+(v.offers?.filter(o=>typeof o.price_eur==='number'&&!o.stale).length||0),0);
     $('#offer-count').textContent=hasScan?`${offers} quoted prices`:'Awaiting scan';
     const pill=$('#run-status');
     pill.classList.toggle('live',isFresh && !state.latest.error_count);
     pill.classList.toggle('error',hasScan && (!isFresh || !!state.latest.error_count));
     pill.textContent=!hasScan?'Awaiting first scan':!isFresh?'Scan overdue':state.latest.error_count?`Partial scan · ${state.latest.error_count} errors`:'Recent scan';
     for(const [id,prefix] of [['pro-256gb','pro'],['pro-max-256gb','max']]){
-      const v=state.latest.variants?.[id]; const best=(v?.offers||[]).filter(o=>typeof o.price_eur==='number').sort((a,b)=>a.price_eur-b.price_eur)[0];
+      const v=state.latest.variants?.[id]; const best=(v?.offers||[]).filter(o=>typeof o.price_eur==='number'&&!o.stale).sort((a,b)=>a.price_eur-b.price_eur)[0];
       $(`#feature-${prefix}-price`).textContent=best?euro(best.price_eur):'—';
       $(`#feature-${prefix}-seller`).textContent=v?.status==='error'?'Last available result · scan failed':!isFresh&&hasScan?'Last observed price · scan overdue':best?`${best.merchant} · ${best.trust==='trusted_retailer'?'retailer price':'seller needs verification'} · excluding unknown shipping`:hasScan?(v?.offers?.length?'Retailer listings found · check current prices':'No matching retailer pages found'):'Awaiting first scan';
     }
@@ -45,7 +64,7 @@
       (state.storage==='all'||o.storage?.toLowerCase()===state.storage)
     );
     const priced=selected.filter(o=>typeof o.price_eur==='number'&&Number.isFinite(o.price_eur))
-      .sort((a,b)=>a.price_eur-b.price_eur||String(a.merchant).localeCompare(String(b.merchant)));
+      .sort((a,b)=>Number(!!a.stale)-Number(!!b.stale)||a.price_eur-b.price_eur||String(a.merchant).localeCompare(String(b.merchant)));
     const recognized=priced.filter(o=>o.trust==='trusted_retailer');
     const toCheck=priced.filter(o=>o.trust!=='trusted_retailer');
     const unpriced=selected.filter(o=>o.price_eur==null).sort((a,b)=>String(a.merchant).localeCompare(String(b.merchant)));
@@ -53,8 +72,10 @@
     const otherUnpriced=unpriced.filter(o=>o.merchant!=='Amazon.it');
     $('#retailer-count').textContent='('+recognized.length+')';
     $('#unvetted-count').textContent='('+toCheck.length+' priced / '+amazonWithoutQuote.length+' Amazon links)';
-    $('#view-summary').textContent=priced.length+' quoted prices across '+new Set(priced.map(o=>o.merchant)).size+
-      ' seller names'+(unpriced.length?' · '+unpriced.length+' more store links without prices':'');
+    $('#view-summary').textContent=priced.filter(o=>!o.stale).length+' fresh quoted prices across '+
+      new Set(priced.filter(o=>!o.stale).map(o=>o.merchant)).size+
+      ' seller/source names · '+priced.filter(o=>o.stale).length+' previous quotes retained as STALE'+
+      (unpriced.length?' · '+unpriced.length+' links without prices':'');
     $('#view-timestamp').textContent=state.latest.checked_at?'Checked '+dateLabel(state.latest.checked_at):'';
     $('#result-caption').textContent='All quoted prices in EUR; shipping and checkout availability may differ';
 
@@ -122,7 +143,7 @@
       <defs><linearGradient id="pricefill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#95ddb6" stop-opacity=".26"/><stop offset="100%" stop-color="#95ddb6" stop-opacity="0"/></linearGradient></defs>
       ${lines}<path d="${area}" fill="url(#pricefill)"/><path d="${path}" stroke="#a2e9c7" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="${dotx}" cy="${doty}" r="6" fill="#b5f2d4" stroke="#17231f" stroke-width="3"/>${ticks}</svg>`;
   }
-  function render(){renderSummary();renderOffers();renderChart();}
+  function render(){renderHealth();renderSummary();renderOffers();renderChart();}
   $$('[data-model]').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;if(state.model==='pro'&&state.storage==='2tb')state.storage='all';render();}));
   $('#storage').addEventListener('change',e=>{state.storage=e.target.value;render();});
   $$('.choose-model').forEach(btn=>btn.addEventListener('click',()=>{state.model=btn.dataset.model;state.storage=btn.dataset.storage;render();$('#offers').scrollIntoView({behavior:'smooth',block:'start'});}));
