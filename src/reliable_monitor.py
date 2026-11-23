@@ -246,6 +246,33 @@ def keepa_request(key, asin_map, scan):
         raise RuntimeError("Keepa API error (key and subscription status should be checked)")
     return keepa_prices(result.get("products") or [],asin_map,scan)
 
+
+def serpapi_request(key,query):
+    """Optional independent paid Google Shopping feed, region Italy."""
+    params=urllib.parse.urlencode({
+        "api_key":key,"engine":"google_shopping","q":query,"gl":"it",
+        "hl":"it","google_domain":"google.it","num":40,
+    })
+    req=urllib.request.Request("https://serpapi.com/search.json?"+params,
+                               headers={"User-Agent":UAGENT})
+    try:
+        with urllib.request.urlopen(req,timeout=22) as resp:
+            payload=json.load(resp)
+    except Exception:
+        # URL embeds the secret; never log the actual request URL.
+        raise RuntimeError("SerpApi Shopping API request failed") from None
+    if payload.get("error"):
+        raise RuntimeError("SerpApi Shopping API error: "+str(payload["error"])[:150])
+    rows=payload.get("shopping_results") or []
+    normalized=[]
+    for item in rows:
+        if not isinstance(item,dict):continue
+        value=dict(item)
+        value["link"]=item.get("product_link") or item.get("link") or ""
+        value["extractedPrice"]=item.get("extracted_price")
+        normalized.append(value)
+    return normalized
+
 def offer_key(o):
     normalized_link=(o.get("link") or "").split("?")[0]
     return (o.get("variant_id"),o.get("merchant","").casefold(),normalized_link,
@@ -321,6 +348,7 @@ def run():
     history=base.load_json(out/"history.json",{})
     scan=at_now()
     key=os.environ.get("SERPER_API_KEY","")
+    serpapi_key=os.environ.get("SERPAPI_API_KEY","").strip()
     # Our default cadence is comparison-first. Run the paid feed only on the
     # hourly cron or manually, preserving credits.
     paid=os.environ.get("RUN_PAID_SEARCH","false").lower()=="true"
@@ -426,6 +454,21 @@ def run():
                     serper_outage=str(e)
                     paid_available=False
                     sources["serper_shopping"]={"status":"error","reason":serper_outage}
+            # Separate paid SERP provider as a fallback when Serper credits
+            # run out. Keep all matching prices with clear seller labels.
+            if paid and serpapi_key:
+                try:
+                    rows=serpapi_request(serpapi_key,
+                        f"Apple iPhone 17 {model} {base.storage_label(gb)}")
+                    extra=[o for x in rows if (o:=base.normalize_item(x,model,gb,config))]
+                    for x in extra:
+                        x["provider"]="serpapi_shopping";x["observed_at"]=scan;x["stale"]=False
+                    offers.extend(extra)
+                    any_fresh=any_fresh or bool(extra)
+                    st=sources.setdefault("serpapi_shopping",{"status":"ok","variants":0,"offers":0})
+                    st["variants"]+=1;st["offers"]+=len(extra)
+                except Exception as e:
+                    sources["serpapi_shopping"]={"status":"error","reason":str(e)[:200]}
             # Preserve prior listings, visibly stale and never eligible for
             # alerts, when current discovery has gaps.
             current_keys={(o.get("merchant"),o.get("link","").split("?")[0]) for o in offers}
@@ -446,6 +489,9 @@ def run():
                       "best_review":next((x for x in priced if x.get("trust")!="trusted_retailer"),None)}
     if not paid:
         sources["serper_shopping"]={"status":"skipped","reason":"Hourly paid search disabled on interim check"}
+        sources["serpapi_shopping"]={"status":"skipped","reason":"Hourly paid search disabled on interim check"}
+    elif not serpapi_key:
+        sources["serpapi_shopping"]={"status":"skipped","reason":"Optional SERPAPI_API_KEY not configured"}
     elif not key:
         sources["serper_shopping"]={"status":"unconfigured","reason":"No SERPER_API_KEY secret"}
     health=("healthy" if price_count and all(x.get("status") in ("ok","skipped") for x in sources.values())
