@@ -183,7 +183,11 @@ class TestPriceScout(unittest.TestCase):
             latest = json.loads((out/'latest.json').read_text())
             self.assertEqual(latest['variants']['pro-256gb']['best_trusted']['price_eur'], 1149)
             self.assertIsNone(latest['variants']['pro-max-256gb']['best_trusted'])
-            self.assertEqual(len(make_alerts(latest['variants'], {}, {}, CONFIG, '')), 0)
+            disabled = {**CONFIG, "alert_on_first_discovery":False}
+            self.assertEqual(len(make_alerts(latest['variants'], {}, {}, disabled, '')), 0)
+            # With first-discovery alerts enabled, one genuine priced SKU
+            # should generate a notification, not invented variant alerts.
+            self.assertEqual(len(make_alerts(latest['variants'], {}, {}, CONFIG, '')), 1)
             self.assertEqual(len(json.loads((out/'history.json').read_text())['pro-256gb']), 1)
 
 if __name__ == '__main__':
