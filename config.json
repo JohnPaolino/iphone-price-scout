@@ -64,6 +64,6 @@
   "max_price_eur": 4500,
   "min_price_eur": 650,
   "max_history_points_per_variant": 1440,
-  "alert_min_drop_eur": 5,
-  "alert_on_first_discovery": false
+  "alert_min_drop_eur": 2,
+  "alert_on_first_discovery": true
 }
