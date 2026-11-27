@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-27T18:59:47Z",
+  "checked_at": "2026-11-27T19:24:51Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Independent public comparisons + retailer pages + optional Serper",
@@ -11,7 +11,7 @@
       "model": "Pro",
       "storage": "256GB",
       "status": "ok",
-      "checked_at": "2026-11-27T18:59:47Z",
+      "checked_at": "2026-11-27T19:24:51Z",
       "offers": [
         {
           "variant_id": "pro-256gb",
@@ -66,7 +66,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -85,7 +85,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -178,7 +178,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T18:59:47Z",
+        "observed_at": "2026-11-27T19:24:51Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -188,7 +188,7 @@
       "model": "Pro",
       "storage": "512GB",
       "status": "ok",
-      "checked_at": "2026-11-27T18:59:47Z",
+      "checked_at": "2026-11-27T19:24:51Z",
       "offers": [
         {
           "variant_id": "pro-512gb",
@@ -224,7 +224,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -281,7 +281,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T18:59:47Z",
+        "observed_at": "2026-11-27T19:24:51Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -291,7 +291,7 @@
       "model": "Pro",
       "storage": "1TB",
       "status": "ok",
-      "checked_at": "2026-11-27T18:59:47Z",
+      "checked_at": "2026-11-27T19:24:51Z",
       "offers": [
         {
           "variant_id": "pro-1tb",
@@ -384,7 +384,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -403,7 +403,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -496,7 +496,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T18:59:47Z",
+        "observed_at": "2026-11-27T19:24:51Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -506,7 +506,7 @@
       "model": "Pro Max",
       "storage": "256GB",
       "status": "ok",
-      "checked_at": "2026-11-27T18:59:47Z",
+      "checked_at": "2026-11-27T19:24:51Z",
       "offers": [
         {
           "variant_id": "pro-max-256gb",
@@ -542,7 +542,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -561,7 +561,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -636,7 +636,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T18:59:47Z",
+        "observed_at": "2026-11-27T19:24:51Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -646,7 +646,7 @@
       "model": "Pro Max",
       "storage": "512GB",
       "status": "ok",
-      "checked_at": "2026-11-27T18:59:47Z",
+      "checked_at": "2026-11-27T19:24:51Z",
       "offers": [
         {
           "variant_id": "pro-max-512gb",
@@ -663,7 +663,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -720,7 +720,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -778,7 +778,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T18:59:47Z",
+        "observed_at": "2026-11-27T19:24:51Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -836,7 +836,7 @@
       "model": "Pro Max",
       "storage": "2TB",
       "status": "ok",
-      "checked_at": "2026-11-27T18:59:47Z",
+      "checked_at": "2026-11-27T19:24:51Z",
       "offers": [
         {
           "variant_id": "pro-max-2tb",
@@ -872,7 +872,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -891,7 +891,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T18:59:47Z",
+          "observed_at": "2026-11-27T19:24:51Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -1057,7 +1057,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T18:59:47Z",
+        "observed_at": "2026-11-27T19:24:51Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -1101,12 +1101,12 @@
         ]
       },
       "serper_shopping": {
-        "status": "error",
-        "reason": "Serper HTTP 400: {\"message\":\"Not enough credits\",\"statusCode\":400}"
+        "status": "skipped",
+        "reason": "Hourly paid search disabled on interim check"
       },
       "serpapi_shopping": {
         "status": "skipped",
-        "reason": "Optional SERPAPI_API_KEY not configured"
+        "reason": "Hourly paid search disabled on interim check"
       }
     },
     "alerts_configured": false,
