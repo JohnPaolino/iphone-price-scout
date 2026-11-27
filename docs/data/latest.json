@@ -1,17 +1,17 @@
 {
-  "checked_at": "2026-11-27T12:33:24Z",
+  "checked_at": "2026-11-27T13:18:02Z",
   "market": "Italy",
   "currency": "EUR",
   "source": "Independent public comparisons + retailer pages + optional Serper",
-  "success_count": 4,
-  "error_count": 3,
+  "success_count": 6,
+  "error_count": 1,
   "errors": [],
   "variants": {
     "pro-256gb": {
       "model": "Pro",
       "storage": "256GB",
       "status": "ok",
-      "checked_at": "2026-11-27T12:33:24Z",
+      "checked_at": "2026-11-27T13:18:02Z",
       "offers": [
         {
           "variant_id": "pro-256gb",
@@ -66,7 +66,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -85,7 +85,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -178,7 +178,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T12:33:24Z",
+        "observed_at": "2026-11-27T13:18:02Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -187,8 +187,8 @@
     "pro-512gb": {
       "model": "Pro",
       "storage": "512GB",
-      "status": "stale",
-      "checked_at": "2026-11-27T11:59:31Z",
+      "status": "ok",
+      "checked_at": "2026-11-27T13:18:02Z",
       "offers": [
         {
           "variant_id": "pro-512gb",
@@ -222,11 +222,11 @@
           "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vLOgrSZJpri4MDUjRY-WAeSzEc0OtWbik0Wd-L0rrJIj--ow540",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "historical_price",
+          "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T11:59:31Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
-          "stale": true
+          "stale": false
         },
         {
           "variant_id": "pro-512gb",
@@ -266,14 +266,32 @@
         }
       ],
       "results_checked": 4,
-      "best_trusted": null,
+      "best_trusted": {
+        "variant_id": "pro-512gb",
+        "model": "Pro",
+        "storage": "512GB",
+        "title": "Apple iPhone 17 Pro 512GB Blu Profondo",
+        "merchant": "Unieuro",
+        "price_eur": 1429.0,
+        "shipping_eur": null,
+        "total_eur": null,
+        "shipping_known": false,
+        "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-512GB-Blu-Profondo-pidAPLIPHONE17PRO512B?srsltid=AYCX9vLOgrSZJpri4MDUjRY-WAeSzEc0OtWbik0Wd-L0rrJIj--ow540",
+        "trust": "trusted_retailer",
+        "link_quality": "direct",
+        "price_status": "retailer_page_price",
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-27T13:18:02Z",
+        "provider": "retailer_page",
+        "stale": false
+      },
       "best_review": null
     },
     "pro-1tb": {
       "model": "Pro",
       "storage": "1TB",
       "status": "ok",
-      "checked_at": "2026-11-27T12:33:24Z",
+      "checked_at": "2026-11-27T13:18:02Z",
       "offers": [
         {
           "variant_id": "pro-1tb",
@@ -366,7 +384,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -385,7 +403,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -478,7 +496,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T12:33:24Z",
+        "observed_at": "2026-11-27T13:18:02Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -488,7 +506,7 @@
       "model": "Pro Max",
       "storage": "256GB",
       "status": "ok",
-      "checked_at": "2026-11-27T12:33:24Z",
+      "checked_at": "2026-11-27T13:18:02Z",
       "offers": [
         {
           "variant_id": "pro-max-256gb",
@@ -524,7 +542,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -541,11 +559,11 @@
           "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-256GB-Argento-pidAPLIPHONE17PMAX256S?srsltid=AYCX9vKdFCT2Jado3sL8WPswBCR-O9xjeXpabRbj9XxHGFi4mGzAQP00",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "retailer_page_price",
+          "price_status": "historical_price",
           "condition": "not_declared_refurbished",
           "observed_at": "2026-11-27T12:33:24Z",
           "provider": "retailer_page",
-          "stale": false
+          "stale": true
         },
         {
           "variant_id": "pro-max-256gb",
@@ -618,7 +636,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T12:33:24Z",
+        "observed_at": "2026-11-27T13:18:02Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -628,7 +646,7 @@
       "model": "Pro Max",
       "storage": "512GB",
       "status": "ok",
-      "checked_at": "2026-11-27T12:33:24Z",
+      "checked_at": "2026-11-27T13:18:02Z",
       "offers": [
         {
           "variant_id": "pro-max-512gb",
@@ -645,7 +663,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -702,7 +720,7 @@
           "link_quality": "direct",
           "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T12:33:24Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
           "stale": false
         },
@@ -760,7 +778,7 @@
         "link_quality": "direct",
         "price_status": "retailer_page_price",
         "condition": "not_declared_refurbished",
-        "observed_at": "2026-11-27T12:33:24Z",
+        "observed_at": "2026-11-27T13:18:02Z",
         "provider": "retailer_page",
         "stale": false
       },
@@ -817,8 +835,8 @@
     "pro-max-2tb": {
       "model": "Pro Max",
       "storage": "2TB",
-      "status": "stale",
-      "checked_at": "2026-11-27T11:59:31Z",
+      "status": "ok",
+      "checked_at": "2026-11-27T13:18:02Z",
       "offers": [
         {
           "variant_id": "pro-max-2tb",
@@ -852,11 +870,11 @@
           "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Blu-Profondo-pidAPLIPHONE17PMAX2TBB?srsltid=AYCX9vIREhcOltE8qFn78qBAtrQIFlp8AExLQkKI3qZM4C3Xm0Jcw45P",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "historical_price",
+          "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T11:59:31Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
-          "stale": true
+          "stale": false
         },
         {
           "variant_id": "pro-max-2tb",
@@ -871,11 +889,11 @@
           "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Argento-pidAPLIPHONE17PMAX2TBS?srsltid=AYCX9vJMY3vyll2h9pfcpYhXTvW_8mj0sPIZLsoPZWCXIxbhiK2hf12k",
           "trust": "trusted_retailer",
           "link_quality": "direct",
-          "price_status": "historical_price",
+          "price_status": "retailer_page_price",
           "condition": "not_declared_refurbished",
-          "observed_at": "2026-11-27T11:59:31Z",
+          "observed_at": "2026-11-27T13:18:02Z",
           "provider": "retailer_page",
-          "stale": true
+          "stale": false
         },
         {
           "variant_id": "pro-max-2tb",
@@ -1024,13 +1042,31 @@
         }
       ],
       "results_checked": 11,
-      "best_trusted": null,
+      "best_trusted": {
+        "variant_id": "pro-max-2tb",
+        "model": "Pro Max",
+        "storage": "2TB",
+        "title": "Apple iPhone 17 Pro Max 2TB Blu Profondo",
+        "merchant": "Unieuro",
+        "price_eur": 2279.0,
+        "shipping_eur": null,
+        "total_eur": null,
+        "shipping_known": false,
+        "link": "https://www.unieuro.it/online/iPhone/iPhone-17-Pro-Max-2TB-Blu-Profondo-pidAPLIPHONE17PMAX2TBB?srsltid=AYCX9vIREhcOltE8qFn78qBAtrQIFlp8AExLQkKI3qZM4C3Xm0Jcw45P",
+        "trust": "trusted_retailer",
+        "link_quality": "direct",
+        "price_status": "retailer_page_price",
+        "condition": "not_declared_refurbished",
+        "observed_at": "2026-11-27T13:18:02Z",
+        "provider": "retailer_page",
+        "stale": false
+      },
       "best_review": null
     }
   },
   "health": {
     "status": "degraded",
-    "live_prices": 8,
+    "live_prices": 10,
     "sources": {
       "keepa": {
         "status": "skipped",
@@ -1065,16 +1101,16 @@
         ]
       },
       "serper_shopping": {
-        "status": "skipped",
-        "reason": "Hourly paid search disabled on interim check"
+        "status": "error",
+        "reason": "Serper HTTP 400: {\"message\":\"Not enough credits\",\"statusCode\":400}"
       },
       "serpapi_shopping": {
         "status": "skipped",
-        "reason": "Hourly paid search disabled on interim check"
+        "reason": "Optional SERPAPI_API_KEY not configured"
       }
     },
     "alerts_configured": false,
-    "alerts_found": 4,
+    "alerts_found": 6,
     "alerts_sent": 0,
     "notes": "Stale prices and comparison quotes are not confirmed checkout prices."
   },
